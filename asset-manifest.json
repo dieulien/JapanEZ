@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/japanese-reading/static/css/main.48ebd745.chunk.css",
+    "main.js": "/japanese-reading/static/js/main.f0be804b.chunk.js",
+    "main.js.map": "/japanese-reading/static/js/main.f0be804b.chunk.js.map",
+    "runtime-main.js": "/japanese-reading/static/js/runtime-main.ba7e5498.js",
+    "runtime-main.js.map": "/japanese-reading/static/js/runtime-main.ba7e5498.js.map",
+    "static/css/2.3c03f26f.chunk.css": "/japanese-reading/static/css/2.3c03f26f.chunk.css",
+    "static/js/2.7bb2dbb8.chunk.js": "/japanese-reading/static/js/2.7bb2dbb8.chunk.js",
+    "static/js/2.7bb2dbb8.chunk.js.map": "/japanese-reading/static/js/2.7bb2dbb8.chunk.js.map",
+    "index.html": "/japanese-reading/index.html",
+    "precache-manifest.b32c8cbd0956e6e3646c186ca00c00b6.js": "/japanese-reading/precache-manifest.b32c8cbd0956e6e3646c186ca00c00b6.js",
+    "service-worker.js": "/japanese-reading/service-worker.js",
+    "static/css/2.3c03f26f.chunk.css.map": "/japanese-reading/static/css/2.3c03f26f.chunk.css.map",
+    "static/css/main.48ebd745.chunk.css.map": "/japanese-reading/static/css/main.48ebd745.chunk.css.map",
+    "static/js/2.7bb2dbb8.chunk.js.LICENSE.txt": "/japanese-reading/static/js/2.7bb2dbb8.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.ba7e5498.js",
+    "static/css/2.3c03f26f.chunk.css",
+    "static/js/2.7bb2dbb8.chunk.js",
+    "static/css/main.48ebd745.chunk.css",
+    "static/js/main.f0be804b.chunk.js"
+  ]
+}
