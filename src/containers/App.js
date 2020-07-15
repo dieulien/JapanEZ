@@ -16,6 +16,12 @@ class App extends React.Component {
       userInput: "",
       familiarity: 0,
       route: "signin",
+      userInfo: {
+        id: "",
+        name: "",
+        email: "",
+        joined: "",
+      },
     };
   }
 
@@ -27,24 +33,40 @@ class App extends React.Component {
     console.log("user have submitted");
   };
 
-  onLogin = () => {
-    this.setState({ route: "home" });
-  };
-
-  onLogout = () => {
-    this.setState({ route: "signin" });
-  };
-
   onRouteChange = (route) => {
     this.setState({ route: route });
   };
+
+  loadUser = (user) => {
+    const { id, name, email, joined } = user;
+    this.setState((prevState) => {
+      let userInfo = { ...prevState.userInfo };
+      userInfo.name = name;
+      userInfo.id = id;
+      userInfo.email = email;
+      userInfo.joined = joined;
+      return { userInfo };
+    });
+    console.log(this.state.userInfo);
+  };
+
+  componentDidMount() {
+    fetch("http://localhost:3001")
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+  }
 
   renderRoute = (route) => {
     switch (route) {
       case "signin":
         return <Signin onRouteChange={this.onRouteChange} />;
       case "register":
-        return <Register onRouteChange={this.onRouteChange} />;
+        return (
+          <Register
+            onRouteChange={this.onRouteChange}
+            loadUser={this.loadUser}
+          />
+        );
       case "home":
         return (
           <div>
