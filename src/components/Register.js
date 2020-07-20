@@ -26,9 +26,7 @@ class Register extends React.Component {
     const { name, email, password } = this.state;
     fetch("http://localhost:3001/register", {
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name: name,
         email: email,
@@ -36,10 +34,9 @@ class Register extends React.Component {
       }),
     })
       .then((response) => response.json())
-      .then((newUser) => {
-        if (newUser) {
-          console.log("Successfully added new user!");
-          this.props.loadUser(newUser);
+      .then((data) => {
+        if (data === "registration success") {
+          this.props.loadUser(data);
           this.props.onRouteChange("home");
         }
       })
@@ -47,8 +44,8 @@ class Register extends React.Component {
         console.log("Error!", error);
       });
 
-    this.props.onRouteChange("home");
-    console.log(this.state);
+    // this.props.onRouteChange("signin");
+    console.log("submission: invalid", this.state);
   };
 
   render() {
