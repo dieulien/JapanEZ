@@ -35,6 +35,7 @@ class App extends React.Component {
 
   onRouteChange = (route) => {
     this.setState({ route: route });
+    console.log("ROUTE CHANGED!");
   };
 
   loadUser = (user) => {
@@ -50,11 +51,11 @@ class App extends React.Component {
     console.log(this.state.userInfo);
   };
 
-  componentDidMount() {
-    fetch("http://localhost:3001")
-      .then((response) => response.json())
-      .then((data) => console.log(data));
-  }
+  // componentDidMount() {
+  //   fetch("http://localhost:3001")
+  //     .then((response) => response.json())
+  //     .then((data) => console.log("HELLO FROM CLIENT", data));
+  // }
 
   renderRoute = (route) => {
     switch (route) {

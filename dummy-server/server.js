@@ -2,11 +2,22 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt-nodejs");
 const cors = require("cors");
+const knex = require("knex");
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
+
+const pg = knex({
+  client: "pg",
+  connection: {
+    host: "localhost",
+    user: "postgres",
+    password: "Lamonchotaovao1",
+    database: "japlearn",
+  },
+});
 
 const database = {
   users: [
@@ -28,29 +39,57 @@ const database = {
 };
 
 app.get("/", (req, res) => {
-  res.send(database.users);
+  res.json("Home Page");
 });
 
 app.post("/signin", (req, res) => {
-  if (req.body.email === database.users[0].name) {
-    res.send("Login Successful!");
-    console.log(req.body);
-  } else {
-    res.status(400).json("Error Logging in :(");
-  }
+  const { email, password } = req.body;
+
+  pg("login")
+    .select("email")
+    .where({
+      email: email,
+      hash: password,
+    })
+    .then((result) => {
+      console.log(result);
+      if (Object.keys(result).length !== 0) {
+        res.json("Login Successful!");
+        console.log("Login Successful!");
+      } else {
+        res.status(400).json("Error Loggin in");
+      }
+    })
+    .catch((error) => console.log(error));
 });
 
 app.post("/register", (req, res) => {
   const { email, name, password } = req.body;
-  const id = Number(database.users[database.users.length - 1].id) + 1;
-  database.users.push({
-    id: "223",
-    name: name,
-    email: email,
-    password: password,
-    joined: new Date(),
-  });
-  res.json(database.users[database.users.length - 1]);
+
+  pg("users")
+    .insert({
+      name: name,
+      email: email,
+      joined: new Date(),
+    })
+    .then((result) => {
+      res.json("registration success");
+      console.log("result", result);
+    })
+    .catch((error) => {
+      // res.status(400).json("Error in registration for users", error);
+      console.log("error1", error);
+    });
+
+  pg("login")
+    .insert({
+      email: email,
+      hash: password,
+    })
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((err) => console.log("error2", err));
 });
 
 app.get("/profile/:userId", (req, res) => {
@@ -68,7 +107,7 @@ app.get("/profile/:userId", (req, res) => {
 });
 
 app.listen(3001, () => {
-  console.log("app is running on port 3001");
+  console.log("server is running on port 3001");
 });
 
 /*
