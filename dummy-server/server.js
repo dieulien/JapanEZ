@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const bcrypt = require("bcrypt-nodejs");
+const bcrypt = require("bcryptjs");
 const cors = require("cors");
 const knex = require("knex");
 
@@ -19,25 +19,6 @@ const pg = knex({
   },
 });
 
-const database = {
-  users: [
-    {
-      id: "0",
-      name: "John",
-      email: "john@gmail.com",
-      password: "cookies",
-      joined: new Date(),
-    },
-    {
-      id: "1",
-      name: "Becky",
-      email: "becky@gmail.com",
-      password: "cakes",
-      joined: new Date(),
-    },
-  ],
-};
-
 app.get("/", (req, res) => {
   res.json("Home Page");
 });
@@ -46,18 +27,26 @@ app.post("/signin", (req, res) => {
   const { email, password } = req.body;
 
   pg("login")
-    .select("email")
+    .select("hash")
     .where({
       email: email,
-      hash: password,
     })
     .then((result) => {
-      console.log(result);
       if (Object.keys(result).length !== 0) {
-        res.json("Login Successful!");
-        console.log("Login Successful!");
+        if (bcrypt.compareSync(password, result[0].hash)) {
+          pg("users")
+            .select()
+            .where({
+              email: email,
+            })
+            .then((users) => {
+              res.json(users[0]);
+            });
+        } else {
+          res.json("incorrect password");
+        }
       } else {
-        res.status(400).json("Error Loggin in");
+        res.status(400).json("email is not yet registered");
       }
     })
     .catch((error) => console.log(error));
@@ -65,31 +54,36 @@ app.post("/signin", (req, res) => {
 
 app.post("/register", (req, res) => {
   const { email, name, password } = req.body;
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(password, salt);
 
-  pg("users")
-    .insert({
-      name: name,
-      email: email,
-      joined: new Date(),
+  pg.transaction((trx) => {
+    trx("login")
+      .insert({
+        email: email,
+        hash: hash,
+      })
+      .then(() => {
+        return trx("users")
+          .insert({
+            name: name,
+            email: email,
+            joined: new Date(),
+          })
+          .returning("*")
+          .then((newUser) => {
+            res.json(newUser[0]);
+          });
+      })
+      .then(trx.commit)
+      .catch(trx.rollback);
+  })
+    .then(function (result) {
+      console.log("transaction result", result);
     })
-    .then((result) => {
-      res.json("registration success");
-      console.log("result", result);
-    })
-    .catch((error) => {
-      // res.status(400).json("Error in registration for users", error);
-      console.log("error1", error);
+    .catch(function (error) {
+      res.status(400).json(error);
     });
-
-  pg("login")
-    .insert({
-      email: email,
-      hash: password,
-    })
-    .then((result) => {
-      console.log(result);
-    })
-    .catch((err) => console.log("error2", err));
 });
 
 app.get("/profile/:userId", (req, res) => {
@@ -109,10 +103,3 @@ app.get("/profile/:userId", (req, res) => {
 app.listen(3001, () => {
   console.log("server is running on port 3001");
 });
-
-/*
-/ --> res = this is working
-/signin --> POST user info in json format, res with success of fail
-/register --> POST, add user data to database, res with user
-/profile/:userId --> GET = user
-*/
