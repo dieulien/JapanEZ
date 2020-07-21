@@ -18,25 +18,8 @@ class Signin extends React.Component {
     this.setState({ signInPassword: event.target.value });
   };
 
-  onSignIn = () => {
-    // fetch("http://localhost:3001/signin", {
-    //   method: "post",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({
-    //     email: this.state.signInEmail,
-    //     password: this.state.signInPassword,
-    //   }),
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log(this.state);
-    //     if (data === "Login Successful!") {
-    //       this.props.onRouteChange("home");
-    //     }
-    //     console.log("response", data);
-    //   });
-    // console.log(this.state);
-
+  onSignIn = (event) => {
+    event.preventDefault();
     const { signInEmail, signInPassword } = this.state;
     fetch("http://localhost:3001/signin", {
       method: "post",
@@ -48,17 +31,16 @@ class Signin extends React.Component {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data === "Login Successful!") {
-          // this.props.loadUser(data);
+        if (Object.keys(data).length === 4) {
+          this.props.loadUser(data);
           this.props.onRouteChange("home");
+        } else {
+          console.log("Login Failed", data);
         }
       })
       .catch((error) => {
         console.log("Error!", error);
       });
-
-    // this.props.onRouteChange("signin");
-    console.log("submission: invalid", this.state);
   };
 
   render() {

@@ -22,7 +22,8 @@ class Register extends React.Component {
     this.setState({ password: event.target.value });
   };
 
-  onFormSubmit = () => {
+  onFormSubmit = (event) => {
+    event.preventDefault();
     const { name, email, password } = this.state;
     fetch("http://localhost:3001/register", {
       method: "post",
@@ -35,7 +36,7 @@ class Register extends React.Component {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data === "registration success") {
+        if (Object.keys(data).length === 4) {
           this.props.loadUser(data);
           this.props.onRouteChange("home");
         }
@@ -43,9 +44,6 @@ class Register extends React.Component {
       .catch((error) => {
         console.log("Error!", error);
       });
-
-    // this.props.onRouteChange("signin");
-    console.log("submission: invalid", this.state);
   };
 
   render() {
@@ -99,6 +97,14 @@ class Register extends React.Component {
                 type="submit"
                 value="Register"
               />
+            </div>
+            <div className="lh-copy mt3">
+              <p
+                className="f6 link dim black db pointer"
+                onClick={() => this.props.onRouteChange("signin")}
+              >
+                Sign in
+              </p>
             </div>
           </form>
         </main>

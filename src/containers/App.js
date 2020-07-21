@@ -35,7 +35,6 @@ class App extends React.Component {
 
   onRouteChange = (route) => {
     this.setState({ route: route });
-    console.log("ROUTE CHANGED!");
   };
 
   loadUser = (user) => {
@@ -48,19 +47,23 @@ class App extends React.Component {
       userInfo.joined = joined;
       return { userInfo };
     });
-    console.log(this.state.userInfo);
+    console.log("userInfo", this.state.userInfo);
   };
 
-  // componentDidMount() {
-  //   fetch("http://localhost:3001")
-  //     .then((response) => response.json())
-  //     .then((data) => console.log("HELLO FROM CLIENT", data));
-  // }
+  componentDidMount() {
+    console.log("userInfoMount", this.state.userInfo);
+    const id = this.state.userInfo.id;
+    fetch("http://localhost:3001/profile/".concat(id))
+      .then((response) => response.json())
+      .then((data) => console.log("current user", data));
+  }
 
   renderRoute = (route) => {
     switch (route) {
       case "signin":
-        return <Signin onRouteChange={this.onRouteChange} />;
+        return (
+          <Signin onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
+        );
       case "register":
         return (
           <Register
@@ -80,6 +83,7 @@ class App extends React.Component {
             >
               <Paper elevation={0} />
               <h1>Learn Hiragana on the go</h1>
+              <h1>User: {this.state.userInfo.name} </h1>
               <CharInput
                 onInputChange={this.onInputChange}
                 onSubmit={this.onSubmit}
