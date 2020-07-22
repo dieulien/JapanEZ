@@ -1,27 +1,27 @@
 const charsToRead = [
   {
     char: "あ",
-    romaji: "",
+    romaji: "a",
   },
   {
     char: "い",
-    romaji: "",
+    romaji: "i",
   },
   {
     char: "た",
-    romaji: "",
+    romaji: "ta",
   },
   {
     char: "な",
-    romaji: "",
+    romaji: "na",
   },
   {
     char: "さ",
-    romaji: "",
+    romaji: "ki",
   },
   {
     char: "ち",
-    romaji: "",
+    romaji: "chi",
   },
 ];
 

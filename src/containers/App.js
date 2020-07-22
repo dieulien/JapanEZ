@@ -29,10 +29,6 @@ class App extends React.Component {
     console.log(event.target.value);
   };
 
-  onSubmit = () => {
-    console.log("user have submitted");
-  };
-
   onRouteChange = (route) => {
     this.setState({ route: route });
   };

@@ -2,7 +2,7 @@ import React from "react";
 import "../containers/App.css";
 import { Input, Button } from "@material-ui/core";
 
-const CharInput = ({ onInputChange, onSubmit }) => {
+const CharInput = ({ onInputChange }) => {
   return (
     <form>
       <Input
@@ -10,9 +10,6 @@ const CharInput = ({ onInputChange, onSubmit }) => {
         inputProps={{ "aria-label": "description" }}
         onChange={onInputChange}
       />
-      <Button variant="contained" color="primary" onClick={onSubmit}>
-        Submit
-      </Button>
     </form>
   );
 };
