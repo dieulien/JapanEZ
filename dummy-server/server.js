@@ -57,6 +57,9 @@ app.post("/register", (req, res) => {
   const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(password, salt);
 
+  if (!name || !email || !password) {
+    return res.status(400).json("empty name OR email OR password");
+  }
   pg.transaction((trx) => {
     trx("login")
       .insert({
@@ -88,16 +91,17 @@ app.post("/register", (req, res) => {
 
 app.get("/profile/:userId", (req, res) => {
   const { userId } = req.params;
-  let found = false;
-  database.users.forEach((user) => {
-    if (userId == user.id) {
-      found = true;
-      res.json("User found!");
-    }
-  });
-  if (!found) {
-    res.status(404).json("User not found!");
-  }
+  pg("users")
+    .select()
+    .where("id", userId)
+    .then((user) => {
+      if (user.length === 0) {
+        res.json("user not found");
+      } else {
+        res.json(user[0]);
+      }
+    })
+    .catch((error) => json.status(400).json("error getting user", error));
 });
 
 app.listen(3001, () => {
