@@ -13,6 +13,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      displayChars: "a-i-ta-na-ki-chi",
       userInput: "",
       familiarity: 0,
       route: "signin",
@@ -26,7 +27,8 @@ class App extends React.Component {
   }
 
   onInputChange = (event) => {
-    console.log(event.target.value);
+    const input = event.target.value;
+    console.log(input);
   };
 
   onRouteChange = (route) => {
@@ -49,7 +51,7 @@ class App extends React.Component {
   componentDidMount() {
     console.log("userInfoMount", this.state.userInfo);
     const id = this.state.userInfo.id;
-    fetch("http://localhost:3001/profile/".concat(id))
+    fetch("https://shrouded-harbor-11572.herokuapp.com/profile/".concat(id))
       .then((response) => response.json())
       .then((data) => console.log("current user", data));
   }
@@ -91,7 +93,10 @@ class App extends React.Component {
                 alignItems="center"
               >
                 <Grid item>
-                  <CharList charsToRead={charsToRead} />
+                  <CharList
+                    charsToRead={charsToRead}
+                    userInput={this.state.userInput}
+                  />
                 </Grid>
                 <Grid item>
                   <Paper elevation={1} />
