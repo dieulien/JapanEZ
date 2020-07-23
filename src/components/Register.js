@@ -25,7 +25,7 @@ class Register extends React.Component {
   onFormSubmit = (event) => {
     event.preventDefault();
     const { name, email, password } = this.state;
-    fetch("http://localhost:3001/register", {
+    fetch("https://shrouded-harbor-11572.herokuapp.com/register", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

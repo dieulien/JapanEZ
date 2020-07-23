@@ -1,6 +1,6 @@
 import React from "react";
 import "../containers/App.css";
-import { Input, Button } from "@material-ui/core";
+import { Input } from "@material-ui/core";
 
 const CharInput = ({ onInputChange }) => {
   return (
