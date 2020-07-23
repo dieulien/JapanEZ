@@ -18,22 +18,29 @@ class Signin extends React.Component {
     this.setState({ signInPassword: event.target.value });
   };
 
-  onSignIn = () => {
-    fetch("http://localhost:3001/signin", {
+  onSignIn = (event) => {
+    event.preventDefault();
+    const { signInEmail, signInPassword } = this.state;
+    fetch("https://shrouded-harbor-11572.herokuapp.com/signin", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        email: this.state.signInEmail,
-        password: this.state.signInPassword,
+        email: signInEmail,
+        password: signInPassword,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data === "Login Successful!") {
+        if (Object.keys(data).length === 4) {
+          this.props.loadUser(data);
           this.props.onRouteChange("home");
+        } else {
+          console.log("Login Failed", data);
         }
+      })
+      .catch((error) => {
+        console.log("Error!", error);
       });
-    console.log(this.state);
   };
 
   render() {
@@ -67,9 +74,9 @@ class Signin extends React.Component {
                   onChange={this.onPasswordInput}
                 />
               </div>
-              <label className="pa0 ma0 lh-copy f6 pointer">
+              {/* <label className="pa0 ma0 lh-copy f6 pointer">
                 <input type="checkbox" /> Remember me
-              </label>
+              </label> */}
             </fieldset>
             <div className="">
               <input

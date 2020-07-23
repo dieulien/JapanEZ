@@ -22,13 +22,12 @@ class Register extends React.Component {
     this.setState({ password: event.target.value });
   };
 
-  onFormSubmit = () => {
+  onFormSubmit = (event) => {
+    event.preventDefault();
     const { name, email, password } = this.state;
-    fetch("http://localhost:3001/register", {
+    fetch("https://shrouded-harbor-11572.herokuapp.com/register", {
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name: name,
         email: email,
@@ -36,19 +35,15 @@ class Register extends React.Component {
       }),
     })
       .then((response) => response.json())
-      .then((newUser) => {
-        if (newUser) {
-          console.log("Successfully added new user!");
-          this.props.loadUser(newUser);
+      .then((data) => {
+        if (Object.keys(data).length === 4) {
+          this.props.loadUser(data);
           this.props.onRouteChange("home");
         }
       })
       .catch((error) => {
         console.log("Error!", error);
       });
-
-    this.props.onRouteChange("home");
-    console.log(this.state);
   };
 
   render() {
@@ -102,6 +97,14 @@ class Register extends React.Component {
                 type="submit"
                 value="Register"
               />
+            </div>
+            <div className="lh-copy mt3">
+              <p
+                className="f6 link dim black db pointer"
+                onClick={() => this.props.onRouteChange("signin")}
+              >
+                Sign in
+              </p>
             </div>
           </form>
         </main>
