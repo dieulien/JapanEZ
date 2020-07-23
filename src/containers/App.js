@@ -1,15 +1,30 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import CharList from "../components/CharList.js";
 import CharInput from "../components/CharInput";
 import NavBar from "../components/NavBar";
 import Hint from "../components/Hint";
 import { Grid, Paper } from "@material-ui/core";
-import "./App.css";
 import charsToRead from "../jap-char.js";
 import Signin from "../components/Signin";
 import Register from "../components/Register";
+import "./App.css";
 
-class App extends React.Component {
+import { typeAnswer } from "../actions";
+
+const mapStateToProps = (state) => {
+  return {
+    inputBox: state.inputBox,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onInputBoxChange: (event) => dispatch(typeAnswer(event.target.value)),
+  };
+};
+
+class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -28,7 +43,7 @@ class App extends React.Component {
 
   onInputChange = (event) => {
     const input = event.target.value;
-    console.log(input);
+    // console.log(input);
   };
 
   onRouteChange = (route) => {
@@ -49,6 +64,10 @@ class App extends React.Component {
   };
 
   componentDidMount() {
+    console.log("props", this.props);
+    console.log("state", this.state);
+    console.log("this", this);
+
     console.log("userInfoMount", this.state.userInfo);
     const id = this.state.userInfo.id;
     fetch("https://shrouded-harbor-11572.herokuapp.com/profile/".concat(id))
@@ -83,7 +102,7 @@ class App extends React.Component {
               <h1>Learn Hiragana on the go</h1>
               <h1>User: {this.state.userInfo.name} </h1>
               <CharInput
-                onInputChange={this.onInputChange}
+                onInputChange={this.props.onInputBoxChange}
                 onSubmit={this.onSubmit}
               />
               <Grid
@@ -116,4 +135,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);
