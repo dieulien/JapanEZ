@@ -14,7 +14,7 @@ const pg = knex({
   connection: {
     host: "localhost",
     user: "postgres",
-    password: "Lamonchotaovao1",
+    password: "pgpassword",
     database: "japlearn",
   },
 });
