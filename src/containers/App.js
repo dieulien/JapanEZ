@@ -5,7 +5,7 @@ import CharInput from "../components/CharInput";
 import NavBar from "../components/NavBar";
 import Hint from "../components/Hint";
 import { Grid, Paper } from "@material-ui/core";
-import charsToRead from "../jap-char.js";
+import { charsToRead } from "../jap-char.js";
 import Signin from "../components/Signin";
 import Register from "../components/Register";
 import "./App.css";
@@ -48,6 +48,13 @@ class App extends Component {
 
   onRouteChange = (route) => {
     this.setState({ route: route });
+  };
+
+  spacePress = (event) => {
+    console.log(event);
+    if (event.keyCode === 32 || event.key === " " || event.which === 32) {
+      console.log("PRESS SPACE", this.props);
+    }
   };
 
   loadUser = (user) => {
@@ -104,7 +111,7 @@ class App extends Component {
               <h1>User: {this.state.userInfo.name} </h1>
               <CharInput
                 onInputChange={this.props.onInputBoxChange}
-                onSubmit={this.onSubmit}
+                spacePress={this.spacePress}
               />
               <Grid
                 container
