@@ -14,7 +14,7 @@ import { typeAnswer } from "../actions";
 
 const mapStateToProps = (state) => {
   return {
-    inputBox: state.inputBox,
+    userInput: state.highlightCard.inputBox,
   };
 };
 
@@ -89,6 +89,7 @@ class App extends Component {
           />
         );
       case "home":
+        console.log("what's this", this);
         return (
           <div>
             <NavBar onRouteChange={this.onRouteChange} />
@@ -114,7 +115,7 @@ class App extends Component {
                 <Grid item>
                   <CharList
                     charsToRead={charsToRead}
-                    userInput={this.state.userInput}
+                    userInput={this.props.userInput}
                   />
                 </Grid>
                 <Grid item>

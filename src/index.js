@@ -1,7 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import { createLogger } from "redux-logger";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import "tachyons";
@@ -9,8 +10,9 @@ import App from "./containers/App.js";
 import { highlightCard } from "./reducers";
 
 const rootReducer = combineReducers({ highlightCard });
+const logger = createLogger();
 
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, applyMiddleware(logger));
 
 ReactDOM.render(
   <Provider store={store}>
