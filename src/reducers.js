@@ -1,14 +1,14 @@
 import { USER_INPUT } from "./constants";
 
 const initialState = {
-  inputBox: "sample Input",
+  inputBox: "",
 };
 
 export const highlightCard = (state = initialState, action = {}) => {
   console.log(action.type);
   switch (action.type) {
     case USER_INPUT:
-      return Object.assign({}, state, { searchField: action.payload });
+      return Object.assign({}, state, { inputBox: action.payload });
     default:
       return state;
   }
