@@ -1,11 +1,11 @@
 .correct {
-  background-color: green;
+  color: green;
 }
 
 .incorrect {
-  background-color: red;
+  color: red;
 }
 
 .highlighted {
-  border: 10px solid yellow;
+  border: 30px solid blue;
 }
