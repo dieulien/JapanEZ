@@ -17,14 +17,17 @@ class CharList extends React.Component {
     return indexPartition;
   };
 
-  decideCardState = (userInput, currentChar, i, indexPartition) => {
+  decideCardState = (userInput, currentChar, idx, indexPartition) => {
     var userChar = "";
     var className = "";
-    if (userInput.length >= indexPartition[i]) {
-      if (i === 0) {
-        userChar = userInput.slice(0, indexPartition[i]);
+    if (userInput.length >= indexPartition[idx]) {
+      if (idx === 0) {
+        userChar = userInput.slice(0, indexPartition[idx]);
       } else {
-        userChar = userInput.slice(indexPartition[i - 1], indexPartition[i]);
+        userChar = userInput.slice(
+          indexPartition[idx - 1],
+          indexPartition[idx]
+        );
       }
       if (userChar === currentChar) {
         className = className.concat("correct");
@@ -33,11 +36,15 @@ class CharList extends React.Component {
       }
     }
 
-    console.log(userInput.length);
-    console.log(indexPartition[i]);
-
-    if (userInput.length < indexPartition[i]) {
-      className = className.concat(" highlighted");
+    for (var i = 0; i < indexPartition.length; i++) {
+      if (userInput.length < indexPartition[i]) {
+        console.log(userInput.length);
+        console.log(indexPartition[i]);
+        if (idx === i) {
+          className = className.concat(" highlighted");
+        }
+        break;
+      }
     }
 
     return className;
