@@ -17,7 +17,7 @@ export const charsToRead = [
   },
   {
     char: "さ",
-    romaji: "ki",
+    romaji: "sa",
   },
   {
     char: "ち",
