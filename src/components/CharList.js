@@ -19,6 +19,7 @@ class CharList extends React.Component {
 
   decideCardState = (userInput, currentChar, i, indexPartition) => {
     var userChar = "";
+    var className = "";
     if (userInput.length >= indexPartition[i]) {
       if (i === 0) {
         userChar = userInput.slice(0, indexPartition[i]);
@@ -26,13 +27,20 @@ class CharList extends React.Component {
         userChar = userInput.slice(indexPartition[i - 1], indexPartition[i]);
       }
       if (userChar === currentChar) {
-        return "correct";
+        className = className.concat("correct");
       } else {
-        return "incorrect";
+        className = className.concat("incorrect");
       }
-    } else {
-      return "";
     }
+
+    console.log(userInput.length);
+    console.log(indexPartition[i]);
+
+    if (userInput.length < indexPartition[i]) {
+      className = className.concat(" highlighted");
+    }
+
+    return className;
   };
 
   render() {
