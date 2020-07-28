@@ -12,3 +12,16 @@ export const pressSpace = () => {
     type: "SPACE_PRESS",
   };
 };
+
+export const updateChar = (char) => {
+  return {
+    type: "CHAR_UPDATE",
+    curChar: char,
+  };
+};
+
+export const pressEnter = () => {
+  return {
+    type: "ENTER_PRESS",
+  };
+};
