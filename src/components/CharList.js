@@ -24,7 +24,10 @@ class CharList extends React.Component {
     indexPartition,
     hintDisplayOn,
     updateCurrentChar,
-    hintedCharList
+    hintedCharList,
+    onWrongInput,
+    wrongCharList,
+    onIncorrectCard
   ) => {
     var userChar = "";
     var className = "";
@@ -47,15 +50,23 @@ class CharList extends React.Component {
           className = className.concat(" correct ");
         }
       } else {
-        className = className.concat(" incorrect ");
+        onWrongInput(userChar, currentChar);
       }
+    }
+
+    if (currentChar in wrongCharList) {
+      className = className.concat(" incorrect ");
     }
 
     // decide which Card to highlight
     for (var i = 0; i < indexPartition.length; i++) {
       if (userInput.length < indexPartition[i]) {
-        indexOfCurrentCard = i;
-        if (idx === i) {
+        if (!onIncorrectCard) {
+          indexOfCurrentCard = i;
+        } else {
+          indexOfCurrentCard = i - 1;
+        }
+        if (idx === indexOfCurrentCard) {
           className = className.concat(" highlighted ");
           updateCurrentChar(currentChar);
         }
@@ -75,7 +86,6 @@ class CharList extends React.Component {
 
   render() {
     const charList = this.props.charsToRead.map((item) => item.romaji);
-    const phrase = charList.reduce((acc, item) => acc.concat(item), "");
     const indexPartition = this.partitionCharIndex(charList);
 
     const charsArrayDisplay = this.props.charsToRead.map((item, i) => {
@@ -91,7 +101,10 @@ class CharList extends React.Component {
               indexPartition,
               this.props.hintDisplayOn,
               this.props.updateCurrentChar,
-              this.props.hintedCharList
+              this.props.hintedCharList,
+              this.props.onWrongInput,
+              this.props.wrongCharList,
+              this.props.onIncorrectCard
             )}
           />
         </Grid>
