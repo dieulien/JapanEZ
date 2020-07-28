@@ -10,7 +10,7 @@ import Signin from "../components/Signin";
 import Register from "../components/Register";
 import "./App.css";
 
-import { typeAnswer } from "../actions";
+import { typeAnswer, pressSpace } from "../actions";
 
 const mapStateToProps = (state) => {
   return {
@@ -20,7 +20,12 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onInputBoxChange: (event) => dispatch(typeAnswer(event.target.value)),
+    onInputBoxChange: (event) => {
+      dispatch(typeAnswer(event.target.value));
+    },
+    ononSpecialKeyPress: () => {
+      dispatch(pressSpace());
+    },
   };
 };
 
@@ -28,6 +33,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      displayHint: false,
+      currentChar: "",
       displayChars: "a-i-ta-na-ki-chi",
       userInput: "",
       familiarity: 0,
@@ -44,16 +51,29 @@ class App extends Component {
   onInputChange = (event) => {
     const input = event.target.value;
     // console.log(input);
+    event.target.value = "HACK";
   };
 
   onRouteChange = (route) => {
     this.setState({ route: route });
   };
 
-  spacePress = (event) => {
-    console.log(event);
-    if (event.keyCode === 32 || event.key === " " || event.which === 32) {
-      console.log("PRESS SPACE", this.props);
+  setCurrentChar = (char) => {
+    this.setState({ currentChar: char });
+  };
+
+  onSpecialKeyPress = (event) => {
+    // handle ENTER press
+    if (event.which === 13) {
+      event.preventDefault();
+      if (this.state.displayHint) {
+        event.target.value = "TEST";
+      }
+    }
+    // handle SPACE press
+    if (event.which === 32) {
+      event.preventDefault();
+      this.setState({ displayHint: !this.state.displayHint });
     }
   };
 
@@ -82,6 +102,12 @@ class App extends Component {
       .then((data) => console.log("current user", data));
   }
 
+  showHint = () => {
+    if (this.state.displayHint) {
+      return <Hint />;
+    }
+  };
+
   renderRoute = (route) => {
     switch (route) {
       case "signin":
@@ -96,7 +122,6 @@ class App extends Component {
           />
         );
       case "home":
-        console.log("what's this", this);
         return (
           <div>
             <NavBar onRouteChange={this.onRouteChange} />
@@ -111,7 +136,7 @@ class App extends Component {
               <h1>User: {this.state.userInfo.name} </h1>
               <CharInput
                 onInputChange={this.props.onInputBoxChange}
-                spacePress={this.spacePress}
+                onSpecialKeyPress={this.onSpecialKeyPress}
               />
               <Grid
                 container
@@ -123,11 +148,12 @@ class App extends Component {
                   <CharList
                     charsToRead={charsToRead}
                     userInput={this.props.userInput}
+                    hintDisplayOn={this.state.displayHint}
                   />
                 </Grid>
                 <Grid item>
                   <Paper elevation={1} />
-                  <Hint />
+                  {this.showHint()}
                 </Grid>
               </Grid>
             </Grid>
