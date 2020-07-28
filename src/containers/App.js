@@ -10,17 +10,45 @@ import Signin from "../components/Signin";
 import Register from "../components/Register";
 import "./App.css";
 
-import { typeAnswer } from "../actions";
+import {
+  typeAnswer,
+  pressSpace,
+  updateChar,
+  pressEnter,
+  typeWrongAnswer,
+} from "../actions";
 
 const mapStateToProps = (state) => {
   return {
     userInput: state.highlightCard.inputBox,
+    currentChar: state.highlightCard.curChar,
+    hintedCharList: state.highlightCard.hintedCharList,
+    wrongCharList: state.highlightCard.wrongCharList,
+    onIncorrectCard: state.highlightCard.onIncorrectCard,
+    curWrongChar: state.highlightCard.curWrongChar,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onInputBoxChange: (event) => dispatch(typeAnswer(event.target.value)),
+    onInputBoxChange: (event) => {
+      dispatch(typeAnswer(event.target.value));
+    },
+    onSpecialKeyPress: () => {
+      dispatch(pressSpace());
+    },
+    setCurrentChar: (char) => {
+      dispatch(updateChar(char));
+    },
+    onEnterPress: () => {
+      dispatch(pressEnter());
+    },
+    onWrongInput: (userChar, currentChar) => {
+      dispatch(typeWrongAnswer(userChar, currentChar));
+    },
+    onSpacePress: () => {
+      dispatch(pressSpace());
+    },
   };
 };
 
@@ -28,6 +56,9 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      displayHint: false,
+      wrongInput: false,
+      currentChar: "",
       displayChars: "a-i-ta-na-ki-chi",
       userInput: "",
       familiarity: 0,
@@ -41,19 +72,57 @@ class App extends Component {
     };
   }
 
-  onInputChange = (event) => {
-    const input = event.target.value;
-    // console.log(input);
-  };
-
   onRouteChange = (route) => {
     this.setState({ route: route });
   };
 
-  spacePress = (event) => {
-    console.log(event);
-    if (event.keyCode === 32 || event.key === " " || event.which === 32) {
-      console.log("PRESS SPACE", this.props);
+  onSpecialKeyPress = (event) => {
+    if (event.which === 8) {
+      event.preventDefault();
+    }
+
+    if (this.state.displayHint && event.which !== 13) {
+      console.log("Press Enter To Continue!");
+      event.preventDefault();
+    }
+
+    // handle SPACE press for HINT
+    if (
+      !this.props.onIncorrectCard &&
+      event.which === 32 &&
+      !this.state.displayHint
+    ) {
+      event.preventDefault();
+      this.setState({ displayHint: true });
+    }
+
+    // handle SPACE press on incorrect input
+    if (this.props.onIncorrectCard) {
+      event.preventDefault();
+      if (event.which === 32) {
+        const curWrongChar = this.props.curWrongChar;
+        var curInputBox = event.target.value.slice(0, -curWrongChar.length);
+        event.target.value = curInputBox.concat(curWrongChar);
+
+        this.props.onInputBoxChange(event);
+        this.props.onSpacePress();
+        event.target.value = event.target.value;
+      } else {
+        console.log("Press Space To Reveal Correct Answer");
+      }
+    }
+
+    // handle ENTER press
+    if (event.which === 13) {
+      event.preventDefault();
+      if (this.state.displayHint) {
+        this.setState({ displayHint: false });
+
+        // autofill correct answer
+        event.target.value = event.target.value.concat(this.props.currentChar);
+        this.props.onInputBoxChange(event);
+        this.props.onEnterPress();
+      }
     }
   };
 
@@ -71,16 +140,33 @@ class App extends Component {
   };
 
   componentDidMount() {
-    console.log("props", this.props);
-    console.log("state", this.state);
-    console.log("this", this);
-
     console.log("userInfoMount", this.state.userInfo);
     const id = this.state.userInfo.id;
     fetch("https://shrouded-harbor-11572.herokuapp.com/profile/".concat(id))
       .then((response) => response.json())
       .then((data) => console.log("current user", data));
   }
+
+  showHint = () => {
+    if (this.state.displayHint) {
+      return <Hint />;
+    }
+  };
+
+  displayMessage = () => {
+    if (this.props.onIncorrectCard) {
+      const userInput = this.props.wrongCharList[this.props.curWrongChar];
+      return (
+        <div>
+          <p>{`This character is not \"${userInput}\"`}</p>
+          <p>press SPACE to reveal the correct romaji</p>
+        </div>
+      );
+    }
+    if (this.state.displayHint) {
+      return <p>press ENTER to continue</p>;
+    }
+  };
 
   renderRoute = (route) => {
     switch (route) {
@@ -96,7 +182,15 @@ class App extends Component {
           />
         );
       case "home":
-        console.log("what's this", this);
+        const {
+          userInput,
+          setCurrentChar,
+          hintedCharList,
+          onWrongInput,
+          wrongCharList,
+          onIncorrectCard,
+        } = this.props;
+
         return (
           <div>
             <NavBar onRouteChange={this.onRouteChange} />
@@ -111,7 +205,7 @@ class App extends Component {
               <h1>User: {this.state.userInfo.name} </h1>
               <CharInput
                 onInputChange={this.props.onInputBoxChange}
-                spacePress={this.spacePress}
+                onSpecialKeyPress={this.onSpecialKeyPress}
               />
               <Grid
                 container
@@ -122,12 +216,19 @@ class App extends Component {
                 <Grid item>
                   <CharList
                     charsToRead={charsToRead}
-                    userInput={this.props.userInput}
+                    userInput={userInput}
+                    hintDisplayOn={this.state.displayHint}
+                    updateCurrentChar={setCurrentChar}
+                    hintedCharList={hintedCharList}
+                    onWrongInput={onWrongInput}
+                    wrongCharList={wrongCharList}
+                    onIncorrectCard={onIncorrectCard}
                   />
                 </Grid>
+                <div>{this.displayMessage()}</div>
                 <Grid item>
                   <Paper elevation={1} />
-                  <Hint />
+                  {this.showHint()}
                 </Grid>
               </Grid>
             </Grid>

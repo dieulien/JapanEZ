@@ -2,14 +2,14 @@ import React from "react";
 import "../containers/App.css";
 import { Input } from "@material-ui/core";
 
-const CharInput = ({ onInputChange, spacePress }) => {
+const CharInput = ({ onInputChange, onSpecialKeyPress }) => {
   return (
     <form>
       <Input
         placeholder="Start typing here..."
         inputProps={{ "aria-label": "description" }}
         onChange={onInputChange}
-        onKeyPress={spacePress}
+        onKeyDown={onSpecialKeyPress}
       />
     </form>
   );

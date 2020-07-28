@@ -17,9 +17,23 @@ class CharList extends React.Component {
     return indexPartition;
   };
 
-  decideCardState = (userInput, currentChar, idx, indexPartition) => {
+  decideCardState = (
+    userInput,
+    currentChar,
+    idx,
+    indexPartition,
+    hintDisplayOn,
+    updateCurrentChar,
+    hintedCharList,
+    onWrongInput,
+    wrongCharList,
+    onIncorrectCard
+  ) => {
     var userChar = "";
     var className = "";
+    var indexOfCurrentCard = null;
+
+    // judge which card is correct/incorrect
     if (userInput.length >= indexPartition[idx]) {
       if (idx === 0) {
         userChar = userInput.slice(0, indexPartition[idx]);
@@ -30,20 +44,40 @@ class CharList extends React.Component {
         );
       }
       if (userChar === currentChar) {
-        className = className.concat("correct");
+        if (hintedCharList.includes(currentChar)) {
+          className = className.concat(" hinted ");
+        } else {
+          className = className.concat(" correct ");
+        }
       } else {
-        className = className.concat("incorrect");
+        onWrongInput(userChar, currentChar);
       }
     }
 
+    if (currentChar in wrongCharList) {
+      className = className.concat(" incorrect ");
+    }
+
+    // decide which Card to highlight
     for (var i = 0; i < indexPartition.length; i++) {
       if (userInput.length < indexPartition[i]) {
-        console.log(userInput.length);
-        console.log(indexPartition[i]);
-        if (idx === i) {
-          className = className.concat(" highlighted");
+        if (!onIncorrectCard) {
+          indexOfCurrentCard = i;
+        } else {
+          indexOfCurrentCard = i - 1;
+        }
+        if (idx === indexOfCurrentCard) {
+          className = className.concat(" highlighted ");
+          updateCurrentChar(currentChar);
         }
         break;
+      }
+    }
+
+    // fade all cards except the highlighted one
+    if (hintDisplayOn) {
+      if (idx !== indexOfCurrentCard) {
+        className = className.concat(" o-30 ");
       }
     }
 
@@ -52,7 +86,6 @@ class CharList extends React.Component {
 
   render() {
     const charList = this.props.charsToRead.map((item) => item.romaji);
-    const phrase = charList.reduce((acc, item) => acc.concat(item), "");
     const indexPartition = this.partitionCharIndex(charList);
 
     const charsArrayDisplay = this.props.charsToRead.map((item, i) => {
@@ -65,7 +98,13 @@ class CharList extends React.Component {
               this.props.userInput,
               item.romaji,
               i,
-              indexPartition
+              indexPartition,
+              this.props.hintDisplayOn,
+              this.props.updateCurrentChar,
+              this.props.hintedCharList,
+              this.props.onWrongInput,
+              this.props.wrongCharList,
+              this.props.onIncorrectCard
             )}
           />
         </Grid>
