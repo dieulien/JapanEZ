@@ -140,10 +140,6 @@ class App extends Component {
   };
 
   componentDidMount() {
-    console.log("props", this.props);
-    console.log("state", this.state);
-    console.log("this", this);
-
     console.log("userInfoMount", this.state.userInfo);
     const id = this.state.userInfo.id;
     fetch("https://shrouded-harbor-11572.herokuapp.com/profile/".concat(id))
@@ -157,9 +153,15 @@ class App extends Component {
     }
   };
 
-  instruction = () => {
+  displayMessage = () => {
     if (this.props.onIncorrectCard) {
-      return <p>press SPACE to continue</p>;
+      const userInput = this.props.wrongCharList[this.props.curWrongChar];
+      return (
+        <div>
+          <p>{`This character is not \"${userInput}\"`}</p>
+          <p>press SPACE to reveal the correct romaji</p>
+        </div>
+      );
     }
     if (this.state.displayHint) {
       return <p>press ENTER to continue</p>;
@@ -223,7 +225,7 @@ class App extends Component {
                     onIncorrectCard={onIncorrectCard}
                   />
                 </Grid>
-                <div>{this.instruction()}</div>
+                <div>{this.displayMessage()}</div>
                 <Grid item>
                   <Paper elevation={1} />
                   {this.showHint()}
