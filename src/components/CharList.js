@@ -17,9 +17,18 @@ class CharList extends React.Component {
     return indexPartition;
   };
 
-  decideCardState = (userInput, currentChar, idx, indexPartition) => {
+  decideCardState = (
+    userInput,
+    currentChar,
+    idx,
+    indexPartition,
+    hintDisplayOn
+  ) => {
     var userChar = "";
     var className = "";
+    var indexOfCurrentCard = null;
+
+    // judge which card is correct/incorrect
     if (userInput.length >= indexPartition[idx]) {
       if (idx === 0) {
         userChar = userInput.slice(0, indexPartition[idx]);
@@ -30,20 +39,27 @@ class CharList extends React.Component {
         );
       }
       if (userChar === currentChar) {
-        className = className.concat("correct");
+        className = className.concat(" correct ");
       } else {
-        className = className.concat("incorrect");
+        className = className.concat(" incorrect ");
       }
     }
 
+    // decide which Card to highlight
     for (var i = 0; i < indexPartition.length; i++) {
       if (userInput.length < indexPartition[i]) {
-        console.log(userInput.length);
-        console.log(indexPartition[i]);
+        indexOfCurrentCard = i;
         if (idx === i) {
-          className = className.concat(" highlighted");
+          className = className.concat(" highlighted ");
         }
         break;
+      }
+    }
+
+    // fade all cards except the highlighted one
+    if (hintDisplayOn) {
+      if (idx !== indexOfCurrentCard) {
+        className = className.concat(" o-30 ");
       }
     }
 
@@ -65,7 +81,8 @@ class CharList extends React.Component {
               this.props.userInput,
               item.romaji,
               i,
-              indexPartition
+              indexPartition,
+              this.props.hintDisplayOn
             )}
           />
         </Grid>

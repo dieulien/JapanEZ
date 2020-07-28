@@ -6,3 +6,9 @@ export const typeAnswer = (text) => {
     payload: text,
   };
 };
+
+export const pressSpace = () => {
+  return {
+    type: "SPACE_PRESS",
+  };
+};

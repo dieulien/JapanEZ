@@ -6,6 +6,10 @@
   color: red;
 }
 
+.hinted {
+  color: yellow;
+}
+
 .highlighted {
   border: 30px solid blue;
 }
