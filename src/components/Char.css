@@ -7,9 +7,9 @@
 }
 
 .hinted {
-  color: yellow;
+  color: #f2b50c;
 }
 
 .highlighted {
-  border: 30px solid blue;
+  border: 30px blue;
 }

@@ -10,13 +10,22 @@ import Signin from "../components/Signin";
 import Register from "../components/Register";
 import "./App.css";
 
-import { typeAnswer, pressSpace, updateChar, pressEnter } from "../actions";
+import {
+  typeAnswer,
+  pressSpace,
+  updateChar,
+  pressEnter,
+  typeWrongAnswer,
+} from "../actions";
 
 const mapStateToProps = (state) => {
   return {
     userInput: state.highlightCard.inputBox,
     currentChar: state.highlightCard.curChar,
     hintedCharList: state.highlightCard.hintedCharList,
+    wrongCharList: state.highlightCard.wrongCharList,
+    onIncorrectCard: state.highlightCard.onIncorrectCard,
+    curWrongChar: state.highlightCard.curWrongChar,
   };
 };
 
@@ -34,6 +43,12 @@ const mapDispatchToProps = (dispatch) => {
     onEnterPress: () => {
       dispatch(pressEnter());
     },
+    onWrongInput: (userChar, currentChar) => {
+      dispatch(typeWrongAnswer(userChar, currentChar));
+    },
+    onSpacePress: () => {
+      dispatch(pressSpace());
+    },
   };
 };
 
@@ -42,6 +57,7 @@ class App extends Component {
     super(props);
     this.state = {
       displayHint: false,
+      wrongInput: false,
       currentChar: "",
       displayChars: "a-i-ta-na-ki-chi",
       userInput: "",
@@ -56,21 +72,44 @@ class App extends Component {
     };
   }
 
-  onInputChange = (event) => {
-    const input = event.target.value;
-    // console.log(input);
-    event.target.value = "HACK";
-  };
-
   onRouteChange = (route) => {
     this.setState({ route: route });
   };
 
   onSpecialKeyPress = (event) => {
+    if (event.which === 8) {
+      event.preventDefault();
+    }
+
     if (this.state.displayHint && event.which !== 13) {
-      this.setState({ displayHint: false });
       console.log("Press Enter To Continue!");
       event.preventDefault();
+    }
+
+    // handle SPACE press for HINT
+    if (
+      !this.props.onIncorrectCard &&
+      event.which === 32 &&
+      !this.state.displayHint
+    ) {
+      event.preventDefault();
+      this.setState({ displayHint: true });
+    }
+
+    // handle SPACE press on incorrect input
+    if (this.props.onIncorrectCard) {
+      event.preventDefault();
+      if (event.which === 32) {
+        const curWrongChar = this.props.curWrongChar;
+        var curInputBox = event.target.value.slice(0, -curWrongChar.length);
+        event.target.value = curInputBox.concat(curWrongChar);
+
+        this.props.onInputBoxChange(event);
+        this.props.onSpacePress();
+        event.target.value = event.target.value;
+      } else {
+        console.log("Press Space To Reveal Correct Answer");
+      }
     }
 
     // handle ENTER press
@@ -84,11 +123,6 @@ class App extends Component {
         this.props.onInputBoxChange(event);
         this.props.onEnterPress();
       }
-    }
-    // handle SPACE press for HINT
-    if (event.which === 32 && !this.state.displayHint) {
-      event.preventDefault();
-      this.setState({ displayHint: !this.state.displayHint });
     }
   };
 
@@ -123,6 +157,15 @@ class App extends Component {
     }
   };
 
+  instruction = () => {
+    if (this.props.onIncorrectCard) {
+      return <p>press SPACE to continue</p>;
+    }
+    if (this.state.displayHint) {
+      return <p>press ENTER to continue</p>;
+    }
+  };
+
   renderRoute = (route) => {
     switch (route) {
       case "signin":
@@ -137,6 +180,15 @@ class App extends Component {
           />
         );
       case "home":
+        const {
+          userInput,
+          setCurrentChar,
+          hintedCharList,
+          onWrongInput,
+          wrongCharList,
+          onIncorrectCard,
+        } = this.props;
+
         return (
           <div>
             <NavBar onRouteChange={this.onRouteChange} />
@@ -162,12 +214,16 @@ class App extends Component {
                 <Grid item>
                   <CharList
                     charsToRead={charsToRead}
-                    userInput={this.props.userInput}
+                    userInput={userInput}
                     hintDisplayOn={this.state.displayHint}
-                    updateCurrentChar={this.props.setCurrentChar}
-                    hintedCharList={this.props.hintedCharList}
+                    updateCurrentChar={setCurrentChar}
+                    hintedCharList={hintedCharList}
+                    onWrongInput={onWrongInput}
+                    wrongCharList={wrongCharList}
+                    onIncorrectCard={onIncorrectCard}
                   />
                 </Grid>
+                <div>{this.instruction()}</div>
                 <Grid item>
                   <Paper elevation={1} />
                   {this.showHint()}

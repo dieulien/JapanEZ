@@ -25,3 +25,11 @@ export const pressEnter = () => {
     type: "ENTER_PRESS",
   };
 };
+
+export const typeWrongAnswer = (userChar, currentChar) => {
+  return {
+    type: "WRONG_INPUT",
+    userInput: userChar,
+    currentChar: currentChar,
+  };
+};

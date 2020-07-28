@@ -3,7 +3,10 @@ import { USER_INPUT } from "./constants";
 const initialState = {
   inputBox: "",
   curChar: "",
-  hintedCharList: ["test", "hi"],
+  hintedCharList: [],
+  wrongCharList: {},
+  onIncorrectCard: false,
+  curWrongChar: "",
 };
 
 export const highlightCard = (state = initialState, action = {}) => {
@@ -17,6 +20,15 @@ export const highlightCard = (state = initialState, action = {}) => {
         ...state,
         hintedCharList: [...state.hintedCharList, state.curChar],
       };
+    case "WRONG_INPUT":
+      state.wrongCharList[action.currentChar] = action.userInput;
+      return {
+        ...state,
+        onIncorrectCard: true,
+        curWrongChar: action.currentChar,
+      };
+    case "SPACE_PRESS":
+      return { ...state, onIncorrectCard: false };
     default:
       return state;
   }
