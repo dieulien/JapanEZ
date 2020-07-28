@@ -22,7 +22,9 @@ class CharList extends React.Component {
     currentChar,
     idx,
     indexPartition,
-    hintDisplayOn
+    hintDisplayOn,
+    updateCurrentChar,
+    hintedCharList
   ) => {
     var userChar = "";
     var className = "";
@@ -39,7 +41,11 @@ class CharList extends React.Component {
         );
       }
       if (userChar === currentChar) {
-        className = className.concat(" correct ");
+        if (hintedCharList.includes(currentChar)) {
+          className = className.concat(" hinted ");
+        } else {
+          className = className.concat(" correct ");
+        }
       } else {
         className = className.concat(" incorrect ");
       }
@@ -51,6 +57,7 @@ class CharList extends React.Component {
         indexOfCurrentCard = i;
         if (idx === i) {
           className = className.concat(" highlighted ");
+          updateCurrentChar(currentChar);
         }
         break;
       }
@@ -82,7 +89,9 @@ class CharList extends React.Component {
               item.romaji,
               i,
               indexPartition,
-              this.props.hintDisplayOn
+              this.props.hintDisplayOn,
+              this.props.updateCurrentChar,
+              this.props.hintedCharList
             )}
           />
         </Grid>

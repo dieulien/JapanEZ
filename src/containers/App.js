@@ -10,11 +10,13 @@ import Signin from "../components/Signin";
 import Register from "../components/Register";
 import "./App.css";
 
-import { typeAnswer, pressSpace } from "../actions";
+import { typeAnswer, pressSpace, updateChar, pressEnter } from "../actions";
 
 const mapStateToProps = (state) => {
   return {
     userInput: state.highlightCard.inputBox,
+    currentChar: state.highlightCard.curChar,
+    hintedCharList: state.highlightCard.hintedCharList,
   };
 };
 
@@ -23,8 +25,14 @@ const mapDispatchToProps = (dispatch) => {
     onInputBoxChange: (event) => {
       dispatch(typeAnswer(event.target.value));
     },
-    ononSpecialKeyPress: () => {
+    onSpecialKeyPress: () => {
       dispatch(pressSpace());
+    },
+    setCurrentChar: (char) => {
+      dispatch(updateChar(char));
+    },
+    onEnterPress: () => {
+      dispatch(pressEnter());
     },
   };
 };
@@ -58,20 +66,27 @@ class App extends Component {
     this.setState({ route: route });
   };
 
-  setCurrentChar = (char) => {
-    this.setState({ currentChar: char });
-  };
-
   onSpecialKeyPress = (event) => {
+    if (this.state.displayHint && event.which !== 13) {
+      this.setState({ displayHint: false });
+      console.log("Press Enter To Continue!");
+      event.preventDefault();
+    }
+
     // handle ENTER press
     if (event.which === 13) {
       event.preventDefault();
       if (this.state.displayHint) {
-        event.target.value = "TEST";
+        this.setState({ displayHint: false });
+
+        // autofill correct answer
+        event.target.value = event.target.value.concat(this.props.currentChar);
+        this.props.onInputBoxChange(event);
+        this.props.onEnterPress();
       }
     }
-    // handle SPACE press
-    if (event.which === 32) {
+    // handle SPACE press for HINT
+    if (event.which === 32 && !this.state.displayHint) {
       event.preventDefault();
       this.setState({ displayHint: !this.state.displayHint });
     }
@@ -149,6 +164,8 @@ class App extends Component {
                     charsToRead={charsToRead}
                     userInput={this.props.userInput}
                     hintDisplayOn={this.state.displayHint}
+                    updateCurrentChar={this.props.setCurrentChar}
+                    hintedCharList={this.props.hintedCharList}
                   />
                 </Grid>
                 <Grid item>
