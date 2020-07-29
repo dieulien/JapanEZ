@@ -1,4 +1,5 @@
 import React from "react";
+import {REGISTER_URL} from '../constants';
 
 class Register extends React.Component {
   constructor(props) {
@@ -25,7 +26,7 @@ class Register extends React.Component {
   onFormSubmit = (event) => {
     event.preventDefault();
     const { name, email, password } = this.state;
-    fetch("https://shrouded-harbor-11572.herokuapp.com/register", {
+      fetch(REGISTER_URL, {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

@@ -35,4 +35,6 @@ const handleRegister = (pg, bcrypt) => (req, res) => {
       });
   }
 
-  export const handleRegister = handleRegister;
+  module.exports = {
+    handleRegister: handleRegister
+  };

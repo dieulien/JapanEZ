@@ -8,6 +8,7 @@ import { Grid, Paper } from "@material-ui/core";
 import { charsToRead } from "../jap-char.js";
 import Signin from "../components/Signin";
 import Register from "../components/Register";
+import {PROFILE_URL} from "../constants";
 import "./App.css";
 
 import {
@@ -142,7 +143,7 @@ class App extends Component {
   componentDidMount() {
     console.log("userInfoMount", this.state.userInfo);
     const id = this.state.userInfo.id;
-    fetch("https://shrouded-harbor-11572.herokuapp.com/profile/".concat(id))
+    fetch(PROFILE_URL.concat(id))
       .then((response) => response.json())
       .then((data) => console.log("current user", data));
   }

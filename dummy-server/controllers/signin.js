@@ -27,4 +27,6 @@ const handleSignIn = (pg, bcrypt) => (req, res) => {
       .catch((error) => console.log(error));
   }
 
-  export default handleSignIn;
+  module.exports = {
+    handleSignIn: handleSignIn
+  }

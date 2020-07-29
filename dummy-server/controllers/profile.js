@@ -1,4 +1,4 @@
-const displayPersonalizedContent = (pg) => (req, res) => {
+const handleProfileGet = (pg) => (req, res) => {
     const { userId } = req.params;
     pg("users")
       .select()
@@ -13,4 +13,6 @@ const displayPersonalizedContent = (pg) => (req, res) => {
       .catch((error) => json.status(400).json("error getting user", error));
   };
 
-  export default displayPersonalizedContent;
+module.exports = {
+  handleProfileGet
+}
