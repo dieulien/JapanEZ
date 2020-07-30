@@ -22,6 +22,5 @@ switch(method){
         break;
 }
 
-https://peaceful-sands-25473.herokuapp.com/
 
- export {REGISTER_URL, SIGNIN_URL, PROFILE_URL};
+export {REGISTER_URL, SIGNIN_URL, PROFILE_URL};
