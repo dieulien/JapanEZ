@@ -14,6 +14,14 @@ switch(method){
         SIGNIN_URL = "https://shrouded-harbor-11572.herokuapp.com/signin";
         PROFILE_URL = "https://shrouded-harbor-11572.herokuapp.com/profile/";
         break;
+
+    case "lienHeroku":
+        REGISTER_URL = "https://peaceful-sands-25473.herokuapp.com/register";
+        SIGNIN_URL = "https://peaceful-sands-25473.herokuapp.com/signin";
+        PROFILE_URL = "https://peaceful-sands-25473.herokuapp.com/profile/";
+        break;
 }
+
+https://peaceful-sands-25473.herokuapp.com/
 
  export {REGISTER_URL, SIGNIN_URL, PROFILE_URL};
