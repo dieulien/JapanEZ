@@ -7,6 +7,8 @@ var SIGNIN_URL = "https://localhost:3000/signin";
 var PROFILE_URL = "https://localhost:3000/profile/";
 
 switch(method){
+    case "local":
+        break;
     case "tuanHeroku":
         REGISTER_URL = "https://shrouded-harbor-11572.herokuapp.com/register";
         SIGNIN_URL = "https://shrouded-harbor-11572.herokuapp.com/signin";
