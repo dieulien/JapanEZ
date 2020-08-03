@@ -1,5 +1,9 @@
 import { USER_INPUT } from "./constants";
 
+const initialInpuxBox = {
+  inputBox: "",
+};
+
 const initialState = {
   inputBox: "",
   curChar: "",
