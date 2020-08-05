@@ -55,9 +55,9 @@ export const completeWord = () => {
   };
 };
 
-export const getNextWord = (word) => {
+export const updateWord = (word) => {
   return {
-    type: "GET_NEXT_WORD",
+    type: "UPDATE_WORD",
     payload: word,
   };
 };

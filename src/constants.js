@@ -5,6 +5,7 @@ const method = "tuanHeroku";
 var REGISTER_URL = "https://localhost:3000/register";
 var SIGNIN_URL = "https://localhost:3000/signin";
 var PROFILE_URL = "https://localhost:3000/profile/";
+var GETWORD_URL = "https://shrouded-harbor-11572.herokuapp.com/getword";
 
 switch (method) {
   case "local":
@@ -24,4 +25,4 @@ switch (method) {
     break;
 }
 
-export { REGISTER_URL, SIGNIN_URL, PROFILE_URL };
+export { REGISTER_URL, SIGNIN_URL, PROFILE_URL, GETWORD_URL };

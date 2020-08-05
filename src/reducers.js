@@ -49,7 +49,7 @@ export const changeCardState = (state = initialCardState, action = {}) => {
       return { ...state, wordCompleted: false };
     case "COMPLETE_WORD":
       return { ...state, wordCompleted: true };
-    case "GET_NEXT_WORD":
+    case "UPDATE_WORD":
       return { ...state, currentWord: action.payload };
     default:
       return state;

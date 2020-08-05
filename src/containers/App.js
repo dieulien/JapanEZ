@@ -8,7 +8,7 @@ import { Grid, Paper } from "@material-ui/core";
 import { charsToRead, katakanaToRomaji } from "../jap-char.js";
 import Signin from "../components/Signin";
 import Register from "../components/Register";
-import { PROFILE_URL } from "../constants";
+import { PROFILE_URL, GETWORD_URL } from "../constants";
 import "./App.css";
 
 import {
@@ -18,7 +18,7 @@ import {
   pressEnter,
   typeWrongAnswer,
   completeWord,
-  getNextWord,
+  updateWord,
 } from "../actions";
 
 const mapStateToProps = (state) => {
@@ -55,8 +55,8 @@ const mapDispatchToProps = (dispatch) => {
     onWordCompletion: () => {
       dispatch(completeWord());
     },
-    getNextWord: (word) => {
-      dispatch(getNextWord(word));
+    updateWord: (word) => {
+      dispatch(updateWord(word));
     },
   };
 };
@@ -115,15 +115,14 @@ class App extends Component {
         onInputBoxChange(event);
         onSpacePress("CONTINUE_AFTER_ERROR");
       } else if (wordCompleted) {
-        console.log("SPACE FOR NEXT WORD");
-        fetch("http://localhost:3001/kore", {
+        fetch(GETWORD_URL, {
           method: "get",
           headers: { "Content-Type": "application/json" },
         })
           .then((res) => res.json())
           .then((word) => {
-            this.props.getNextWord(word);
-            console.log("GET NEXT WORd", word);
+            this.props.updateWord(word);
+            console.log("CURRENT WORD CHEAT", this.parseJapaneseWord(word));
           })
           .catch((err) => {
             console.log("Error in getting next word", err);
@@ -167,18 +166,14 @@ class App extends Component {
       .then((response) => response.json())
       .then((data) => console.log("current user", data));
 
-    var firstWord = "";
-    console.log("get first word");
-    fetch("http://localhost:3001/kore", {
+    fetch(GETWORD_URL, {
       method: "get",
       headers: { "Content-Type": "application/json" },
     })
       .then((res) => res.json())
       .then((word) => {
-        this.props.getNextWord(word);
-        console.log("Getting First Word", word);
-        firstWord = this.parseJapaneseWord(word);
-        console.log("DID IT WORK", firstWord);
+        this.props.updateWord(word);
+        console.log("CURRENT WORD CHEAT", this.parseJapaneseWord(word));
       })
       .catch((err) => {
         console.log("Error in getting first word", err);
