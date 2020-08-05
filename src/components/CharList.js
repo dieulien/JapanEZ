@@ -3,10 +3,6 @@ import Char from "./Char.js";
 import { Grid } from "@material-ui/core";
 
 class CharList extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   partitionCharIndex = (charList) => {
     var characterCounter = 0;
 
@@ -33,8 +29,8 @@ class CharList extends React.Component {
     var className = "";
     var indexOfCurrentCard = null;
 
-    // judge which card is correct/incorrect
     if (userInput.length >= indexPartition[idx]) {
+      // infer userChar using partitioning indices
       if (idx === 0) {
         userChar = userInput.slice(0, indexPartition[idx]);
       } else {
@@ -50,12 +46,9 @@ class CharList extends React.Component {
           className = className.concat(" correct ");
         }
       } else {
+        className = className.concat(" incorrect ");
         onWrongInput(userChar, currentChar);
       }
-    }
-
-    if (currentChar in wrongCharList) {
-      className = className.concat(" incorrect ");
     }
 
     // decide which Card to highlight

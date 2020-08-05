@@ -1,28 +1,36 @@
 import { USER_INPUT } from "./constants";
 
-const initialInpuxBox = {
+const initialInputBox = {
   inputBox: "",
 };
 
-const initialState = {
-  inputBox: "",
+const initialCardState = {
   curChar: "",
   hintedCharList: [],
   wrongCharList: {},
   onIncorrectCard: false,
   curWrongChar: "",
+  onHintedCard: false,
 };
 
-export const highlightCard = (state = initialState, action = {}) => {
+export const changeInputBox = (state = initialInputBox, action = {}) => {
   switch (action.type) {
     case USER_INPUT:
-      return Object.assign({}, state, { inputBox: action.payload });
+      return { ...state, inputBox: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const changeCardState = (state = initialCardState, action = {}) => {
+  switch (action.type) {
     case "CHAR_UPDATE":
-      return Object.assign({}, state, { curChar: action.curChar });
+      return { ...state, curChar: action.curChar };
     case "ENTER_PRESS":
       return {
         ...state,
         hintedCharList: [...state.hintedCharList, state.curChar],
+        onHintedCard: false,
       };
     case "WRONG_INPUT":
       state.wrongCharList[action.currentChar] = action.userInput;
@@ -31,8 +39,10 @@ export const highlightCard = (state = initialState, action = {}) => {
         onIncorrectCard: true,
         curWrongChar: action.currentChar,
       };
-    case "SPACE_PRESS":
+    case "SPACE_PRESS_TO_CONTINUE":
       return { ...state, onIncorrectCard: false };
+    case "SPACE_PRESS_FOR_HINT":
+      return { ...state, onHintedCard: true };
     default:
       return state;
   }

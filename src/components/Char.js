@@ -3,10 +3,6 @@ import "../containers/App.css";
 import "./Char.css";
 
 class Char extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const className = `tmw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10 ${this.props.cardState}`;
     return (

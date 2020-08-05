@@ -7,10 +7,21 @@ export const typeAnswer = (text) => {
   };
 };
 
-export const pressSpace = () => {
-  return {
-    type: "SPACE_PRESS",
-  };
+export const pressSpace = (context) => {
+  switch (context) {
+    case "REQUEST_HINT":
+      return {
+        type: "SPACE_PRESS_FOR_HINT",
+      };
+    case "CONTINUE_AFTER_ERROR":
+      return {
+        type: "SPACE_PRESS_TO_CONTINUE",
+      };
+    default:
+      return {
+        type: "SPACE_PRESS",
+      };
+  }
 };
 
 export const updateChar = (char) => {

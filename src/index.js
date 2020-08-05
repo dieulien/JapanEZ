@@ -7,9 +7,9 @@ import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import "tachyons";
 import App from "./containers/App.js";
-import { highlightCard } from "./reducers";
+import { changeInputBox, changeCardState } from "./reducers";
 
-const rootReducer = combineReducers({ highlightCard });
+const rootReducer = combineReducers({ changeInputBox, changeCardState });
 const logger = createLogger();
 
 const store = createStore(rootReducer, applyMiddleware(logger));
