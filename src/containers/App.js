@@ -24,7 +24,8 @@ import {
 const mapStateToProps = (state) => {
   return {
     userInput: state.changeInputBox.inputBox,
-    currentChar: state.changeCardState.curChar,
+    currentJapChar: state.changeCardState.currentJapChar,
+    currentRomaji: state.changeCardState.currentRomaji,
     hintedCharList: state.changeCardState.hintedCharList,
     wrongCharList: state.changeCardState.wrongCharList,
     onIncorrectCard: state.changeCardState.onIncorrectCard,
@@ -40,8 +41,8 @@ const mapDispatchToProps = (dispatch) => {
     onInputBoxChange: (event) => {
       dispatch(typeAnswer(event.target.value));
     },
-    setCurrentChar: (char) => {
-      dispatch(updateChar(char));
+    setCurrentChar: (japchar, romaji) => {
+      dispatch(updateChar(japchar, romaji));
     },
     onEnterPress: () => {
       dispatch(pressEnter());
@@ -90,7 +91,7 @@ class App extends Component {
 
   onSpecialKeyPress = (event) => {
     const {
-      currentChar,
+      currentRomaji,
       curWrongChar,
       onIncorrectCard,
       onHintedCard,
@@ -139,7 +140,7 @@ class App extends Component {
       event.preventDefault();
       if (onHintedCard) {
         // autofill correct answer
-        event.target.value = event.target.value.concat(currentChar);
+        event.target.value = event.target.value.concat(currentRomaji);
         onInputBoxChange(event);
         onEnterPress();
       }
@@ -182,7 +183,7 @@ class App extends Component {
 
   showHint = () => {
     if (this.props.onHintedCard) {
-      return <Hint />;
+      return <Hint currentHintedChar={this.props.currentJapChar} />;
     }
   };
 

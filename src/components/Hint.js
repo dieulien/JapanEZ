@@ -8,6 +8,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import { katakanaHint } from "../jap-char";
 
 //original component
 // const Hint = () =>{
@@ -24,29 +25,32 @@ import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 200,
+    maxWidth: 320,
+  },
+  media: {
+    height: 200,
   },
 });
 
-export default function Hint() {
+export default function Hint({ currentHintedChar }) {
   const classes = useStyles();
 
   return (
     <Card className={classes.root}>
       <CardActionArea>
         <CardMedia
+          className={classes.media}
           component="img"
-          alt="Contemplative Reptile"
-          height="200"
-          image="https://images.squarespace-cdn.com/content/v1/5b3df7a2e2ccd1a90cd980f8/1586264092269-PH3K138MDDNEYO3WN8JA/ke17ZwdGBToddI8pDm48kEpVg-ILAPna1wRh-xAJ9fRZw-zPPgdn4jUwVcJE1ZvWQUxwkmyExglNqGp0IvTJZUJFbgE-7XRK3dMEBRBhUpwEv36x-EUL2-BSQ5feDhwGCbXuJBFqZ-erYzVouT8yOb9TwqchglLQOCYTRn7ZGxI/Fran+Wrigley+Japanese+Lessons+Learn+Japanese+Online+Learn+Hiragana+Katakana+Mnemonics+4.jpeg"
-          title="Contemplative Reptile"
+          alt="Hint for character"
+          image={katakanaHint[currentHintedChar].imageLink}
+          title="Hint for character"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            Lizard
+            {currentHintedChar}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            This will be a brief explanation
+            {katakanaHint[currentHintedChar].shortHint}
           </Typography>
         </CardContent>
       </CardActionArea>

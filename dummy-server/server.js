@@ -4,9 +4,9 @@ const bcrypt = require("bcryptjs");
 const cors = require("cors");
 const knex = require("knex");
 
-const register = require('./controllers/register');
-const signin = require('./controllers/signin');
-const profile = require('./controllers/profile')
+const register = require("./controllers/register");
+const signin = require("./controllers/signin");
+const profile = require("./controllers/profile");
 
 const app = express();
 
@@ -27,10 +27,8 @@ app.get("/", (req, res) => {
   res.json("Home Page");
 });
 
-app.post("/signin", signin.handleSignIn(pg,bcrypt));
-
-app.post("/register", register.handleRegister(pg,bcrypt));
-
+app.post("/signin", signin.handleSignIn(pg, bcrypt));
+app.post("/register", register.handleRegister(pg, bcrypt));
 app.get("/profile/:userId", profile.handleProfileGet(pg));
 
 app.listen(3000, () => {

@@ -1,6 +1,15 @@
 import React from "react";
+import { connect } from "react-redux";
 import Char from "./Char.js";
 import { Grid } from "@material-ui/core";
+
+const mapStateToProps = (state) => {
+  return {};
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
 
 class CharList extends React.Component {
   partitionCharIndex = (charList) => {
@@ -15,7 +24,8 @@ class CharList extends React.Component {
 
   decideCardState = (
     userInput,
-    currentChar,
+    currentJapChar,
+    currentRomaji,
     idx,
     indexPartition,
     hintDisplayOn,
@@ -41,8 +51,8 @@ class CharList extends React.Component {
           indexPartition[idx]
         );
       }
-      if (userChar === currentChar) {
-        if (hintedCharList.includes(currentChar)) {
+      if (userChar === currentRomaji) {
+        if (hintedCharList.includes(currentRomaji)) {
           className = className.concat(" hinted ");
         } else {
           className = className.concat(" correct ");
@@ -56,7 +66,7 @@ class CharList extends React.Component {
         }
       } else {
         className = className.concat(" incorrect ");
-        onWrongInput(userChar, currentChar);
+        onWrongInput(userChar, currentRomaji);
       }
     }
 
@@ -70,7 +80,7 @@ class CharList extends React.Component {
         }
         if (idx === indexOfCurrentCard) {
           className = className.concat(" highlighted ");
-          updateCurrentChar(currentChar);
+          updateCurrentChar(currentJapChar, currentRomaji);
         }
         break;
       }
@@ -98,6 +108,7 @@ class CharList extends React.Component {
             key={i}
             cardState={this.decideCardState(
               this.props.userInput,
+              item.char,
               item.romaji,
               i,
               indexPartition,
@@ -128,4 +139,4 @@ class CharList extends React.Component {
   }
 }
 
-export default CharList;
+export default connect(mapStateToProps, mapDispatchToProps)(CharList);

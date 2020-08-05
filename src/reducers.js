@@ -5,7 +5,8 @@ const initialInputBox = {
 };
 
 const initialCardState = {
-  curChar: "",
+  currentJapChar: "",
+  currentRomaji: "",
   hintedCharList: [],
   wrongCharList: {},
   onIncorrectCard: false,
@@ -13,6 +14,7 @@ const initialCardState = {
   onHintedCard: false,
   wordCompleted: false,
   currentWord: "",
+  currentHintedChar: "",
 };
 
 export const changeInputBox = (state = initialInputBox, action = {}) => {
@@ -27,11 +29,15 @@ export const changeInputBox = (state = initialInputBox, action = {}) => {
 export const changeCardState = (state = initialCardState, action = {}) => {
   switch (action.type) {
     case "CHAR_UPDATE":
-      return { ...state, curChar: action.curChar };
+      return {
+        ...state,
+        currentJapChar: action.currentJapChar,
+        currentRomaji: action.currentRomaji,
+      };
     case "ENTER_PRESS":
       return {
         ...state,
-        hintedCharList: [...state.hintedCharList, state.curChar],
+        hintedCharList: [...state.hintedCharList, state.currentRomaji],
         onHintedCard: false,
       };
     case "WRONG_INPUT":
@@ -51,6 +57,8 @@ export const changeCardState = (state = initialCardState, action = {}) => {
       return { ...state, wordCompleted: true };
     case "UPDATE_WORD":
       return { ...state, currentWord: action.payload };
+    case "UPDATE_HINTED_CHAR":
+      return { ...state, currentHintedChar: action.payload };
     default:
       return state;
   }

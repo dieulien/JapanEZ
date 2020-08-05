@@ -28,10 +28,11 @@ export const pressSpace = (context) => {
   }
 };
 
-export const updateChar = (char) => {
+export const updateChar = (japchar, romaji) => {
   return {
     type: "CHAR_UPDATE",
-    curChar: char,
+    currentJapChar: japchar,
+    currentRomaji: romaji,
   };
 };
 
@@ -59,5 +60,12 @@ export const updateWord = (word) => {
   return {
     type: "UPDATE_WORD",
     payload: word,
+  };
+};
+
+export const updateHintedCHar = (char) => {
+  return {
+    type: "UPDATE_HINTED_CHAR",
+    payload: char,
   };
 };
