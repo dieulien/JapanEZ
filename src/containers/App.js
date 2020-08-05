@@ -197,6 +197,7 @@ class App extends Component {
       wrongCharList,
       curWrongChar,
       onHintedCard,
+      wordCompleted,
     } = this.props;
 
     if (onIncorrectCard) {
@@ -210,6 +211,9 @@ class App extends Component {
     }
     if (onHintedCard) {
       return <p>press ENTER to continue</p>;
+    }
+    if (wordCompleted) {
+      return <p>press SPACE to continue</p>;
     }
   };
 

@@ -47,12 +47,11 @@ class CharList extends React.Component {
         } else {
           className = className.concat(" correct ");
         }
-        if (userInput.length >= romajiLength) {
-          console.log("DISPATCH WORD COMPLETE");
-          if (userChar === currentChar) {
-            console.log("userCHar", userChar);
-            console.log("currentCHar", currentChar);
-          }
+        if (
+          userInput.length >= romajiLength &&
+          idx === indexPartition.length - 1
+        ) {
+          // if the last card is correct
           onWordCompletion();
         }
       } else {
