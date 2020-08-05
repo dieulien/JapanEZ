@@ -5,7 +5,7 @@ import CharInput from "../components/CharInput";
 import NavBar from "../components/NavBar";
 import Hint from "../components/Hint";
 import { Grid, Paper } from "@material-ui/core";
-import { charsToRead } from "../jap-char.js";
+import { charsToRead, katakanaToRomaji } from "../jap-char.js";
 import Signin from "../components/Signin";
 import Register from "../components/Register";
 import { PROFILE_URL } from "../constants";
@@ -17,6 +17,8 @@ import {
   updateChar,
   pressEnter,
   typeWrongAnswer,
+  completeWord,
+  getNextWord,
 } from "../actions";
 
 const mapStateToProps = (state) => {
@@ -28,6 +30,8 @@ const mapStateToProps = (state) => {
     onIncorrectCard: state.changeCardState.onIncorrectCard,
     curWrongChar: state.changeCardState.curWrongChar,
     onHintedCard: state.changeCardState.onHintedCard,
+    wordCompleted: state.changeCardState.wordCompleted,
+    currentWord: state.changeCardState.currentWord,
   };
 };
 
@@ -35,9 +39,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onInputBoxChange: (event) => {
       dispatch(typeAnswer(event.target.value));
-    },
-    onSpecialKeyPress: () => {
-      dispatch(pressSpace());
     },
     setCurrentChar: (char) => {
       dispatch(updateChar(char));
@@ -50,6 +51,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     onSpacePress: (context) => {
       dispatch(pressSpace(context));
+    },
+    onWordCompletion: () => {
+      dispatch(completeWord());
+    },
+    getNextWord: (word) => {
+      dispatch(getNextWord(word));
     },
   };
 };
@@ -72,6 +79,15 @@ class App extends Component {
     this.setState({ route: route });
   };
 
+  parseJapaneseWord = (word) => {
+    var charToRead = [];
+    for (const c of word) {
+      var c_romaji = katakanaToRomaji[c] || "??";
+      charToRead.push({ char: c, romaji: c_romaji });
+    }
+    return charToRead;
+  };
+
   onSpecialKeyPress = (event) => {
     const {
       currentChar,
@@ -81,22 +97,41 @@ class App extends Component {
       onSpacePress,
       onEnterPress,
       onInputBoxChange,
+      wordCompleted,
     } = this.props;
 
-    if (onIncorrectCard || onHintedCard) {
+    if (onIncorrectCard || onHintedCard || wordCompleted) {
       event.preventDefault();
     }
 
     // handle SPACE press
     if (event.which === 32) {
       event.preventDefault();
-      if (!onIncorrectCard && !onHintedCard) {
+      if (!onIncorrectCard && !onHintedCard && !wordCompleted) {
         onSpacePress("REQUEST_HINT");
       } else if (onIncorrectCard) {
         // remove wrong input
         event.target.value = event.target.value.slice(0, -curWrongChar.length);
         onInputBoxChange(event);
         onSpacePress("CONTINUE_AFTER_ERROR");
+      } else if (wordCompleted) {
+        console.log("SPACE FOR NEXT WORD");
+        fetch("http://localhost:3001/kore", {
+          method: "get",
+          headers: { "Content-Type": "application/json" },
+        })
+          .then((res) => res.json())
+          .then((word) => {
+            this.props.getNextWord(word);
+            console.log("GET NEXT WORd", word);
+          })
+          .catch((err) => {
+            console.log("Error in getting next word", err);
+          });
+        onSpacePress("CONTINUE_AFTER_COMPLETE");
+
+        event.target.value = "";
+        onInputBoxChange(event);
       }
     }
 
@@ -131,6 +166,23 @@ class App extends Component {
     fetch(PROFILE_URL.concat(id))
       .then((response) => response.json())
       .then((data) => console.log("current user", data));
+
+    var firstWord = "";
+    console.log("get first word");
+    fetch("http://localhost:3001/kore", {
+      method: "get",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => res.json())
+      .then((word) => {
+        this.props.getNextWord(word);
+        console.log("Getting First Word", word);
+        firstWord = this.parseJapaneseWord(word);
+        console.log("DID IT WORK", firstWord);
+      })
+      .catch((err) => {
+        console.log("Error in getting first word", err);
+      });
   }
 
   showHint = () => {
@@ -177,11 +229,14 @@ class App extends Component {
       case "home":
         const {
           userInput,
+          onHintedCard,
           setCurrentChar,
           hintedCharList,
           onWrongInput,
           wrongCharList,
           onIncorrectCard,
+          onWordCompletion,
+          currentWord,
         } = this.props;
 
         return (
@@ -208,14 +263,15 @@ class App extends Component {
               >
                 <Grid item>
                   <CharList
-                    charsToRead={charsToRead}
+                    charsToRead={this.parseJapaneseWord(currentWord)}
                     userInput={userInput}
-                    hintDisplayOn={this.props.onHintedCard}
+                    hintDisplayOn={onHintedCard}
                     updateCurrentChar={setCurrentChar}
                     hintedCharList={hintedCharList}
                     onWrongInput={onWrongInput}
                     wrongCharList={wrongCharList}
                     onIncorrectCard={onIncorrectCard}
+                    onWordCompletion={onWordCompletion}
                   />
                 </Grid>
                 <div>{this.displayMessage()}</div>

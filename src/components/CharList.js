@@ -23,11 +23,13 @@ class CharList extends React.Component {
     hintedCharList,
     onWrongInput,
     wrongCharList,
-    onIncorrectCard
+    onIncorrectCard,
+    onWordCompletion
   ) => {
     var userChar = "";
     var className = "";
     var indexOfCurrentCard = null;
+    var romajiLength = indexPartition[indexPartition.length - 1];
 
     if (userInput.length >= indexPartition[idx]) {
       // infer userChar using partitioning indices
@@ -44,6 +46,14 @@ class CharList extends React.Component {
           className = className.concat(" hinted ");
         } else {
           className = className.concat(" correct ");
+        }
+        if (userInput.length >= romajiLength) {
+          console.log("DISPATCH WORD COMPLETE");
+          if (userChar === currentChar) {
+            console.log("userCHar", userChar);
+            console.log("currentCHar", currentChar);
+          }
+          onWordCompletion();
         }
       } else {
         className = className.concat(" incorrect ");
@@ -97,7 +107,8 @@ class CharList extends React.Component {
               this.props.hintedCharList,
               this.props.onWrongInput,
               this.props.wrongCharList,
-              this.props.onIncorrectCard
+              this.props.onIncorrectCard,
+              this.props.onWordCompletion
             )}
           />
         </Grid>

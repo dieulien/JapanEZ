@@ -11,6 +11,8 @@ const initialCardState = {
   onIncorrectCard: false,
   curWrongChar: "",
   onHintedCard: false,
+  wordCompleted: false,
+  currentWord: "",
 };
 
 export const changeInputBox = (state = initialInputBox, action = {}) => {
@@ -43,6 +45,12 @@ export const changeCardState = (state = initialCardState, action = {}) => {
       return { ...state, onIncorrectCard: false };
     case "SPACE_PRESS_FOR_HINT":
       return { ...state, onHintedCard: true };
+    case "SPACE_PRESS_TO_GO_NEXT":
+      return { ...state, wordCompleted: false };
+    case "COMPLETE_WORD":
+      return { ...state, wordCompleted: true };
+    case "GET_NEXT_WORD":
+      return { ...state, currentWord: action.payload };
     default:
       return state;
   }

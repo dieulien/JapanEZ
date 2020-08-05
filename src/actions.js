@@ -17,6 +17,10 @@ export const pressSpace = (context) => {
       return {
         type: "SPACE_PRESS_TO_CONTINUE",
       };
+    case "CONTINUE_AFTER_COMPLETE":
+      return {
+        type: "SPACE_PRESS_TO_GO_NEXT",
+      };
     default:
       return {
         type: "SPACE_PRESS",
@@ -42,5 +46,18 @@ export const typeWrongAnswer = (userChar, currentChar) => {
     type: "WRONG_INPUT",
     userInput: userChar,
     currentChar: currentChar,
+  };
+};
+
+export const completeWord = () => {
+  return {
+    type: "COMPLETE_WORD",
+  };
+};
+
+export const getNextWord = (word) => {
+  return {
+    type: "GET_NEXT_WORD",
+    payload: word,
   };
 };
