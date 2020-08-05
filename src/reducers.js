@@ -14,7 +14,6 @@ const initialCardState = {
   onHintedCard: false,
   wordCompleted: false,
   currentWord: "",
-  currentHintedChar: "",
 };
 
 export const changeInputBox = (state = initialInputBox, action = {}) => {
@@ -57,8 +56,6 @@ export const changeCardState = (state = initialCardState, action = {}) => {
       return { ...state, wordCompleted: true };
     case "UPDATE_WORD":
       return { ...state, currentWord: action.payload };
-    case "UPDATE_HINTED_CHAR":
-      return { ...state, currentHintedChar: action.payload };
     default:
       return state;
   }

@@ -62,10 +62,3 @@ export const updateWord = (word) => {
     payload: word,
   };
 };
-
-export const updateHintedCHar = (char) => {
-  return {
-    type: "UPDATE_HINTED_CHAR",
-    payload: char,
-  };
-};

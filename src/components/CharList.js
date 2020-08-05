@@ -3,14 +3,6 @@ import { connect } from "react-redux";
 import Char from "./Char.js";
 import { Grid } from "@material-ui/core";
 
-const mapStateToProps = (state) => {
-  return {};
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {};
-};
-
 class CharList extends React.Component {
   partitionCharIndex = (charList) => {
     var characterCounter = 0;
@@ -139,4 +131,4 @@ class CharList extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CharList);
+export default CharList;
