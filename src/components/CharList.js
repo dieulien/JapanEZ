@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 import Char from "./Char.js";
 import { Grid } from "@material-ui/core";
 

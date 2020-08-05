@@ -54,14 +54,14 @@ export default function Hint({ currentHintedChar }) {
           </Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions>
+      {/* <CardActions>
         <Button size="small" color="primary">
           Share
         </Button>
         <Button size="small" color="primary">
           Learn More
         </Button>
-      </CardActions>
+      </CardActions> */}
     </Card>
   );
 }

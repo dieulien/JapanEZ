@@ -5,9 +5,10 @@ import CharInput from "../components/CharInput";
 import NavBar from "../components/NavBar";
 import Hint from "../components/Hint";
 import { Grid, Paper } from "@material-ui/core";
-import { charsToRead, katakanaToRomaji } from "../jap-char.js";
+import { katakanaToRomaji } from "../jap-char.js";
 import Signin from "../components/Signin";
 import Register from "../components/Register";
+import WordCard from "../components/WordCard";
 import { PROFILE_URL, GETWORD_URL } from "../constants";
 import "./App.css";
 
@@ -73,6 +74,7 @@ class App extends Component {
         email: "",
         joined: "",
       },
+      currentWordInfo: null,
     };
   }
 
@@ -81,12 +83,12 @@ class App extends Component {
   };
 
   parseJapaneseWord = (word) => {
-    var charToRead = [];
+    var charsToRead = [];
     for (const c of word) {
       var c_romaji = katakanaToRomaji[c] || "??";
-      charToRead.push({ char: c, romaji: c_romaji });
+      charsToRead.push({ char: c, romaji: c_romaji });
     }
-    return charToRead;
+    return charsToRead;
   };
 
   onSpecialKeyPress = (event) => {
@@ -122,8 +124,12 @@ class App extends Component {
         })
           .then((res) => res.json())
           .then((word) => {
-            this.props.updateWord(word);
-            console.log("CURRENT WORD CHEAT", this.parseJapaneseWord(word));
+            this.props.updateWord(word.vocab_kana);
+            this.setState({ currentWordInfo: word });
+            console.log(
+              "CURRENT WORD CHEAT",
+              this.parseJapaneseWord(word.vocab_kana)
+            );
           })
           .catch((err) => {
             console.log("Error in getting next word", err);
@@ -173,8 +179,12 @@ class App extends Component {
     })
       .then((res) => res.json())
       .then((word) => {
-        this.props.updateWord(word);
-        console.log("CURRENT WORD CHEAT", this.parseJapaneseWord(word));
+        this.setState({ currentWordInfo: word });
+        this.props.updateWord(word.vocab_kana);
+        console.log(
+          "CURRENT WORD CHEAT",
+          this.parseJapaneseWord(word.vocab_kana)
+        );
       })
       .catch((err) => {
         console.log("Error in getting first word", err);
@@ -184,6 +194,13 @@ class App extends Component {
   showHint = () => {
     if (this.props.onHintedCard) {
       return <Hint currentHintedChar={this.props.currentJapChar} />;
+    }
+  };
+
+  displayWordInfo = () => {
+    if (this.props.wordCompleted) {
+      console.log(this.state.currentWordInfo);
+      return <WordCard wordInfo={this.state.currentWordInfo} />;
     }
   };
 
@@ -279,6 +296,7 @@ class App extends Component {
                   <Paper elevation={1} />
                   {this.showHint()}
                 </Grid>
+                <div>{this.displayWordInfo()}</div>
               </Grid>
             </Grid>
           </div>

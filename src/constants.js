@@ -5,7 +5,7 @@ const method = "tuanHeroku";
 var REGISTER_URL = "https://localhost:3000/register";
 var SIGNIN_URL = "https://localhost:3000/signin";
 var PROFILE_URL = "https://localhost:3000/profile/";
-var GETWORD_URL = "https://shrouded-harbor-11572.herokuapp.com/getword";
+var GETWORD_URL = "https://shrouded-harbor-11572.herokuapp.com/getwordinfo";
 
 switch (method) {
   case "local":
