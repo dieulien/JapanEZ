@@ -6,6 +6,10 @@ var REGISTER_URL = "https://localhost:3000/register";
 var SIGNIN_URL = "https://localhost:3000/signin";
 var PROFILE_URL = "https://localhost:3000/profile/";
 var GETWORD_URL = "https://shrouded-harbor-11572.herokuapp.com/getwordinfo";
+var MEDIA_BASE_URL_SENTENCE =
+  "https://s3.amazonaws.com/media.japanesereading.com/sentence-sound/";
+var MEDIA_BASE_URL_WORD =
+  "https://s3.amazonaws.com/media.japanesereading.com/word-sound/";
 
 switch (method) {
   case "local":
@@ -25,4 +29,11 @@ switch (method) {
     break;
 }
 
-export { REGISTER_URL, SIGNIN_URL, PROFILE_URL, GETWORD_URL };
+export {
+  REGISTER_URL,
+  SIGNIN_URL,
+  PROFILE_URL,
+  GETWORD_URL,
+  MEDIA_BASE_URL_SENTENCE,
+  MEDIA_BASE_URL_WORD,
+};

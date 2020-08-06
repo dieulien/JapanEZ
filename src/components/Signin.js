@@ -61,6 +61,7 @@ class Signin extends React.Component {
                   name="email-address"
                   id="email-address"
                   onChange={this.onEmailInput}
+                  autoFocus
                 />
               </div>
               <div className="mv3">

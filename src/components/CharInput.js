@@ -10,6 +10,7 @@ const CharInput = ({ onInputChange, onSpecialKeyPress }) => {
         inputProps={{ "aria-label": "description" }}
         onChange={onInputChange}
         onKeyDown={onSpecialKeyPress}
+        autoFocus
       />
     </form>
   );
