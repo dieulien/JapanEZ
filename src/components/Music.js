@@ -3,17 +3,14 @@ import React from "react";
 class Music extends React.Component {
   state = {
     play: false,
-    audio: new Audio(`${this.props.baseMediaUrl}${this.props.audiofile}`),
+    audio: new Audio(`${this.props.audioLink}`),
   };
 
   componentDidMount() {
     this.state.audio.addEventListener("ended", () =>
       this.setState({ play: false })
     );
-    console.log(
-      "audio file",
-      `${this.props.baseMediaUrl}${this.props.audiofile}`
-    );
+    console.log("audio file", `${this.props.audioLink}`);
   }
 
   componentWillUnmont() {

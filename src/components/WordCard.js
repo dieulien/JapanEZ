@@ -44,8 +44,9 @@ export default function OutlinedCard({ wordInfo }) {
         <Typography variant="h5" component="h2">
           {wordInfo.vocab_meaning} ({wordInfo.vocab_pos})
           <Music
-            audiofile={parseAudio(wordInfo.vocab_sound_local)}
-            baseMediaUrl={MEDIA_BASE_URL_WORD}
+            audioLink={`${MEDIA_BASE_URL_WORD}${parseAudio(
+              wordInfo.vocab_sound_local
+            )}`}
           />
         </Typography>
         <br></br>
@@ -59,8 +60,9 @@ export default function OutlinedCard({ wordInfo }) {
         <Typography variant="h5" component="h2">
           {wordInfo.sentence_kana}{" "}
           <Music
-            audiofile={parseAudio(wordInfo.sentence_sound_local)}
-            baseMediaUrl={MEDIA_BASE_URL_SENTENCE}
+            audioLink={`${MEDIA_BASE_URL_SENTENCE}${parseAudio(
+              wordInfo.sentence_sound_local
+            )}`}
           />
         </Typography>
         <Typography

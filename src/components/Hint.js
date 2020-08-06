@@ -8,7 +8,8 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import { katakanaHint } from "../jap-char";
+import { katakanaToRomaji, katakanaHint } from "../jap-char";
+import Music from "./Music";
 
 //original component
 // const Hint = () =>{
@@ -34,6 +35,7 @@ const useStyles = makeStyles({
 
 export default function Hint({ currentHintedChar }) {
   const classes = useStyles();
+  const romaji = katakanaToRomaji[currentHintedChar];
 
   return (
     <Card className={classes.root}>
@@ -53,6 +55,9 @@ export default function Hint({ currentHintedChar }) {
             {katakanaHint[currentHintedChar].shortHint}
           </Typography>
         </CardContent>
+        <Music
+          audioLink={`https://www.learn-japanese-adventure.com/media-files/kanasound-${romaji}.mp3`}
+        />
       </CardActionArea>
       {/* <CardActions>
         <Button size="small" color="primary">
