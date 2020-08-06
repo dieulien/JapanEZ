@@ -50,6 +50,7 @@ export default function OutlinedCard({ wordInfo }) {
           />
         </Typography>
         <br></br>
+
         <Typography
           className={classes.title}
           color="textSecondary"
@@ -63,6 +64,7 @@ export default function OutlinedCard({ wordInfo }) {
             audioLink={`${MEDIA_BASE_URL_SENTENCE}${parseAudio(
               wordInfo.sentence_sound_local
             )}`}
+            delay={3000}
           />
         </Typography>
         <Typography

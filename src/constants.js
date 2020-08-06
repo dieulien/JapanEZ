@@ -10,6 +10,8 @@ var MEDIA_BASE_URL_SENTENCE =
   "https://s3.amazonaws.com/media.japanesereading.com/sentence-sound/";
 var MEDIA_BASE_URL_WORD =
   "https://s3.amazonaws.com/media.japanesereading.com/word-sound/";
+var MEDIA_BASE_URL_CHAR =
+  "https://s3.amazonaws.com/media.japanesereading.com/character-sound/kanasound-"; // add {romaji}.mp3
 
 switch (method) {
   case "local":
@@ -36,4 +38,5 @@ export {
   GETWORD_URL,
   MEDIA_BASE_URL_SENTENCE,
   MEDIA_BASE_URL_WORD,
+  MEDIA_BASE_URL_CHAR,
 };

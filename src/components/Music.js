@@ -1,3 +1,4 @@
+// Taken from this https://stackoverflow.com/questions/47686345/playing-sound-in-reactjs
 import React from "react";
 
 class Music extends React.Component {
@@ -10,10 +11,14 @@ class Music extends React.Component {
     this.state.audio.addEventListener("ended", () =>
       this.setState({ play: false })
     );
+    setTimeout(() => {
+      this.state.audio.play();
+    }, this.props.delay);
+
     console.log("audio file", `${this.props.audioLink}`);
   }
 
-  componentWillUnmont() {
+  componentWillUnmount() {
     this.state.audio.removeEventListener("ended", () =>
       this.setState({ play: false })
     );
