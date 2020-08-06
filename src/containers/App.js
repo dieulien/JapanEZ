@@ -199,7 +199,6 @@ class App extends Component {
 
   displayWordInfo = () => {
     if (this.props.wordCompleted) {
-      console.log(this.state.currentWordInfo);
       return <WordCard wordInfo={this.state.currentWordInfo} />;
     }
   };

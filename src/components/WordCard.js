@@ -23,9 +23,19 @@ const useStyles = makeStyles({
   },
 });
 
+const parseoutBoldText = (sentence) => {
+  // replace <b> and </b> with comma
+  var sentence = sentence.replace(/<\/?b>/g, ",");
+  return sentence.split(",");
+};
+
 export default function OutlinedCard({ wordInfo }) {
   const classes = useStyles();
   const bull = <span className={classes.bullet}>•</span>;
+
+  var el = document.createElement("html");
+  el.innerHTML = "<b>bolded text</b>";
+  const sentenceSegments = parseoutBoldText(wordInfo.sentence_kana);
 
   const parseAudio = (audio_string) => {
     return audio_string.slice(7, audio_string.length - 1);
@@ -59,7 +69,9 @@ export default function OutlinedCard({ wordInfo }) {
           Sample Sentence
         </Typography>
         <Typography variant="h5" component="h2">
-          {wordInfo.sentence_kana}{" "}
+          {sentenceSegments[0]}
+          <b>{sentenceSegments[1]}</b>
+          {sentenceSegments[2]}
           <Music
             audioLink={`${MEDIA_BASE_URL_SENTENCE}${parseAudio(
               wordInfo.sentence_sound_local
@@ -72,7 +84,7 @@ export default function OutlinedCard({ wordInfo }) {
           color="textSecondary"
           gutterBottom
         >
-          Sentence Usage
+          Sentence Meaning
         </Typography>
         <Typography variant="body2" component="p">
           {wordInfo.sentence_meaning}

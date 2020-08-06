@@ -10,6 +10,7 @@ var MEDIA_BASE_URL_SENTENCE =
   "https://s3.amazonaws.com/media.japanesereading.com/sentence-sound/";
 var MEDIA_BASE_URL_WORD =
   "https://s3.amazonaws.com/media.japanesereading.com/word-sound/";
+// source: https://www.learn-japanese-adventure.com/learn-how-to-speak-japanese.html
 var MEDIA_BASE_URL_CHAR =
   "https://s3.amazonaws.com/media.japanesereading.com/character-sound/kanasound-"; // add {romaji}.mp3
 

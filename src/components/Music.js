@@ -14,8 +14,6 @@ class Music extends React.Component {
     setTimeout(() => {
       this.state.audio.play();
     }, this.props.delay);
-
-    console.log("audio file", `${this.props.audioLink}`);
   }
 
   componentWillUnmount() {
