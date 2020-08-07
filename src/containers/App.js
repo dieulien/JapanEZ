@@ -9,7 +9,7 @@ import { katakanaToRomaji } from "../jap-char.js";
 import Signin from "../components/Signin";
 import Register from "../components/Register";
 import WordCard from "../components/WordCard";
-import { PROFILE_URL, GETWORD_URL } from "../constants";
+import { GETWORD_URL } from "../constants";
 import "./App.css";
 
 import {
@@ -20,6 +20,7 @@ import {
   typeWrongAnswer,
   completeWord,
   updateWord,
+  completeChar,
 } from "../actions";
 
 const mapStateToProps = (state) => {
@@ -45,8 +46,8 @@ const mapDispatchToProps = (dispatch) => {
     setCurrentChar: (japchar, romaji) => {
       dispatch(updateChar(japchar, romaji));
     },
-    onEnterPress: () => {
-      dispatch(pressEnter());
+    onEnterPress: (time) => {
+      dispatch(pressEnter(time));
     },
     onWrongInput: (userChar, currentChar) => {
       dispatch(typeWrongAnswer(userChar, currentChar));
@@ -59,6 +60,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     updateWord: (word) => {
       dispatch(updateWord(word));
+    },
+    onCompleteChar: (time, type) => {
+      dispatch(completeChar(time, type));
     },
   };
 };
@@ -102,6 +106,8 @@ class App extends Component {
       onEnterPress,
       onInputBoxChange,
       wordCompleted,
+      updateWord,
+      onCompleteChar,
     } = this.props;
 
     if (onIncorrectCard || onHintedCard || wordCompleted) {
@@ -113,6 +119,7 @@ class App extends Component {
       event.preventDefault();
       if (!onIncorrectCard && !onHintedCard && !wordCompleted) {
         onSpacePress("REQUEST_HINT");
+        onCompleteChar(Date.now(), "hinted");
       } else if (onIncorrectCard) {
         // remove wrong input
         event.target.value = event.target.value.slice(0, -curWrongChar.length);
@@ -125,7 +132,7 @@ class App extends Component {
         })
           .then((res) => res.json())
           .then((word) => {
-            this.props.updateWord(word.vocab_kana);
+            updateWord(word.vocab_kana);
             this.setState({ currentWordInfo: word });
             console.log(
               "CURRENT WORD CHEAT",
@@ -149,7 +156,7 @@ class App extends Component {
         // autofill correct answer
         event.target.value = event.target.value.concat(currentRomaji);
         onInputBoxChange(event);
-        onEnterPress();
+        onEnterPress(Date.now());
       }
     }
   };
@@ -179,12 +186,6 @@ class App extends Component {
 
   componentDidMount() {
     document.addEventListener("keypress", this.keypressGlobalHandler);
-
-    console.log("userInfoMount", this.state.userInfo);
-    const id = this.state.userInfo.id;
-    fetch(PROFILE_URL.concat(id))
-      .then((response) => response.json())
-      .then((data) => console.log("current user", data));
 
     fetch(GETWORD_URL, {
       method: "get",

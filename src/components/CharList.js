@@ -1,8 +1,39 @@
 import React from "react";
 import Char from "./Char.js";
 import { Grid } from "@material-ui/core";
+import { connect } from "react-redux";
+import { completeChar, setNewWordTime } from "../actions";
+
+const mapStateToProps = (state) => {
+  return {
+    charTimestamp: state.changeCardState.charTimestamp,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onCompleteChar: (time, type) => {
+      dispatch(completeChar(time, type));
+    },
+    setNewWordTime: (time) => {
+      dispatch(setNewWordTime(time));
+    },
+  };
+};
 
 class CharList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dispatchTime: 0,
+    };
+  }
+
+  componentDidMount = () => {
+    const timeStamp = Date.now();
+    this.props.setNewWordTime(timeStamp);
+  };
+
   partitionCharIndex = (charList) => {
     var characterCounter = 0;
 
@@ -45,8 +76,19 @@ class CharList extends React.Component {
       if (userChar === currentRomaji) {
         if (hintedCharList.includes(currentRomaji)) {
           className = className.concat(" hinted ");
+
+          /* this simple condition is crucial due to prevent repeated 'onCorrectChar' call due to repeated 
+          rendering everytime the user types something and 
+          update the redux store */
+          if (idx >= this.props.charTimestamp.length) {
+            this.props.onCompleteChar(Date.now(), "hinted");
+          }
         } else {
           className = className.concat(" correct ");
+
+          if (idx >= this.props.charTimestamp.length) {
+            this.props.onCompleteChar(Date.now(), "correct");
+          }
         }
         if (
           userInput.length >= romajiLength &&
@@ -60,7 +102,6 @@ class CharList extends React.Component {
         onWrongInput(userChar, currentRomaji);
       }
     }
-
     // decide which Card to highlight
     for (var i = 0; i < indexPartition.length; i++) {
       if (userInput.length < indexPartition[i]) {
@@ -76,7 +117,6 @@ class CharList extends React.Component {
         break;
       }
     }
-
     // fade all cards except the highlighted one
     if (hintDisplayOn) {
       if (idx !== indexOfCurrentCard) {
@@ -130,4 +170,4 @@ class CharList extends React.Component {
   }
 }
 
-export default CharList;
+export default connect(mapStateToProps, mapDispatchToProps)(CharList);

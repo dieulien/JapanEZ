@@ -14,6 +14,9 @@ const initialCardState = {
   onHintedCard: false,
   wordCompleted: false,
   currentWord: "",
+  prevTimestamp: null,
+  charTimestamp: [],
+  allCharTimestamp: [],
 };
 
 export const changeInputBox = (state = initialInputBox, action = {}) => {
@@ -38,6 +41,7 @@ export const changeCardState = (state = initialCardState, action = {}) => {
         ...state,
         hintedCharList: [...state.hintedCharList, state.currentRomaji],
         onHintedCard: false,
+        prevTimestamp: action.time,
       };
     case "WRONG_INPUT":
       state.wrongCharList[action.currentChar] = action.userInput;
@@ -51,11 +55,31 @@ export const changeCardState = (state = initialCardState, action = {}) => {
     case "SPACE_PRESS_FOR_HINT":
       return { ...state, onHintedCard: true };
     case "SPACE_PRESS_TO_GO_NEXT":
-      return { ...state, wordCompleted: false };
+      return {
+        ...state,
+        wordCompleted: false,
+        charTimestamp: [],
+        allCharTimestamp: [...state.allCharTimestamp, state.charTimestamp],
+        prevTimestamp: action.time,
+      };
     case "COMPLETE_WORD":
       return { ...state, wordCompleted: true };
     case "UPDATE_WORD":
       return { ...state, currentWord: action.payload };
+    case "COMPLETE_CHAR":
+      const newTimestamp = {
+        char: state.currentRomaji,
+        time: action.time - state.prevTimestamp,
+        type: action.completionType,
+      };
+      console.log("TIME STAMP", newTimestamp);
+      return {
+        ...state,
+        charTimestamp: [...state.charTimestamp, newTimestamp],
+        prevTimestamp: action.time,
+      };
+    case "SET_NEW_WORD_TIME":
+      return { ...state, prevTimestamp: action.time };
     default:
       return state;
   }

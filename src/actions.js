@@ -20,6 +20,7 @@ export const pressSpace = (context) => {
     case "CONTINUE_AFTER_COMPLETE":
       return {
         type: "SPACE_PRESS_TO_GO_NEXT",
+        time: Date.now(),
       };
     default:
       return {
@@ -36,9 +37,10 @@ export const updateChar = (japchar, romaji) => {
   };
 };
 
-export const pressEnter = () => {
+export const pressEnter = (time) => {
   return {
     type: "ENTER_PRESS",
+    time: time,
   };
 };
 
@@ -60,5 +62,20 @@ export const updateWord = (word) => {
   return {
     type: "UPDATE_WORD",
     payload: word,
+  };
+};
+
+export const completeChar = (timestamp, completionType) => {
+  return {
+    type: "COMPLETE_CHAR",
+    time: timestamp,
+    completionType: completionType,
+  };
+};
+
+export const setNewWordTime = (time) => {
+  return {
+    type: "SET_NEW_WORD_TIME",
+    time: time,
   };
 };
