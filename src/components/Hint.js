@@ -34,9 +34,18 @@ const useStyles = makeStyles({
   },
 });
 
+const parseoutUnderlineText = (sentence) => {
+  // replace <b> and </b> with comma
+  var sentence = sentence.replace(/<\/?u>/g, ",");
+  return sentence.split(",");
+};
+
 export default function Hint({ currentHintedChar }) {
   const classes = useStyles();
   const romaji = katakanaToRomaji[currentHintedChar];
+  const sentenceFragments = parseoutUnderlineText(
+    katakanaHint[currentHintedChar].shortHint
+  );
 
   return (
     <Card className={classes.root}>
@@ -49,14 +58,14 @@ export default function Hint({ currentHintedChar }) {
           title="Hint for character"
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {currentHintedChar}
-          </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            {katakanaHint[currentHintedChar].shortHint}
+            {sentenceFragments[0]}
+            <u>{sentenceFragments[1]}</u>
+            {sentenceFragments[2]}
           </Typography>
+          <br></br>
+          <Music audioLink={MEDIA_BASE_URL_CHAR + romaji + ".mp3"} />
         </CardContent>
-        <Music audioLink={MEDIA_BASE_URL_CHAR + romaji + ".mp3"} />
       </CardActionArea>
       {/* <CardActions>
         <Button size="small" color="primary">

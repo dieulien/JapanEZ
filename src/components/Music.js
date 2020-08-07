@@ -1,5 +1,6 @@
 // Taken from this https://stackoverflow.com/questions/47686345/playing-sound-in-reactjs
 import React from "react";
+import Button from "@material-ui/core/Button";
 
 class Music extends React.Component {
   state = {
@@ -31,9 +32,9 @@ class Music extends React.Component {
   render() {
     return (
       <div>
-        <button onClick={this.togglePlay}>
-          {this.state.play ? "Pause" : "Play"}
-        </button>
+        <Button variant="contained" color="primary" onClick={this.togglePlay}>
+          {this.state.play ? "Pause Audio" : "Play Audio"}
+        </Button>
       </div>
     );
   }
