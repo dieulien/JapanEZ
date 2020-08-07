@@ -12,10 +12,12 @@ export const pressSpace = (context) => {
     case "REQUEST_HINT":
       return {
         type: "SPACE_PRESS_FOR_HINT",
+        time: Date.now(),
       };
     case "CONTINUE_AFTER_ERROR":
       return {
         type: "SPACE_PRESS_TO_CONTINUE",
+        time: Date.now(),
       };
     case "CONTINUE_AFTER_COMPLETE":
       return {
@@ -49,12 +51,14 @@ export const typeWrongAnswer = (userChar, currentChar) => {
     type: "WRONG_INPUT",
     userInput: userChar,
     currentChar: currentChar,
+    time: Date.now(),
   };
 };
 
 export const completeWord = () => {
   return {
     type: "COMPLETE_WORD",
+    time: Date.now(), // when user complete last character Card
   };
 };
 
