@@ -1,4 +1,4 @@
-Project is currently under development. Working URL will be provided in September in the Readme file. Thank you for your interest!
+Project is currently under development. Live URL will be provided in September in the Readme file. Thank you for your interest!
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
