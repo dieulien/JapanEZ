@@ -35,7 +35,7 @@ export default function OutlinedCard({ wordInfo }) {
 
   var el = document.createElement("html");
   el.innerHTML = "<b>bolded text</b>";
-  const sentenceSegments = parseoutBoldText(wordInfo.sentence_kana);
+  const sentenceSegments = parseoutBoldText(wordInfo.sentence_expression);
 
   const parseAudio = (audio_string) => {
     return audio_string.slice(7, audio_string.length - 1);
@@ -70,7 +70,9 @@ export default function OutlinedCard({ wordInfo }) {
         </Typography>
         <Typography variant="h5" component="h2">
           {sentenceSegments[0]}
-          <b>{sentenceSegments[1]}</b>
+          <b>
+            <u>{sentenceSegments[1]}</u>
+          </b>
           {sentenceSegments[2]}
           <Music
             audioLink={`${MEDIA_BASE_URL_SENTENCE}${parseAudio(

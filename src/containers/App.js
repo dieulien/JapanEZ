@@ -76,6 +76,7 @@ class App extends Component {
       },
       currentWordInfo: null,
     };
+    this.charInputRef = React.createRef();
   }
 
   onRouteChange = (route) => {
@@ -166,7 +167,19 @@ class App extends Component {
     console.log("userInfo", this.state.userInfo);
   };
 
+  // refocus on inputbox when pressing ENTER or SPACE
+  keypressGlobalHandler = (event) => {
+    if (this.state.route === "home") {
+      if (event.which === 32 || event.which === 13) {
+        event.preventDefault();
+        this.charInputRef.current.formRef.current.focus();
+      }
+    }
+  };
+
   componentDidMount() {
+    document.addEventListener("keypress", this.keypressGlobalHandler);
+
     console.log("userInfoMount", this.state.userInfo);
     const id = this.state.userInfo.id;
     fetch(PROFILE_URL.concat(id))
@@ -270,6 +283,7 @@ class App extends Component {
               <CharInput
                 onInputChange={this.props.onInputBoxChange}
                 onSpecialKeyPress={this.onSpecialKeyPress}
+                ref={this.charInputRef}
               />
               <Grid
                 container
