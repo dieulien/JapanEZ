@@ -6,6 +6,7 @@ var REGISTER_URL = "https://localhost:3000/register";
 var SIGNIN_URL = "https://localhost:3000/signin";
 var PROFILE_URL = "https://localhost:3000/profile/";
 var GETWORD_URL = "https://shrouded-harbor-11572.herokuapp.com/getwordinfo";
+var CHARSCORE_URL = "https://shrouded-harbor-11572.herokuapp.com/charscore";
 var MEDIA_BASE_URL_SENTENCE =
   "https://s3.amazonaws.com/media.japanesereading.com/sentence-sound/";
 var MEDIA_BASE_URL_WORD =
@@ -40,4 +41,5 @@ export {
   MEDIA_BASE_URL_SENTENCE,
   MEDIA_BASE_URL_WORD,
   MEDIA_BASE_URL_CHAR,
+  CHARSCORE_URL,
 };

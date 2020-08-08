@@ -9,7 +9,7 @@ import { katakanaToRomaji } from "../jap-char.js";
 import Signin from "../components/Signin";
 import Register from "../components/Register";
 import WordCard from "../components/WordCard";
-import { GETWORD_URL } from "../constants";
+import { GETWORD_URL, CHARSCORE_URL } from "../constants";
 import "./App.css";
 
 import {
@@ -35,6 +35,7 @@ const mapStateToProps = (state) => {
     onHintedCard: state.changeCardState.onHintedCard,
     wordCompleted: state.changeCardState.wordCompleted,
     currentWord: state.changeCardState.currentWord,
+    charTimestamp: state.changeCardState.charTimestamp,
   };
 };
 
@@ -96,6 +97,37 @@ class App extends Component {
     return charsToRead;
   };
 
+  convertTimeToScoreDelta = (charTimestamp) => {
+    return charTimestamp.map((item) => {
+      var score_delta = 20000 / item.time;
+      if (item.type === "hinted") {
+        score_delta *= -1;
+      }
+      return {
+        char: item.char,
+        score_delta: score_delta,
+      };
+    });
+  };
+
+  updateCharScore = (user_uid, scoreDeltaList) => {
+    fetch(CHARSCORE_URL, {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        user_uid: user_uid,
+        charScoreDeltaList: scoreDeltaList,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("update success", data);
+      })
+      .catch((error) => {
+        console.log("Failed to update char score", error);
+      });
+  };
+
   onSpecialKeyPress = (event) => {
     const {
       currentRomaji,
@@ -108,6 +140,7 @@ class App extends Component {
       wordCompleted,
       updateWord,
       onCompleteChar,
+      charTimestamp,
     } = this.props;
 
     if (onIncorrectCard || onHintedCard || wordCompleted) {
@@ -142,6 +175,8 @@ class App extends Component {
           .catch((err) => {
             console.log("Error in getting next word", err);
           });
+        const scoreDeltaList = this.convertTimeToScoreDelta(charTimestamp);
+        this.updateCharScore(this.state.userInfo.id, scoreDeltaList);
         onSpacePress("CONTINUE_AFTER_COMPLETE");
 
         event.target.value = "";
@@ -162,11 +197,11 @@ class App extends Component {
   };
 
   loadUser = (user) => {
-    const { id, name, email, joined } = user;
+    const { user_uid, name, email, joined } = user;
     this.setState((prevState) => {
       let userInfo = { ...prevState.userInfo };
       userInfo.name = name;
-      userInfo.id = id;
+      userInfo.id = user_uid;
       userInfo.email = email;
       userInfo.joined = joined;
       return { userInfo };
@@ -186,7 +221,6 @@ class App extends Component {
 
   componentDidMount() {
     document.addEventListener("keypress", this.keypressGlobalHandler);
-
     fetch(GETWORD_URL, {
       method: "get",
       headers: { "Content-Type": "application/json" },

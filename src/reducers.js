@@ -61,6 +61,7 @@ export const changeCardState = (state = initialCardState, action = {}) => {
         charTimestamp: [],
         allCharTimestamp: [...state.allCharTimestamp, state.charTimestamp],
         prevTimestamp: action.time,
+        hintedCharList: [],
       };
     case "COMPLETE_WORD":
       return { ...state, wordCompleted: true };
@@ -68,7 +69,7 @@ export const changeCardState = (state = initialCardState, action = {}) => {
       return { ...state, currentWord: action.payload };
     case "COMPLETE_CHAR":
       const newTimestamp = {
-        char: state.currentRomaji,
+        char: state.currentJapChar,
         time: action.time - state.prevTimestamp,
         type: action.completionType,
       };

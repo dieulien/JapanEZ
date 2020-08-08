@@ -64,7 +64,7 @@ const katakanaToRomaji = {
   ケ: "ke",
   コ: "ko",
   サ: "sa",
-  シ: "si",
+  シ: "shi",
   ス: "su",
   セ: "se",
   ソ: "so",

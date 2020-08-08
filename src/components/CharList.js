@@ -46,8 +46,8 @@ class CharList extends React.Component {
 
   decideCardState = (
     userInput,
-    currentJapChar,
-    currentRomaji,
+    cardJapChar,
+    cardRomaji,
     idx,
     indexPartition,
     hintDisplayOn,
@@ -73,8 +73,8 @@ class CharList extends React.Component {
           indexPartition[idx]
         );
       }
-      if (userChar === currentRomaji) {
-        if (hintedCharList.includes(currentRomaji)) {
+      if (userChar === cardRomaji) {
+        if (hintedCharList.includes(cardRomaji)) {
           className = className.concat(" hinted ");
 
           /* this simple condition is crucial due to prevent repeated 'onCorrectChar' call due to repeated 
@@ -99,7 +99,7 @@ class CharList extends React.Component {
         }
       } else {
         className = className.concat(" incorrect ");
-        onWrongInput(userChar, currentRomaji);
+        onWrongInput(userChar, cardRomaji);
       }
     }
     // decide which Card to highlight
@@ -112,7 +112,7 @@ class CharList extends React.Component {
         }
         if (idx === indexOfCurrentCard) {
           className = className.concat(" highlighted ");
-          updateCurrentChar(currentJapChar, currentRomaji);
+          updateCurrentChar(cardJapChar, cardRomaji);
         }
         break;
       }
