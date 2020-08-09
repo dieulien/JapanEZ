@@ -11,19 +11,7 @@ import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import { withStyles } from "@material-ui/core/styles";
 import { SIGNIN_URL } from "../constants";
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import Signin from "./Signin";
 
 const useStyles = (theme) => ({
   container: {
@@ -63,9 +51,7 @@ class Signin2 extends React.Component {
       signInEmail: "",
       signInPassword: "",
       emailErrorMsg: "",
-      passswordErrorMsg: "",
-      emailError: false,
-      passwordError: false,
+      passwordErrorMsg: "",
     };
   }
 
@@ -77,9 +63,9 @@ class Signin2 extends React.Component {
     this.setState({ signInPassword: event.target.value });
   };
 
-  onSignIn = (event) => {
-    event.preventDefault();
+  sendSigninInfoToBackend = () => {
     const { signInEmail, signInPassword } = this.state;
+
     fetch(SIGNIN_URL, {
       method: "post",
       headers: { "Content-Type": "application/json" },
@@ -94,21 +80,17 @@ class Signin2 extends React.Component {
           this.props.loadUser(data);
           this.props.onRouteChange("home");
           this.setState({
-            emailError: false,
-            passwordError: false,
             emailErrorMsg: "",
-            passswordErrorMsg: "",
+            passwordErrorMsg: "",
           });
         } else {
           // there is an error loggin in
           console.log("Login Failed", data);
           if (data === "email is not yet registered") {
-            this.setState({ emailErrorMsg: data, emailError: true });
+            this.setState({ emailErrorMsg: data });
           } else if (data === "incorrect password") {
             this.setState({
-              passswordErrorMsg: data,
-              passwordError: true,
-              emailError: false,
+              passwordErrorMsg: data,
               emailErrorMsg: "",
             });
           }
@@ -117,6 +99,29 @@ class Signin2 extends React.Component {
       .catch((error) => {
         console.log("Error!", error);
       });
+  };
+
+  onSignIn = (event) => {
+    event.preventDefault();
+    const { signInEmail, signInPassword } = this.state;
+
+    // check that fields are not empty
+    if (!signInEmail) {
+      this.setState({ emailErrorMsg: "please fill out your email" });
+    } else {
+      this.setState({ emailErrorMsg: "" });
+    }
+    if (!signInPassword) {
+      this.setState({ passwordErrorMsg: "please fill out your password" });
+    } else {
+      this.setState({ passwordErrorMsg: "" });
+    }
+
+    if (signInEmail && signInPassword) {
+      this.sendSigninInfoToBackend();
+    } else {
+      return;
+    }
   };
 
   render() {
@@ -131,7 +136,7 @@ class Signin2 extends React.Component {
             </Typography>
             <form className={classes.form} noValidate>
               <TextField
-                error={this.state.emailError}
+                error={this.state.emailErrorMsg}
                 helperText={this.state.emailErrorMsg}
                 variant="outlined"
                 margin="normal"
@@ -145,8 +150,8 @@ class Signin2 extends React.Component {
                 onChange={this.onEmailInput}
               />
               <TextField
-                error={this.state.passwordError}
-                helperText={this.state.passswordErrorMsg}
+                error={this.state.passwordErrorMsg}
+                helperText={this.state.passwordErrorMsg}
                 variant="outlined"
                 margin="normal"
                 required

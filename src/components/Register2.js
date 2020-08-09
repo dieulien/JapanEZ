@@ -2,29 +2,13 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import { withStyles } from "@material-ui/core/styles";
 import { REGISTER_URL } from "../constants";
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
 const useStyles = (theme) => ({
   container: {
@@ -61,8 +45,15 @@ class Register2 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      signInEmail: "",
-      signInPassword: "",
+      name: "",
+      email: "",
+      password: "",
+      nameError: false,
+      emailError: false,
+      passwordError: false,
+      nameErrorMsg: "",
+      emailErrorMsg: "",
+      passwordErrorMsg: "",
     };
   }
 
@@ -78,9 +69,9 @@ class Register2 extends React.Component {
     this.setState({ password: event.target.value });
   };
 
-  onFormSubmit = (event) => {
-    event.preventDefault();
+  sendFormDataToBackEnd = () => {
     const { name, email, password } = this.state;
+
     fetch(REGISTER_URL, {
       method: "post",
       headers: { "Content-Type": "application/json" },
@@ -93,8 +84,12 @@ class Register2 extends React.Component {
       .then((response) => response.json())
       .then((data) => {
         if (Object.keys(data).length === 4) {
+          this.setState({ emailErrorMsg: "" });
           this.props.loadUser(data);
           this.props.onRouteChange("home");
+        } else {
+          // if user already exist
+          this.setState({ emailErrorMsg: data });
         }
       })
       .catch((error) => {
@@ -102,8 +97,36 @@ class Register2 extends React.Component {
       });
   };
 
+  onFormSubmit = (event) => {
+    event.preventDefault();
+    const { name, email, password } = this.state;
+
+    if (!name) {
+      this.setState({ nameErrorMsg: "please fill out your name" });
+    } else {
+      this.setState({ nameErrorMsg: "" });
+    }
+    if (!email) {
+      this.setState({ emailErrorMsg: "please fill out your email" });
+    } else {
+      this.setState({ emailErrorMsg: "" });
+    }
+    if (!password) {
+      this.setState({ passwordErrorMsg: "please fill out your password" });
+    } else {
+      this.setState({ passwordErrorMsg: "" });
+    }
+
+    if (name && password && email) {
+      this.sendFormDataToBackEnd();
+    } else {
+      return;
+    }
+  };
+
   render() {
     const { classes } = this.props;
+    const { nameErrorMsg, emailErrorMsg, passwordErrorMsg } = this.state;
     return (
       <Paper className={classes.paper2}>
         <Container component="main" maxWidth="xs" className={classes.container}>
@@ -114,6 +137,8 @@ class Register2 extends React.Component {
             </Typography>
             <form className={classes.form} noValidate>
               <TextField
+                error={nameErrorMsg}
+                helperText={nameErrorMsg}
                 variant="outlined"
                 id="name"
                 label="Your Name"
@@ -123,6 +148,8 @@ class Register2 extends React.Component {
                 onChange={this.onNameInput}
               />
               <TextField
+                error={emailErrorMsg}
+                helperText={emailErrorMsg}
                 variant="outlined"
                 margin="normal"
                 required
@@ -131,10 +158,11 @@ class Register2 extends React.Component {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
-                autoFocus
                 onChange={this.onEmailInput}
               />
               <TextField
+                error={passwordErrorMsg}
+                helperText={passwordErrorMsg}
                 variant="outlined"
                 margin="normal"
                 required
