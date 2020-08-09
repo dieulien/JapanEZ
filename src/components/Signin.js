@@ -1,7 +1,47 @@
 import React from "react";
-// import "./Signin.css";
-import { SIGNIN_URL } from "../constants";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Link from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import Paper from "@material-ui/core/Paper";
+import { withStyles } from "@material-ui/core/styles";
+import { SIGNIN_URL } from "../constants";
+
+const useStyles = (theme) => ({
+  container: {
+    fontFamily: "Roboto",
+    backfround: "white",
+  },
+  paper: {
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  paper2: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+    padding: theme.spacing(1),
+    [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
+      width: 500,
+      height: 450,
+      marginLeft: "auto",
+      marginRight: "auto",
+    },
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+});
 
 class Signin extends React.Component {
   constructor(props) {
@@ -9,6 +49,8 @@ class Signin extends React.Component {
     this.state = {
       signInEmail: "",
       signInPassword: "",
+      emailErrorMsg: "",
+      passwordErrorMsg: "",
     };
   }
 
@@ -20,9 +62,9 @@ class Signin extends React.Component {
     this.setState({ signInPassword: event.target.value });
   };
 
-  onSignIn = (event) => {
-    event.preventDefault();
+  sendSigninInfoToBackend = () => {
     const { signInEmail, signInPassword } = this.state;
+
     fetch(SIGNIN_URL, {
       method: "post",
       headers: { "Content-Type": "application/json" },
@@ -36,9 +78,21 @@ class Signin extends React.Component {
         if (Object.keys(data).length === 4) {
           this.props.loadUser(data);
           this.props.onRouteChange("home");
+          this.setState({
+            emailErrorMsg: "",
+            passwordErrorMsg: "",
+          });
         } else {
           // there is an error loggin in
           console.log("Login Failed", data);
+          if (data === "email is not yet registered") {
+            this.setState({ emailErrorMsg: data });
+          } else if (data === "incorrect password") {
+            this.setState({
+              passwordErrorMsg: data,
+              emailErrorMsg: "",
+            });
+          }
         }
       })
       .catch((error) => {
@@ -46,66 +100,109 @@ class Signin extends React.Component {
       });
   };
 
+  onSignIn = (event) => {
+    event.preventDefault();
+    const { signInEmail, signInPassword } = this.state;
+
+    // check that fields are not empty
+    if (!signInEmail) {
+      this.setState({ emailErrorMsg: "please fill out your email" });
+    } else {
+      this.setState({ emailErrorMsg: "" });
+    }
+    if (!signInPassword) {
+      this.setState({ passwordErrorMsg: "please fill out your password" });
+    } else {
+      this.setState({ passwordErrorMsg: "" });
+    }
+
+    if (signInEmail && signInPassword) {
+      this.sendSigninInfoToBackend();
+    } else {
+      return;
+    }
+  };
+
   render() {
+    const { classes } = this.props;
     return (
-      <article
-        className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw5 center shadow-2"
-        style={{ background: "white" }}
-      >
-        <main className="pa4 black-80">
-          <form className="measure">
-            <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
-              <legend className="f4 fw6 ph0 mh0">Sign In</legend>
-              <div className="mt3">
-                <label className="db fw6 lh-copy f6" htmlFor="email-address">
-                  Email
-                </label>
-                <input
-                  className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
-                  type="email"
-                  name="email-address"
-                  id="email-address"
-                  onChange={this.onEmailInput}
-                  autoFocus
-                />
-              </div>
-              <div className="mv3">
-                <label className="db fw6 lh-copy f6" htmlFor="password">
-                  Password
-                </label>
-                <input
-                  className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
-                  type="password"
-                  name="password"
-                  id="password"
-                  onChange={this.onPasswordInput}
-                />
-              </div>
-              {/* <label className="pa0 ma0 lh-copy f6 pointer">
-                <input type="checkbox" /> Remember me
-              </label> */}
-            </fieldset>
-            <div className="">
-              <input
-                onClick={this.onSignIn}
-                className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
-                type="submit"
-                value="Sign in"
+      <Paper className={classes.paper2} elevation={3}>
+        <Container component="main" maxWidth="xs" className={classes.container}>
+          <CssBaseline />
+          <div className={classes.paper}>
+            <Typography component="h1" variant="h5">
+              Sign in
+            </Typography>
+            <form className={classes.form} noValidate>
+              <TextField
+                error={this.state.emailErrorMsg}
+                helperText={this.state.emailErrorMsg}
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                onChange={this.onEmailInput}
               />
-            </div>
-            <div className="lh-copy mt3">
-              <p
-                className="f6 link dim black db pointer"
-                onClick={() => this.props.onRouteChange("register")}
+              <TextField
+                error={this.state.passwordErrorMsg}
+                helperText={this.state.passwordErrorMsg}
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                onChange={this.onPasswordInput}
+              />
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                onClick={this.onSignIn}
               >
-                Register
-              </p>
-            </div>
-          </form>
-        </main>
-      </article>
+                Sign In
+              </Button>
+              <Grid
+                container
+                alignItems="center"
+                direction="row"
+                justify="center"
+              >
+                <Grid item xs>
+                  <Link href="#" variant="body2">
+                    {"Forgot password?"}
+                  </Link>
+                </Grid>
+                <Grid item>
+                  <Link
+                    component="button"
+                    variant="body2"
+                    onClick={() => this.props.onRouteChange("register")}
+                  >
+                    {"Don't have an account? Sign Up Here"}
+                  </Link>
+                </Grid>
+              </Grid>
+            </form>
+          </div>
+        </Container>
+      </Paper>
     );
   }
 }
 
-export default Signin;
+export default withStyles(useStyles)(Signin);

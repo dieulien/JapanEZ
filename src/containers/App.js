@@ -6,8 +6,8 @@ import NavBar from "../components/NavBar";
 import Hint from "../components/Hint";
 import { Grid, Paper } from "@material-ui/core";
 import { katakanaToRomaji } from "../jap-char.js";
-import Signin2 from "../components/Signin2";
-import Register2 from "../components/Register2";
+import Signin from "../components/Signin";
+import Register from "../components/Register";
 import WordCard from "../components/WordCard";
 import { GETWORD_URL, CHARSCORE_URL } from "../constants";
 import "./App.css";
@@ -281,16 +281,11 @@ class App extends Component {
     switch (route) {
       case "signin":
         return (
-          // <Signin onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
-          <Signin2
-            onRouteChange={this.onRouteChange}
-            loadUser={this.loadUser}
-          />
-          // <BasicTextFields />
+          <Signin onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
         );
       case "register":
         return (
-          <Register2
+          <Register
             onRouteChange={this.onRouteChange}
             loadUser={this.loadUser}
           />

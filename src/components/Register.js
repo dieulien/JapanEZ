@@ -1,5 +1,45 @@
 import React from "react";
-import {REGISTER_URL} from '../constants';
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import Link from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import Paper from "@material-ui/core/Paper";
+import { withStyles } from "@material-ui/core/styles";
+import { REGISTER_URL } from "../constants";
+
+const useStyles = (theme) => ({
+  container: {
+    fontFamily: "Roboto",
+    backfround: "white",
+  },
+  paper: {
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  paper2: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+    padding: theme.spacing(1),
+    [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
+      width: 500,
+      height: 450,
+      marginLeft: "auto",
+      marginRight: "auto",
+    },
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+});
 
 class Register extends React.Component {
   constructor(props) {
@@ -8,6 +48,12 @@ class Register extends React.Component {
       name: "",
       email: "",
       password: "",
+      nameError: false,
+      emailError: false,
+      passwordError: false,
+      nameErrorMsg: "",
+      emailErrorMsg: "",
+      passwordErrorMsg: "",
     };
   }
 
@@ -23,10 +69,10 @@ class Register extends React.Component {
     this.setState({ password: event.target.value });
   };
 
-  onFormSubmit = (event) => {
-    event.preventDefault();
+  sendFormDataToBackEnd = () => {
     const { name, email, password } = this.state;
-      fetch(REGISTER_URL, {
+
+    fetch(REGISTER_URL, {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -38,8 +84,12 @@ class Register extends React.Component {
       .then((response) => response.json())
       .then((data) => {
         if (Object.keys(data).length === 4) {
+          this.setState({ emailErrorMsg: "" });
           this.props.loadUser(data);
           this.props.onRouteChange("home");
+        } else {
+          // if user already exist
+          this.setState({ emailErrorMsg: data });
         }
       })
       .catch((error) => {
@@ -47,71 +97,115 @@ class Register extends React.Component {
       });
   };
 
+  onFormSubmit = (event) => {
+    event.preventDefault();
+    const { name, email, password } = this.state;
+
+    if (!name) {
+      this.setState({ nameErrorMsg: "please fill out your name" });
+    } else {
+      this.setState({ nameErrorMsg: "" });
+    }
+    if (!email) {
+      this.setState({ emailErrorMsg: "please fill out your email" });
+    } else {
+      this.setState({ emailErrorMsg: "" });
+    }
+    if (!password) {
+      this.setState({ passwordErrorMsg: "please fill out your password" });
+    } else {
+      this.setState({ passwordErrorMsg: "" });
+    }
+
+    if (name && password && email) {
+      this.sendFormDataToBackEnd();
+    } else {
+      return;
+    }
+  };
+
   render() {
+    const { classes } = this.props;
+    const { nameErrorMsg, emailErrorMsg, passwordErrorMsg } = this.state;
     return (
-      <article className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw6 center shadow-2">
-        <main className="pa4 black-80">
-          <form className="measure">
-            <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
-              <legend className="f4 fw6 ph0 mh0">Register</legend>
-              <div>
-                <label className="db fw6 lh-copy f6" for="name">
-                  Name
-                </label>
-                <input
-                  className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
-                  type="name"
-                  name="name"
-                  id="name"
-                  onChange={this.onNameInput}
-                />
-              </div>
-              <div className="mt3">
-                <label className="db fw6 lh-copy f6" for="email-address">
-                  Email
-                </label>
-                <input
-                  className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
-                  type="email"
-                  name="email-address"
-                  id="email-address"
-                  onChange={this.onEmailInput}
-                />
-              </div>
-              <div className="mv3">
-                <label className="db fw6 lh-copy f6" for="password">
-                  Password
-                </label>
-                <input
-                  className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
-                  type="password"
-                  name="password"
-                  id="password"
-                  onChange={this.onPasswordInput}
-                />
-              </div>
-            </fieldset>
-            <div className="">
-              <input
-                onClick={this.onFormSubmit}
-                className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
-                type="submit"
-                value="Register"
+      <Paper className={classes.paper2}>
+        <Container component="main" maxWidth="xs" className={classes.container}>
+          <CssBaseline />
+          <div className={classes.paper}>
+            <Typography component="h1" variant="h5">
+              Register
+            </Typography>
+            <form className={classes.form} noValidate>
+              <TextField
+                error={nameErrorMsg}
+                helperText={nameErrorMsg}
+                variant="outlined"
+                id="name"
+                label="Your Name"
+                autoFocus
+                required
+                fullWidth
+                onChange={this.onNameInput}
               />
-            </div>
-            <div className="lh-copy mt3">
-              <p
-                className="f6 link dim black db pointer"
-                onClick={() => this.props.onRouteChange("signin")}
+              <TextField
+                error={emailErrorMsg}
+                helperText={emailErrorMsg}
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                onChange={this.onEmailInput}
+              />
+              <TextField
+                error={passwordErrorMsg}
+                helperText={passwordErrorMsg}
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                onChange={this.onPasswordInput}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                onClick={this.onFormSubmit}
               >
-                Sign in
-              </p>
-            </div>
-          </form>
-        </main>
-      </article>
+                Register
+              </Button>
+              <Grid
+                container
+                alignItems="center"
+                direction="column"
+                justify="center"
+              >
+                <Grid item>
+                  <Link
+                    component="button"
+                    variant="body2"
+                    onClick={() => this.props.onRouteChange("signin")}
+                  >
+                    {"Already registered? Sign In"}
+                  </Link>
+                </Grid>
+              </Grid>
+            </form>
+          </div>
+        </Container>
+      </Paper>
     );
   }
 }
 
-export default Register;
+export default withStyles(useStyles)(Register);
