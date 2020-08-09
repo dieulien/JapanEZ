@@ -7,7 +7,9 @@ import Hint from "../components/Hint";
 import { Grid, Paper } from "@material-ui/core";
 import { katakanaToRomaji } from "../jap-char.js";
 import Signin from "../components/Signin";
+import SignIn from "../components/SignInForm";
 import Register from "../components/Register";
+import RegisterForm from "../components/RegisterForm";
 import WordCard from "../components/WordCard";
 import { GETWORD_URL, CHARSCORE_URL } from "../constants";
 import "./App.css";
@@ -22,6 +24,7 @@ import {
   updateWord,
   completeChar,
 } from "../actions";
+import SignInForm from "../components/SignInForm";
 
 const mapStateToProps = (state) => {
   return {
@@ -281,11 +284,11 @@ class App extends Component {
     switch (route) {
       case "signin":
         return (
-          <Signin onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
+          <SignInForm onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
         );
       case "register":
         return (
-          <Register
+          <RegisterForm
             onRouteChange={this.onRouteChange}
             loadUser={this.loadUser}
           />
