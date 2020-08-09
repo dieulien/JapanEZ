@@ -1,57 +1,3 @@
-const charsToRead = [
-  {
-    char: "あ",
-    romaji: "a",
-  },
-  {
-    char: "い",
-    romaji: "i",
-  },
-  {
-    char: "た",
-    romaji: "ta",
-  },
-  {
-    char: "な",
-    romaji: "na",
-  },
-  {
-    char: "さ",
-    romaji: "sa",
-  },
-  {
-    char: "ち",
-    romaji: "chi",
-  },
-];
-
-const charsToRead2 = [
-  {
-    char: "な",
-    romaji: "na",
-  },
-  {
-    char: "さ",
-    romaji: "ki",
-  },
-  {
-    char: "ち",
-    romaji: "chi",
-  },
-  {
-    char: "あ",
-    romaji: "a",
-  },
-  {
-    char: "い",
-    romaji: "i",
-  },
-  {
-    char: "た",
-    romaji: "ta",
-  },
-];
-
 const katakanaToRomaji = {
   ア: "a",
   イ: "i",
@@ -343,4 +289,4 @@ const katakanaHint = {
   },
 };
 
-export { charsToRead, charsToRead2, katakanaToRomaji, katakanaHint };
+export { katakanaToRomaji, katakanaHint };
