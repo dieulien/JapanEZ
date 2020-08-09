@@ -7,7 +7,6 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import { withStyles } from "@material-ui/core/styles";
@@ -63,6 +62,10 @@ class Signin2 extends React.Component {
     this.state = {
       signInEmail: "",
       signInPassword: "",
+      emailErrorMsg: "",
+      passswordErrorMsg: "",
+      emailError: false,
+      passwordError: false,
     };
   }
 
@@ -90,9 +93,25 @@ class Signin2 extends React.Component {
         if (Object.keys(data).length === 4) {
           this.props.loadUser(data);
           this.props.onRouteChange("home");
+          this.setState({
+            emailError: false,
+            passwordError: false,
+            emailErrorMsg: "",
+            passswordErrorMsg: "",
+          });
         } else {
           // there is an error loggin in
           console.log("Login Failed", data);
+          if (data === "email is not yet registered") {
+            this.setState({ emailErrorMsg: data, emailError: true });
+          } else if (data === "incorrect password") {
+            this.setState({
+              passswordErrorMsg: data,
+              passwordError: true,
+              emailError: false,
+              emailErrorMsg: "",
+            });
+          }
         }
       })
       .catch((error) => {
@@ -103,7 +122,7 @@ class Signin2 extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <Paper className={classes.paper2}>
+      <Paper className={classes.paper2} elevation={3}>
         <Container component="main" maxWidth="xs" className={classes.container}>
           <CssBaseline />
           <div className={classes.paper}>
@@ -112,6 +131,8 @@ class Signin2 extends React.Component {
             </Typography>
             <form className={classes.form} noValidate>
               <TextField
+                error={this.state.emailError}
+                helperText={this.state.emailErrorMsg}
                 variant="outlined"
                 margin="normal"
                 required
@@ -124,6 +145,8 @@ class Signin2 extends React.Component {
                 onChange={this.onEmailInput}
               />
               <TextField
+                error={this.state.passwordError}
+                helperText={this.state.passswordErrorMsg}
                 variant="outlined"
                 margin="normal"
                 required
