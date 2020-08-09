@@ -1,6 +1,7 @@
 import React from "react";
-import "./Signin.css";
+// import "./Signin.css";
 import { SIGNIN_URL } from "../constants";
+import TextField from "@material-ui/core/TextField";
 
 class Signin extends React.Component {
   constructor(props) {
@@ -36,6 +37,7 @@ class Signin extends React.Component {
           this.props.loadUser(data);
           this.props.onRouteChange("home");
         } else {
+          // there is an error loggin in
           console.log("Login Failed", data);
         }
       })
@@ -46,7 +48,10 @@ class Signin extends React.Component {
 
   render() {
     return (
-      <article className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw5 center shadow-2">
+      <article
+        className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw5 center shadow-2"
+        style={{ background: "white" }}
+      >
         <main className="pa4 black-80">
           <form className="measure">
             <fieldset id="sign_up" className="ba b--transparent ph0 mh0">

@@ -81,6 +81,8 @@ export default function OutlinedCard({ wordInfo }) {
             delay={3000}
           />
         </Typography>
+        <br></br>
+
         <Typography
           className={classes.title}
           color="textSecondary"
