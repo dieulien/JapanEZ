@@ -55,11 +55,11 @@ class Signin extends React.Component {
   }
 
   onEmailInput = (event) => {
-    this.setState({ signInEmail: event.target.value });
+    this.setState({ signInEmail: event.target.value, emailErrorMsg: "" });
   };
 
   onPasswordInput = (event) => {
-    this.setState({ signInPassword: event.target.value });
+    this.setState({ signInPassword: event.target.value, passwordErrorMsg: "" });
   };
 
   sendSigninInfoToBackend = () => {
@@ -179,7 +179,7 @@ class Signin extends React.Component {
               <Grid
                 container
                 alignItems="center"
-                direction="row"
+                direction="column"
                 justify="center"
               >
                 <Grid item xs>
@@ -193,7 +193,7 @@ class Signin extends React.Component {
                     variant="body2"
                     onClick={() => this.props.onRouteChange("register")}
                   >
-                    {"Don't have an account? Sign Up Here"}
+                    {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>
               </Grid>

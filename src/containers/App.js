@@ -9,7 +9,7 @@ import { katakanaToRomaji } from "../jap-char.js";
 import Signin from "../components/Signin";
 import Register from "../components/Register";
 import WordCard from "../components/WordCard";
-import { GETWORD_URL, CHARSCORE_URL } from "../constants";
+import { GETWORD_URL, CHARSCORE_URL, WORDSCORE_URL } from "../constants";
 import "./App.css";
 
 import {
@@ -121,10 +121,29 @@ class App extends Component {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("update success", data);
+        console.log("update char score success", data);
       })
       .catch((error) => {
         console.log("Failed to update char score", error);
+      });
+  };
+
+  updateWordScore = (user_uid, word) => {
+    console.log("POST TO WORD", word);
+    fetch(WORDSCORE_URL, {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        user_uid: user_uid,
+        word: word,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("update word score success", data);
+      })
+      .catch((error) => {
+        console.log("Failed to update word score", error);
       });
   };
 
@@ -141,6 +160,7 @@ class App extends Component {
       updateWord,
       onCompleteChar,
       charTimestamp,
+      currentWord,
     } = this.props;
 
     if (onIncorrectCard || onHintedCard || wordCompleted) {
@@ -177,6 +197,7 @@ class App extends Component {
           });
         const scoreDeltaList = this.convertTimeToScoreDelta(charTimestamp);
         this.updateCharScore(this.state.userInfo.id, scoreDeltaList);
+        this.updateWordScore(this.state.userInfo.id, currentWord);
         onSpacePress("CONTINUE_AFTER_COMPLETE");
 
         event.target.value = "";

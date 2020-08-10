@@ -57,16 +57,21 @@ class Register extends React.Component {
     };
   }
 
+  validateEmail(email) {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  }
+
   onNameInput = (event) => {
-    this.setState({ name: event.target.value });
+    this.setState({ name: event.target.value, nameErrorMsg: "" });
   };
 
   onEmailInput = (event) => {
-    this.setState({ email: event.target.value });
+    this.setState({ email: event.target.value, emailErrorMsg: "" });
   };
 
   onPasswordInput = (event) => {
-    this.setState({ password: event.target.value });
+    this.setState({ password: event.target.value, passwordErrorMsg: "" });
   };
 
   sendFormDataToBackEnd = () => {
@@ -115,6 +120,13 @@ class Register extends React.Component {
       this.setState({ passwordErrorMsg: "please fill out your password" });
     } else {
       this.setState({ passwordErrorMsg: "" });
+    }
+
+    if (!this.validateEmail(email)) {
+      this.setState({ emailErrorMsg: "please enter a valid email address" });
+      return;
+    } else {
+      this.setState({ emailErrorMsg: "" });
     }
 
     if (name && password && email) {

@@ -1,7 +1,7 @@
 import React from "react";
-import {REGISTER_URL} from '../constants';
+import { REGISTER_URL } from "../constants";
 
-class Register extends React.Component {
+class Register0 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,7 +26,7 @@ class Register extends React.Component {
   onFormSubmit = (event) => {
     event.preventDefault();
     const { name, email, password } = this.state;
-      fetch(REGISTER_URL, {
+    fetch(REGISTER_URL, {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -114,4 +114,4 @@ class Register extends React.Component {
   }
 }
 
-export default Register;
+export default Register0;

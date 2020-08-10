@@ -13,7 +13,8 @@ import "typeface-roboto";
 const rootReducer = combineReducers({ changeInputBox, changeCardState });
 const logger = createLogger();
 
-const store = createStore(rootReducer, applyMiddleware(logger));
+// const store = createStore(rootReducer, applyMiddleware(logger));
+const store = createStore(rootReducer);
 
 ReactDOM.render(
   <Provider store={store}>
