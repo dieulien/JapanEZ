@@ -5,7 +5,7 @@ const initialInputBox = {
 };
 
 const initialCardState = {
-  currentJapChar: "",
+  currentJapChar: "コ",
   currentRomaji: "",
   hintedCharList: [],
   wrongCharList: {},

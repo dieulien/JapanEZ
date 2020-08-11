@@ -15,6 +15,9 @@ var MEDIA_BASE_URL_WORD =
 // source: https://www.learn-japanese-adventure.com/learn-how-to-speak-japanese.html
 var MEDIA_BASE_URL_CHAR =
   "https://s3.amazonaws.com/media.japanesereading.com/character-sound/kanasound-"; // add {romaji}.mp3
+var WORD_LINK =
+  "https://www.reddit.com/r/LearnJapanese/comments/s2iop/heres_a_spreadsheet_of_the_6000_most_common/c4ak0xd/";
+var TOFUGU_LINK = "https://www.tofugu.com/japanese/learn-katakana/";
 
 switch (method) {
   case "local":
@@ -44,4 +47,6 @@ export {
   MEDIA_BASE_URL_CHAR,
   CHARSCORE_URL,
   WORDSCORE_URL,
+  WORD_LINK,
+  TOFUGU_LINK,
 };
