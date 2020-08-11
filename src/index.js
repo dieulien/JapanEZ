@@ -8,7 +8,7 @@ import * as serviceWorker from "./serviceWorker";
 import "tachyons";
 import App from "./containers/App.js";
 import { changeInputBox, changeCardState } from "./reducers";
-import "typeface-roboto";
+//import "typeface-roboto";
 
 const rootReducer = combineReducers({ changeInputBox, changeCardState });
 const logger = createLogger();
