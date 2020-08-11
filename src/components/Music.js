@@ -1,6 +1,25 @@
 // Taken from this https://stackoverflow.com/questions/47686345/playing-sound-in-reactjs
 import React from "react";
+import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
+import { onAudioPlay, onAudioPause } from "../actions";
+
+const mapStateToProps = (state) => {
+  return {
+    audioIsPlaying: state.changeGeneralState.audioIsPlaying,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onAudioPlay: () => {
+      dispatch(onAudioPlay());
+    },
+    onAudioPause: () => {
+      dispatch(onAudioPause());
+    },
+  };
+};
 
 class Music extends React.Component {
   state = {
@@ -9,11 +28,14 @@ class Music extends React.Component {
   };
 
   componentDidMount() {
-    this.state.audio.addEventListener("ended", () =>
-      this.setState({ play: false })
-    );
+    this.state.audio.addEventListener("ended", () => {
+      this.setState({ play: false });
+      console.log("end audio");
+      this.props.onAudioPause();
+    });
     setTimeout(() => {
       this.state.audio.play();
+      this.props.onAudioPlay();
     }, this.props.delay);
   }
 
@@ -25,7 +47,15 @@ class Music extends React.Component {
 
   togglePlay = () => {
     this.setState({ play: !this.state.play }, () => {
-      this.state.play ? this.state.audio.play() : this.state.audio.pause();
+      if (this.state.play) {
+        this.state.audio.play();
+        console.log("distpach");
+        this.props.onAudioPlay();
+      } else {
+        this.state.audio.pause();
+        this.props.onAudioPause();
+      }
+      // this.state.play ? this.state.audio.play() : this.state.audio.pause();
     });
   };
 
@@ -40,4 +70,4 @@ class Music extends React.Component {
   }
 }
 
-export default Music;
+export default connect(mapStateToProps, mapDispatchToProps)(Music);

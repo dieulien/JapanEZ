@@ -4,6 +4,10 @@ const initialInputBox = {
   inputBox: "",
 };
 
+const initialGeneralState = {
+  audioIsPlaying: false,
+};
+
 const initialCardState = {
   currentJapChar: "コ",
   currentRomaji: "",
@@ -17,6 +21,20 @@ const initialCardState = {
   prevTimestamp: null,
   charTimestamp: [],
   allCharTimestamp: [],
+};
+
+export const changeGeneralState = (
+  state = initialGeneralState,
+  action = {}
+) => {
+  switch (action.type) {
+    case "PLAY_AUDIO":
+      return { ...state, audioIsPlaying: true };
+    case "PAUSE_AUDIO":
+      return { ...state, audioIsPlaying: false };
+    default:
+      return state;
+  }
 };
 
 export const changeInputBox = (state = initialInputBox, action = {}) => {

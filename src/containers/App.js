@@ -42,6 +42,7 @@ const mapStateToProps = (state) => {
     wordCompleted: state.changeCardState.wordCompleted,
     currentWord: state.changeCardState.currentWord,
     charTimestamp: state.changeCardState.charTimestamp,
+    audioIsPlaying: state.changeGeneralState.audioIsPlaying,
   };
 };
 
@@ -167,7 +168,13 @@ class App extends Component {
       onCompleteChar,
       charTimestamp,
       currentWord,
+      audioIsPlaying,
     } = this.props;
+
+    if (audioIsPlaying) {
+      event.preventDefault();
+      return;
+    }
 
     if (onIncorrectCard || onHintedCard || wordCompleted) {
       event.preventDefault();
