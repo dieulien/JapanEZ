@@ -7,14 +7,22 @@ import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import "tachyons";
 import App from "./containers/App.js";
-import { changeInputBox, changeCardState } from "./reducers";
+import {
+  changeGeneralState,
+  changeInputBox,
+  changeCardState,
+} from "./reducers";
 //import "typeface-roboto";
 
-const rootReducer = combineReducers({ changeInputBox, changeCardState });
+const rootReducer = combineReducers({
+  changeGeneralState,
+  changeInputBox,
+  changeCardState,
+});
 const logger = createLogger();
 
-// const store = createStore(rootReducer, applyMiddleware(logger));
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, applyMiddleware(logger));
+// const store = createStore(rootReducer);
 
 ReactDOM.render(
   <Provider store={store}>

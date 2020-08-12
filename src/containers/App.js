@@ -9,8 +9,14 @@ import { katakanaToRomaji } from "../jap-char.js";
 import Signin from "../components/Signin";
 import Register from "../components/Register";
 import WordCard from "../components/WordCard";
-import { GETWORD_URL, CHARSCORE_URL, WORDSCORE_URL } from "../constants";
 import "./App.css";
+import {
+  GETWORD_URL,
+  CHARSCORE_URL,
+  WORDSCORE_URL,
+  TOFUGU_LINK,
+  WORD_LINK,
+} from "../constants";
 
 import {
   typeAnswer,
@@ -36,6 +42,7 @@ const mapStateToProps = (state) => {
     wordCompleted: state.changeCardState.wordCompleted,
     currentWord: state.changeCardState.currentWord,
     charTimestamp: state.changeCardState.charTimestamp,
+    audioIsPlaying: state.changeGeneralState.audioIsPlaying,
   };
 };
 
@@ -161,7 +168,13 @@ class App extends Component {
       onCompleteChar,
       charTimestamp,
       currentWord,
+      audioIsPlaying,
     } = this.props;
+
+    if (audioIsPlaying) {
+      event.preventDefault();
+      return;
+    }
 
     if (onIncorrectCard || onHintedCard || wordCompleted) {
       event.preventDefault();
@@ -289,12 +302,12 @@ class App extends Component {
           <p>press SPACE to try again</p>
         </div>
       );
-    }
-    if (onHintedCard) {
+    } else if (onHintedCard) {
       return <p>press ENTER to continue</p>;
-    }
-    if (wordCompleted) {
+    } else if (wordCompleted) {
       return <p>press SPACE to continue</p>;
+    } else {
+      return <p>You can press SPACE for hint</p>;
     }
   };
 
@@ -343,7 +356,6 @@ class App extends Component {
               alignItems="center"
             >
               <Paper elevation={0} />
-
               <CharInput
                 onInputChange={this.props.onInputBoxChange}
                 onSpecialKeyPress={this.onSpecialKeyPress}
@@ -376,6 +388,15 @@ class App extends Component {
                 <div>{this.displayWordInfo()}</div>
               </Grid>
             </Grid>
+            <footer id="footer">
+              <p>
+                Mnemonics taken from <a href={TOFUGU_LINK}>tofugu.com</a>
+              </p>
+              <p>
+                Japanese words taken from{" "}
+                <a href={WORD_LINK}>reddit.com/r/LearnJapanese</a>
+              </p>
+            </footer>
           </div>
         );
       default:

@@ -54,7 +54,6 @@ class CharList extends React.Component {
     updateCurrentChar,
     hintedCharList,
     onWrongInput,
-    wrongCharList,
     onIncorrectCard,
     onWordCompletion
   ) => {
@@ -147,7 +146,6 @@ class CharList extends React.Component {
               this.props.updateCurrentChar,
               this.props.hintedCharList,
               this.props.onWrongInput,
-              this.props.wrongCharList,
               this.props.onIncorrectCard,
               this.props.onWordCompletion
             )}

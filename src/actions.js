@@ -83,3 +83,15 @@ export const setNewWordTime = (time) => {
     time: time,
   };
 };
+
+export const onAudioPlay = () => {
+  return {
+    type: "PLAY_AUDIO",
+  };
+};
+
+export const onAudioPause = () => {
+  return {
+    type: "PAUSE_AUDIO",
+  };
+};
