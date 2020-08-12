@@ -154,6 +154,25 @@ class App extends Component {
       });
   };
 
+  requestNewWord = () => {
+    fetch(GETWORD_URL, {
+      method: "get",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => res.json())
+      .then((word) => {
+        updateWord(word.vocab_kana);
+        this.setState({ currentWordInfo: word });
+        console.log(
+          "CURRENT WORD CHEAT",
+          this.parseJapaneseWord(word.vocab_kana)
+        );
+      })
+      .catch((err) => {
+        console.log("Error in getting next word", err);
+      });
+  };
+
   onSpecialKeyPress = (event) => {
     const {
       currentRomaji,
@@ -192,22 +211,7 @@ class App extends Component {
         onInputBoxChange(event);
         onSpacePress("CONTINUE_AFTER_ERROR");
       } else if (wordCompleted) {
-        fetch(GETWORD_URL, {
-          method: "get",
-          headers: { "Content-Type": "application/json" },
-        })
-          .then((res) => res.json())
-          .then((word) => {
-            updateWord(word.vocab_kana);
-            this.setState({ currentWordInfo: word });
-            console.log(
-              "CURRENT WORD CHEAT",
-              this.parseJapaneseWord(word.vocab_kana)
-            );
-          })
-          .catch((err) => {
-            console.log("Error in getting next word", err);
-          });
+        this.requestNewWord();
         const scoreDeltaList = this.convertTimeToScoreDelta(charTimestamp);
         this.updateCharScore(this.state.userInfo.id, scoreDeltaList);
         this.updateWordScore(this.state.userInfo.id, currentWord);
@@ -245,7 +249,11 @@ class App extends Component {
 
   // refocus on inputbox when pressing ENTER or SPACE
   keypressGlobalHandler = (event) => {
+    const { wordCompleted } = this.props;
+
     if (this.state.route === "home") {
+      if (event.which === 32 || wordCompleted) {
+      }
       if (event.which === 32 || event.which === 13) {
         event.preventDefault();
         this.charInputRef.current.formRef.current.focus();

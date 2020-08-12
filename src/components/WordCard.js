@@ -78,7 +78,7 @@ export default function OutlinedCard({ wordInfo }) {
             audioLink={`${MEDIA_BASE_URL_SENTENCE}${parseAudio(
               wordInfo.sentence_sound_local
             )}`}
-            delay={3000}
+            delay={1500}
           />
         </Typography>
         <br></br>
