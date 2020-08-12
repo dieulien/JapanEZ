@@ -25,13 +25,12 @@ const useStyles = makeStyles({
 
 const parseoutBoldText = (sentence) => {
   // replace <b> and </b> with comma
-  var sentence = sentence.replace(/<\/?b>/g, ",");
+  sentence = sentence.replace(/<\/?b>/g, ",");
   return sentence.split(",");
 };
 
 export default function OutlinedCard({ wordInfo }) {
   const classes = useStyles();
-  const bull = <span className={classes.bullet}>•</span>;
 
   var el = document.createElement("html");
   el.innerHTML = "<b>bolded text</b>";

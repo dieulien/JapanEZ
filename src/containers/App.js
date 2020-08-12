@@ -161,7 +161,7 @@ class App extends Component {
     })
       .then((res) => res.json())
       .then((word) => {
-        updateWord(word.vocab_kana);
+        this.props.updateWord(word.vocab_kana);
         this.setState({ currentWordInfo: word });
         console.log(
           "CURRENT WORD CHEAT",
@@ -183,7 +183,6 @@ class App extends Component {
       onEnterPress,
       onInputBoxChange,
       wordCompleted,
-      updateWord,
       onCompleteChar,
       charTimestamp,
       currentWord,
@@ -211,8 +210,8 @@ class App extends Component {
         onInputBoxChange(event);
         onSpacePress("CONTINUE_AFTER_ERROR");
       } else if (wordCompleted) {
-        this.requestNewWord();
         const scoreDeltaList = this.convertTimeToScoreDelta(charTimestamp);
+        this.requestNewWord();
         this.updateCharScore(this.state.userInfo.id, scoreDeltaList);
         this.updateWordScore(this.state.userInfo.id, currentWord);
         onSpacePress("CONTINUE_AFTER_COMPLETE");
@@ -348,15 +347,20 @@ class App extends Component {
         return (
           <div>
             <NavBar onRouteChange={this.onRouteChange} />
-            <div className= "tmw5 center bg-white br3 pa1 ma1 ba b--black-10 o-40 tl">
-            <Paper elevation={0} />
-            <p>Welcome, {this.state.userInfo.name}! </p>
-                <ul>
-                  <li>Press SPACE to learn the character in the highlighted card</li>
-                  <li>Type the character as fast as you can if you've already known the character</li>
-                </ul>
+            <div className="tmw5 center bg-white br3 pa1 ma1 ba b--black-10 o-40 tl">
+              <Paper elevation={0} />
+              <p>Welcome, {this.state.userInfo.name}! </p>
+              <ul>
+                <li>
+                  Press SPACE to learn the character in the highlighted card
+                </li>
+                <li>
+                  Type the character as fast as you can if you've already known
+                  the character
+                </li>
+              </ul>
             </div>
-            
+
             <Grid
               container
               direction="column"

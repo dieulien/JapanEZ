@@ -1,4 +1,4 @@
-import { USER_INPUT, CHARSCORE_URL } from "./constants.js";
+import { USER_INPUT } from "./constants.js";
 
 export const typeAnswer = (text) => {
   return {
