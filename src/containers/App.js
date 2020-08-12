@@ -348,6 +348,15 @@ class App extends Component {
         return (
           <div>
             <NavBar onRouteChange={this.onRouteChange} />
+            <div className= "tmw5 center bg-white br3 pa1 ma1 ba b--black-10 o-40 tl">
+            <Paper elevation={0} />
+            <p>Welcome, {this.state.userInfo.name}! </p>
+                <ul>
+                  <li>Press SPACE to learn the character in the highlighted card</li>
+                  <li>Type the character as fast as you can if you've already known the character</li>
+                </ul>
+            </div>
+            
             <Grid
               container
               direction="column"
@@ -355,7 +364,6 @@ class App extends Component {
               alignItems="center"
             >
               <Paper elevation={0} />
-              <h1>User: {this.state.userInfo.name} </h1>
               <CharInput
                 onInputChange={this.props.onInputBoxChange}
                 onSpecialKeyPress={this.onSpecialKeyPress}
