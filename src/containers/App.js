@@ -305,6 +305,7 @@ class App extends Component {
       curWrongChar,
       onHintedCard,
       wordCompleted,
+      audioIsPlaying,
     } = this.props;
 
     if (onIncorrectCard) {
@@ -315,12 +316,14 @@ class App extends Component {
           <p>press SPACE to try again</p>
         </div>
       );
-    } else if (onHintedCard) {
+    } else if (onHintedCard && !audioIsPlaying) {
       return <p>press ENTER to continue</p>;
-    } else if (wordCompleted) {
+    } else if (wordCompleted && !audioIsPlaying) {
       return <p>press SPACE to continue</p>;
-    } else {
+    } else if (!onHintedCard && !wordCompleted) {
       return <p>You can press SPACE for hint</p>;
+    } else {
+      return <p></p>;
     }
   };
 
@@ -400,12 +403,12 @@ class App extends Component {
                     onWordCompletion={onWordCompletion}
                   />
                 </Grid>
-                <div>{this.displayMessage()}</div>
                 <Grid item>
                   <Paper elevation={1} />
                   {this.showHint()}
                 </Grid>
                 <div>{this.displayWordInfo()}</div>
+                <div>{this.displayMessage()}</div>
               </Grid>
             </Grid>
             <footer id="footer">
