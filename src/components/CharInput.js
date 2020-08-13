@@ -18,6 +18,9 @@ class CharInput extends React.Component {
           onKeyDown={this.props.onSpecialKeyPress}
           autoFocus
           inputRef={this.formRef}
+          onPaste={(event) => {
+            event.preventDefault();
+          }}
         />
       </form>
     );

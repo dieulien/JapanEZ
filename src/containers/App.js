@@ -129,7 +129,7 @@ class App extends Component {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("update char score success", data);
+        console.log("Update Char Score:", data);
       })
       .catch((error) => {
         console.log("Failed to update char score", error);
@@ -137,7 +137,6 @@ class App extends Component {
   };
 
   updateWordScore = (user_uid, word) => {
-    console.log("POST TO WORD", word);
     fetch(WORDSCORE_URL, {
       method: "post",
       headers: { "Content-Type": "application/json" },
@@ -149,7 +148,7 @@ class App extends Component {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("update word score success", data);
+        console.log("Update Word Score:", data);
       })
       .catch((error) => {
         console.log("Failed to update word score", error);
@@ -157,7 +156,6 @@ class App extends Component {
   };
 
   requestNewWord = () => {
-    console.log(`user_uid: ${this.state.userInfo.id}`);
     fetch(GETWORD_URL, {
       method: "post",
       headers: { "Content-Type": "application/json" },
@@ -167,12 +165,13 @@ class App extends Component {
     })
       .then((res) => res.json())
       .then((word) => {
-        console.log(`Word is ${word}`);
         var unix_time = Date.now();
         this.props.updateWord(word.vocab_kana);
         this.setState({ currentWordInfo: word });
         this.setState({ currentWord_unix_time: unix_time });
-        console.log(`word ${word.vocab_kana} at time ${unix_time}`);
+        console.log(
+          `Request new word: ${word.vocab_kana} at time ${unix_time}`
+        );
         console.log(
           "CURRENT WORD CHEAT",
           this.parseJapaneseWord(word.vocab_kana)
