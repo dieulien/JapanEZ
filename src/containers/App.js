@@ -221,9 +221,12 @@ class App extends Component {
         onSpacePress("CONTINUE_AFTER_ERROR");
       } else if (wordCompleted) {
         const scoreDeltaList = this.convertTimeToScoreDelta(charTimestamp);
-        this.requestNewWord();
         this.updateCharScore(this.state.userInfo.id, scoreDeltaList);
         this.updateWordScore(this.state.userInfo.id, currentWord);
+        // temporary fix to ensure that updateWordScore is process before requestNewWord
+        setTimeout(() => {
+          this.requestNewWord();
+        }, 10);
         onSpacePress("CONTINUE_AFTER_COMPLETE");
 
         event.target.value = "";
