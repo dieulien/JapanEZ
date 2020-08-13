@@ -77,6 +77,7 @@ class Signin extends React.Component {
       .then((response) => response.json())
       .then((data) => {
         if (Object.keys(data).length === 4) {
+          console.log("data", data);
           this.props.loadUser(data);
           this.props.onRouteChange("home");
           this.setState({

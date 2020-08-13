@@ -157,6 +157,7 @@ class App extends Component {
   };
 
   requestNewWord = () => {
+    console.log(`user_uid: ${this.state.userInfo.id}`);
     fetch(GETWORD_URL, {
       method: "post",
       headers: { "Content-Type": "application/json" },
@@ -166,6 +167,7 @@ class App extends Component {
     })
       .then((res) => res.json())
       .then((word) => {
+        console.log(`Word is ${word}`);
         var unix_time = Date.now();
         this.props.updateWord(word.vocab_kana);
         this.setState({ currentWordInfo: word });
@@ -252,6 +254,7 @@ class App extends Component {
       return { userInfo };
     });
     console.log("userInfo", this.state.userInfo);
+    this.requestNewWord();
   };
 
   // refocus on inputbox when pressing ENTER or SPACE
@@ -275,7 +278,6 @@ class App extends Component {
 
   componentDidMount() {
     document.addEventListener("keypress", this.keypressGlobalHandler);
-    this.requestNewWord();
   }
 
   showHint = () => {
