@@ -144,6 +144,7 @@ class App extends Component {
       body: JSON.stringify({
         user_uid: user_uid,
         word: word,
+        unix_time: this.state.currentWord_unix_time,
       }),
     })
       .then((res) => res.json())
@@ -157,13 +158,19 @@ class App extends Component {
 
   requestNewWord = () => {
     fetch(GETWORD_URL, {
-      method: "get",
+      method: "post",
       headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        user_uid: this.state.userInfo.id,
+      }),
     })
       .then((res) => res.json())
       .then((word) => {
+        var unix_time = Date.now();
         this.props.updateWord(word.vocab_kana);
         this.setState({ currentWordInfo: word });
+        this.setState({ currentWord_unix_time: unix_time });
+        console.log(`word ${word.vocab_kana} at time ${unix_time}`);
         console.log(
           "CURRENT WORD CHEAT",
           this.parseJapaneseWord(word.vocab_kana)
@@ -268,22 +275,7 @@ class App extends Component {
 
   componentDidMount() {
     document.addEventListener("keypress", this.keypressGlobalHandler);
-    fetch(GETWORD_URL, {
-      method: "get",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((res) => res.json())
-      .then((word) => {
-        this.setState({ currentWordInfo: word });
-        this.props.updateWord(word.vocab_kana);
-        console.log(
-          "CURRENT WORD CHEAT",
-          this.parseJapaneseWord(word.vocab_kana)
-        );
-      })
-      .catch((err) => {
-        console.log("Error in getting first word", err);
-      });
+    this.requestNewWord();
   }
 
   showHint = () => {
