@@ -9,6 +9,7 @@ import { katakanaToRomaji } from "../jap-char.js";
 import Signin from "../components/Signin";
 import Register from "../components/Register";
 import WordCard from "../components/WordCard";
+import OutsideAlerter from "../components/OutsideAlerter";
 import "./App.css";
 import {
   GETWORD_URL,
@@ -255,9 +256,14 @@ class App extends Component {
       }
       if (event.which === 32 || event.which === 13) {
         event.preventDefault();
-        this.charInputRef.current.formRef.current.focus();
+        this.focusInputBox();
       }
     }
+  };
+
+  focusInputBox = () => {
+    console.log("focus input Box", this);
+    this.charInputRef.current.formRef.current.focus();
   };
 
   componentDidMount() {
@@ -368,11 +374,13 @@ class App extends Component {
               alignItems="center"
             >
               <Paper elevation={0} />
-              <CharInput
-                onInputChange={this.props.onInputBoxChange}
-                onSpecialKeyPress={this.onSpecialKeyPress}
-                ref={this.charInputRef}
-              />
+              <OutsideAlerter focusInputBox={this.focusInputBox}>
+                <CharInput
+                  onInputChange={this.props.onInputBoxChange}
+                  onSpecialKeyPress={this.onSpecialKeyPress}
+                  ref={this.charInputRef}
+                />
+              </OutsideAlerter>
               <Grid
                 container
                 direction="column"
