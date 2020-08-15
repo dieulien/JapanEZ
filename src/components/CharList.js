@@ -111,6 +111,7 @@ class CharList extends React.Component {
         }
         if (idx === indexOfCurrentCard) {
           className = className.concat(" highlighted ");
+          console.log(`UPDATING CHAR ${idx} ${cardJapChar} ${cardRomaji}`);
           updateCurrentChar(cardJapChar, cardRomaji);
         }
         break;

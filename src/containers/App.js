@@ -219,6 +219,7 @@ class App extends Component {
         onInputBoxChange(event);
         onSpacePress("CONTINUE_AFTER_ERROR");
       } else if (wordCompleted) {
+        this.props.updateWord("");
         const scoreDeltaList = this.convertTimeToScoreDelta(charTimestamp);
         this.updateCharScore(this.state.userInfo.id, scoreDeltaList);
         this.updateWordScore(this.state.userInfo.id, currentWord);
