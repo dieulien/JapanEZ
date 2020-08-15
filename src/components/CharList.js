@@ -3,6 +3,16 @@ import Char from "./Char.js";
 import { Grid } from "@material-ui/core";
 import { connect } from "react-redux";
 import { completeChar, setNewWordTime } from "../actions";
+import SpellCheckerBuffer from "../inputChecker";
+import { katakanaToRomaji } from "../jap-char";
+
+function isCorrect(char) {
+  if (Object.values(katakanaToRomaji).includes(char)) {
+    console.log(`${char} true`);
+  } else {
+    console.log(`${char} false`);
+  }
+}
 
 const mapStateToProps = (state) => {
   return {
@@ -32,6 +42,18 @@ class CharList extends React.Component {
   componentDidMount = () => {
     const timeStamp = Date.now();
     this.props.setNewWordTime(timeStamp);
+
+    const sp = new SpellCheckerBuffer(katakanaToRomaji, console.log);
+    console.log("TESTING");
+    sp.checkInput("a");
+    sp.checkInput("m");
+    sp.checkInput("b");
+    sp.checkInput("m");
+    sp.checkInput("a");
+    sp.checkInput("t");
+    sp.checkInput("s");
+    sp.checkInput("u");
+    sp.checkInput("u");
   };
 
   partitionCharIndex = (charList) => {

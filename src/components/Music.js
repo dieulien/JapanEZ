@@ -28,6 +28,10 @@ class Music extends React.Component {
   };
 
   componentDidMount() {
+    // this.state.audio.addEventListener("loadedmetadata", (e) => {
+    //   console.log("DURATION", e.target.duration);
+    // });
+    console.log("props duration", this.props.delay);
     this.state.audio.addEventListener("ended", () => {
       this.setState({ play: false });
       console.log("end audio");

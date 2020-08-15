@@ -226,7 +226,7 @@ class App extends Component {
         // temporary fix to ensure that updateWordScore is process before requestNewWord
         setTimeout(() => {
           this.requestNewWord();
-        }, 10);
+        }, 100);
         onSpacePress("CONTINUE_AFTER_COMPLETE");
 
         event.target.value = "";

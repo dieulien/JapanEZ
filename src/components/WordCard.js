@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, userEffect, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -31,6 +31,7 @@ const parseoutBoldText = (sentence) => {
 
 export default function OutlinedCard({ wordInfo }) {
   const classes = useStyles();
+  const [wordAudioDuration, setWordAudioDuration] = useState(1);
 
   var el = document.createElement("html");
   el.innerHTML = "<b>bolded text</b>";
@@ -39,6 +40,23 @@ export default function OutlinedCard({ wordInfo }) {
   const parseAudio = (audio_string) => {
     return audio_string.slice(7, audio_string.length - 1);
   };
+
+  function getWordAudioDuration() {
+    const word_audio_link = `${MEDIA_BASE_URL_WORD}${parseAudio(
+      wordInfo.vocab_sound_local
+    )}`;
+    const word_audio = new Audio(word_audio_link);
+    word_audio.addEventListener("loadedmetadata", (event) => {
+      setWordAudioDuration(event.target.duration);
+    });
+    console.log("wordAudioDuration", wordAudioDuration * 1000);
+    return wordAudioDuration * 1000;
+  }
+
+  useEffect(() => {
+    console.log("USE EFFECT");
+    // loadAudioDuration();
+  });
 
   return (
     <Card className={classes.root}>
@@ -77,7 +95,7 @@ export default function OutlinedCard({ wordInfo }) {
             audioLink={`${MEDIA_BASE_URL_SENTENCE}${parseAudio(
               wordInfo.sentence_sound_local
             )}`}
-            delay={1500}
+            delay={2500}
           />
         </Typography>
         <br></br>
