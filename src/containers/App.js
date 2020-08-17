@@ -149,6 +149,8 @@ class App extends Component {
       .then((res) => res.json())
       .then((data) => {
         console.log("Update Word Score:", data);
+        // once score is updated, request new word
+        this.requestNewWord();
       })
       .catch((error) => {
         console.log("Failed to update word score", error);
@@ -223,10 +225,7 @@ class App extends Component {
         const scoreDeltaList = this.convertTimeToScoreDelta(charTimestamp);
         this.updateCharScore(this.state.userInfo.id, scoreDeltaList);
         this.updateWordScore(this.state.userInfo.id, currentWord);
-        // temporary fix to ensure that updateWordScore is process before requestNewWord
-        setTimeout(() => {
-          this.requestNewWord();
-        }, 100);
+
         onSpacePress("CONTINUE_AFTER_COMPLETE");
 
         event.target.value = "";
@@ -400,12 +399,12 @@ class App extends Component {
                     onWordCompletion={onWordCompletion}
                   />
                 </Grid>
+                <div>{this.displayMessage()}</div>
                 <Grid item>
                   <Paper elevation={1} />
                   {this.showHint()}
                 </Grid>
                 <div>{this.displayWordInfo()}</div>
-                <div>{this.displayMessage()}</div>
               </Grid>
             </Grid>
             <footer id="footer">
