@@ -17,6 +17,8 @@ import {
   WORDSCORE_URL,
   TOFUGU_LINK,
   WORD_LINK,
+  MEDIA_BASE_URL_SENTENCE,
+  MEDIA_BASE_URL_WORD,
 } from "../constants";
 
 import {
@@ -157,6 +159,10 @@ class App extends Component {
       });
   };
 
+  parseAudio = (audio_string) => {
+    return audio_string.slice(7, audio_string.length - 1);
+  };
+
   requestNewWord = () => {
     fetch(GETWORD_URL, {
       method: "post",
@@ -171,6 +177,14 @@ class App extends Component {
         this.props.updateWord(word.vocab_kana);
         this.setState({ currentWordInfo: word });
         this.setState({ currentWord_unix_time: unix_time });
+        const word_audio = new Audio(
+          `${MEDIA_BASE_URL_WORD}${this.parseAudio(word.vocab_sound_local)}`
+        );
+        word_audio.addEventListener("loadedmetadata", (event) => {
+          this.setState({
+            word_audio_duration: event.target.duration,
+          });
+        });
         console.log(
           `Request new word: ${word.vocab_kana} at time ${unix_time}`
         );
@@ -290,7 +304,12 @@ class App extends Component {
 
   displayWordInfo = () => {
     if (this.props.wordCompleted) {
-      return <WordCard wordInfo={this.state.currentWordInfo} />;
+      return (
+        <WordCard
+          wordInfo={this.state.currentWordInfo}
+          word_audio_duration={this.state.word_audio_duration}
+        />
+      );
     }
   };
 

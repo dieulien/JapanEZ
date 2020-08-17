@@ -28,15 +28,14 @@ class Music extends React.Component {
   };
 
   componentDidMount() {
-    // this.state.audio.addEventListener("loadedmetadata", (e) => {
-    //   console.log("DURATION", e.target.duration);
-    // });
-    console.log("props duration", this.props.delay);
     this.state.audio.addEventListener("ended", () => {
       this.setState({ play: false });
-      console.log("end audio");
-      this.props.onAudioPause();
+      console.log("end audio", this.props.noStoreUpdateWhenEnded);
+      if (!this.props.noStoreUpdateWhenEnded) {
+        this.props.onAudioPause();
+      }
     });
+    console.log("DELAY", this.props.delay);
     setTimeout(() => {
       this.state.audio.play();
       this.props.onAudioPlay();
@@ -59,7 +58,6 @@ class Music extends React.Component {
         this.state.audio.pause();
         this.props.onAudioPause();
       }
-      // this.state.play ? this.state.audio.play() : this.state.audio.pause();
     });
   };
 
