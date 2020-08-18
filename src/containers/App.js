@@ -67,6 +67,7 @@ class App extends Component {
   componentDidUpdate = (prevProps, prevState) => {
     if (this.state.userInfo.id !== prevState.userInfo.id) {
       this.props.resetStore();
+      this.requestNewWord();
     }
   };
 
@@ -171,10 +172,6 @@ class App extends Component {
             word_audio_duration: event.target.duration,
           });
         });
-        console.log(
-          "CURRENT WORD CHEAT",
-          this.parseJapaneseWord(word.vocab_kana)
-        );
       })
       .catch((err) => {
         console.log("Error in getting next word", err);
@@ -192,7 +189,6 @@ class App extends Component {
       return { userInfo };
     });
     console.log("userInfo", this.state.userInfo);
-    this.requestNewWord();
   };
 
   focusInputBox = () => {

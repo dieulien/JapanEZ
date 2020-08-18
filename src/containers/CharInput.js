@@ -31,6 +31,7 @@ const mapStatestoProps = (state) => {
     currentWord: state.changeCardState.currentWord,
     charTimestamp: state.changeCardState.charTimestamp,
     audioIsPlaying: state.changeGeneralState.audioIsPlaying,
+    inputBox: state.changeInputBox.inputBox,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -96,6 +97,11 @@ class CharInput extends React.Component {
     const curKana = currentWord[indexCurrentCard];
     setCurrentChar(curKana, curRomaji);
   }
+
+  componentDidUpdate = (prevProps) => {
+    if (this.props.user_uid === prevProps.user_uid) {
+    }
+  };
 
   convertTimeToScoreDelta = (charTimestamp) => {
     return charTimestamp.map((item) => {
@@ -257,7 +263,8 @@ class CharInput extends React.Component {
     return (
       <form>
         <Input
-          placeholder="Start typing here..."
+          placeholder="Start typing here...."
+          defaultValue={this.props.inputBox}
           inputProps={{ "aria-label": "description" }}
           onChange={this.props.onInputBoxChange}
           onKeyDown={this.onKeyDown}
