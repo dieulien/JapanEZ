@@ -10,6 +10,7 @@ const mapStateToProps = (state) => {
     // keyPressed: state.changeInputBox.keyPressed,
     indexCurrentCard: state.changeCardState.indexCurrentCard,
     cardStateList: state.changeCardState.cardStateList,
+    onHintedCard: state.changeCardState.onHintedCard,
   };
 };
 
@@ -43,10 +44,12 @@ class CharList extends React.Component {
   };
 
   setCardState = (idx) => {
-    const { indexCurrentCard, cardStateList } = this.props;
+    const { indexCurrentCard, cardStateList, onHintedCard } = this.props;
     var className = "";
     if (idx === indexCurrentCard) {
       className = className.concat(` highlighted `);
+    } else {
+      className = className.concat(onHintedCard ? ` o-30 ` : ` o-90 `);
     }
     var cardState = cardStateList[idx];
     className = className.concat(` ${cardState} `);

@@ -10,6 +10,12 @@
   color: #f2b50c;
 }
 
+.highlighted2 {
+  border: 3px solid #3f51b5;
+}
+
 .highlighted {
-  border: 3px solid blue;
+  outline: none;
+  border: 2px solid #375ecc;
+  box-shadow: 0 0 10px #3f51b5;
 }
