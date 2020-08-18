@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import "../containers/App.css";
+import "./App.css";
 import { Input } from "@material-ui/core";
 import SpellCheckerBuffer from "../inputChecker";
 import { katakanaToRomaji } from "../jap-char";
@@ -89,6 +89,7 @@ class CharInput extends React.Component {
       currentWord,
     } = this.props;
 
+    console.log("inputBOx", this);
     const curRomaji = romajiList[indexCurrentCard];
     const curKana = currentWord[indexCurrentCard];
     setCurrentChar(curKana, curRomaji);
@@ -260,4 +261,6 @@ class CharInput extends React.Component {
   }
 }
 
-export default connect(mapStatestoProps, mapDispatchToProps)(CharInput);
+export default connect(mapStatestoProps, mapDispatchToProps, null, {
+  forwardRef: true,
+})(CharInput);

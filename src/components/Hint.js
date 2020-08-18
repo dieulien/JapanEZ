@@ -25,7 +25,6 @@ const parseoutUnderlineText = (sentence) => {
 };
 
 export default function Hint({ currentHintedChar }) {
-  console.log("CURRENT HINT CHAR", currentHintedChar);
   const classes = useStyles();
   const romaji = katakanaToRomaji[currentHintedChar];
   const sentenceFragments = parseoutUnderlineText(

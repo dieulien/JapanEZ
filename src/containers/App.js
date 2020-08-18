@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import CharList from "../components/CharList.js";
-import CharInput from "../components/CharInput";
+import CharInput from "./CharInput";
 import NavBar from "../components/NavBar";
 import Hint from "../components/Hint";
 import { Grid, Paper } from "@material-ui/core";
@@ -17,7 +17,6 @@ import {
   WORDSCORE_URL,
   TOFUGU_LINK,
   WORD_LINK,
-  MEDIA_BASE_URL_SENTENCE,
   MEDIA_BASE_URL_WORD,
 } from "../constants";
 
@@ -412,10 +411,10 @@ class App extends Component {
                 <CharInput
                   onInputChange={this.props.onInputBoxChange}
                   onSpecialKeyPress={this.onSpecialKeyPress}
-                  ref={this.charInputRef}
                   updateCharScore={this.updateCharScore}
                   updateWordScore={this.updateWordScore}
                   user_uid={this.state.userInfo.id}
+                  ref={this.charInputRef}
                 />
               </OutsideAlerter>
               <Grid

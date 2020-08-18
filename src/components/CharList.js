@@ -2,14 +2,12 @@ import React from "react";
 import Char from "./Char.js";
 import { Grid } from "@material-ui/core";
 import { connect } from "react-redux";
-import { completeChar, setNewWordTime } from "../actions";
-import SpellCheckerBuffer from "../inputChecker";
-import { katakanaToRomaji } from "../jap-char";
+import { setNewWordTime } from "../actions";
 
 const mapStateToProps = (state) => {
   return {
-    charTimestamp: state.changeCardState.charTimestamp,
-    keyPressed: state.changeInputBox.keyPressed,
+    // charTimestamp: state.changeCardState.charTimestamp,
+    // keyPressed: state.changeInputBox.keyPressed,
     indexCurrentCard: state.changeCardState.indexCurrentCard,
     cardStateList: state.changeCardState.cardStateList,
   };
@@ -17,9 +15,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onCompleteChar: (time, type) => {
-      dispatch(completeChar(time, type));
-    },
     setNewWordTime: (time) => {
       dispatch(setNewWordTime(time));
     },
