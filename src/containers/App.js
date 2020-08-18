@@ -12,13 +12,11 @@ import WordCard from "../components/WordCard";
 import OutsideAlerter from "../components/OutsideAlerter";
 import Footer from "../components/Footer";
 import "./App.css";
-import { updateChar, updateWord } from "../actions";
+import { updateChar, updateWord, resetStore } from "../actions";
 import {
   GETWORD_URL,
   CHARSCORE_URL,
   WORDSCORE_URL,
-  TOFUGU_LINK,
-  WORD_LINK,
   MEDIA_BASE_URL_WORD,
 } from "../constants";
 
@@ -44,6 +42,9 @@ const mapDispatchToProps = (dispatch) => {
     updateWord: (word, romajiList) => {
       dispatch(updateWord(word, romajiList));
     },
+    resetStore: () => {
+      dispatch(resetStore());
+    },
   };
 };
 
@@ -62,6 +63,12 @@ class App extends Component {
     };
     this.charInputRef = React.createRef();
   }
+
+  componentDidUpdate = (prevProps, prevState) => {
+    if (this.state.userInfo.id !== prevState.userInfo.id) {
+      this.props.resetStore();
+    }
+  };
 
   onRouteChange = (route) => {
     this.setState({ route: route });
@@ -133,7 +140,7 @@ class App extends Component {
   };
 
   requestNewWord = () => {
-    const { setCurrentChar, indexCurrentCard, updateWord } = this.props;
+    const { setCurrentChar, updateWord } = this.props;
     var romajiList = [];
 
     fetch(GETWORD_URL, {
@@ -150,8 +157,8 @@ class App extends Component {
           (item) => item.romaji
         );
         updateWord(word.vocab_kana, romajiList);
-        const curRomaji = romajiList[indexCurrentCard];
-        const curKana = word.vocab_kana.charAt(indexCurrentCard);
+        const curRomaji = romajiList[0];
+        const curKana = word.vocab_kana.charAt(0);
         setCurrentChar(curKana, curRomaji);
 
         this.setState({ currentWordInfo: word });
@@ -164,9 +171,6 @@ class App extends Component {
             word_audio_duration: event.target.duration,
           });
         });
-        // console.log(
-        //   `Request new word: ${word.vocab_kana} at time ${unix_time}`
-        // );
         console.log(
           "CURRENT WORD CHEAT",
           this.parseJapaneseWord(word.vocab_kana)

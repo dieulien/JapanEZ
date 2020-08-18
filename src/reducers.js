@@ -48,6 +48,8 @@ export const changeInputBox = (state = initialInputBox, action = {}) => {
       return { ...state, inputBox: action.payload };
     case "PRESS_KEY":
       return { ...state, keyPressed: action.payload };
+    case "RESET_STORE":
+      return { ...state, inputBox: "", keyPressed: "" };
     default:
       return state;
   }
@@ -132,6 +134,17 @@ export const changeCardState = (state = initialCardState, action = {}) => {
         cardStateList: state.cardStateList.map((item, idx) =>
           idx === state.indexCurrentCard ? "incorrect" : item
         ),
+      };
+    case "RESET_STORE":
+      return {
+        ...state,
+        allCharTimestamp: [],
+        charTimestamp: [],
+        curWrongChar: null,
+        onHintedCard: false,
+        onIncorrectCard: false,
+        wordCompleted: false,
+        wrongCharList: {},
       };
     default:
       return state;

@@ -117,3 +117,9 @@ export const onIncorrectChar = () => {
     type: "INPUT_INCORRECT_CHAR",
   };
 };
+
+export const resetStore = () => {
+  return {
+    type: "RESET_STORE",
+  };
+};
