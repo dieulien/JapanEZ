@@ -56,6 +56,7 @@ export default function OutlinedCard({ wordInfo, word_audio_duration }) {
             audioLink={`${MEDIA_BASE_URL_WORD}${parseAudio(
               wordInfo.vocab_sound_local
             )}`}
+            delay={0}
             noStoreUpdateWhenEnded={true}
           />
         </Typography>
@@ -79,6 +80,7 @@ export default function OutlinedCard({ wordInfo, word_audio_duration }) {
               wordInfo.sentence_sound_local
             )}`}
             delay={word_audio_duration * 1000 + 500}
+            noStoreUpdateWhenEnded={false}
           />
         </Typography>
         <br></br>

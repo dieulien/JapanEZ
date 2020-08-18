@@ -11,15 +11,15 @@ const initialGeneralState = {
 };
 
 const initialCardState = {
-  currentJapChar: "コ",
+  currentJapChar: "",
   currentRomaji: "",
+  currentWord: "",
+  curWrongChar: "",
   hintedCharList: [],
   wrongCharList: {},
   onIncorrectCard: false,
-  curWrongChar: "",
   onHintedCard: false,
   wordCompleted: false,
-  currentWord: "",
   prevTimestamp: null,
   charTimestamp: [],
   allCharTimestamp: [],
@@ -89,7 +89,7 @@ export const changeCardState = (state = initialCardState, action = {}) => {
         wordCompleted: false,
         charTimestamp: [],
         allCharTimestamp: [...state.allCharTimestamp, state.charTimestamp],
-        prevTimestamp: action.time,
+        // prevTimestamp: action.time,
         hintedCharList: [],
       };
     case "COMPLETE_WORD":
