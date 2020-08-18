@@ -30,12 +30,10 @@ class Music extends React.Component {
   componentDidMount() {
     this.state.audio.addEventListener("ended", () => {
       this.setState({ play: false });
-      console.log("end audio", this.props.noStoreUpdateWhenEnded);
       if (!this.props.noStoreUpdateWhenEnded) {
         this.props.onAudioPause();
       }
     });
-    console.log("DELAY", this.props.delay);
     setTimeout(() => {
       this.state.audio.play();
       this.props.onAudioPlay();
@@ -52,7 +50,6 @@ class Music extends React.Component {
     this.setState({ play: !this.state.play }, () => {
       if (this.state.play) {
         this.state.audio.play();
-        console.log("distpach");
         this.props.onAudioPlay();
       } else {
         this.state.audio.pause();

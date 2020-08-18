@@ -10,7 +10,7 @@ const katakanaToRomaji = {
   ウ: "u",
   エ: "e",
   オ: "o",
-  ン: "n",
+  ン: "nn",
   カ: "ka",
   キ: "ki",
   ク: "ku",
@@ -224,15 +224,13 @@ function isCorrect(char) {
   }
 }
 
-const sp = new SpellCheckerBuffer(katakanaToRomaji, isCorrect);
-sp.checkInput("a");
-sp.checkInput("m");
-sp.checkInput("b");
-sp.checkInput("m");
+const sp = new SpellCheckerBuffer(katakanaToRomaji, console.log);
+sp.checkInput("n");
+sp.checkInput("i");
+sp.checkInput("n");
 sp.checkInput("a");
 sp.checkInput("t");
 sp.checkInput("s");
-sp.checkInput("u");
 sp.checkInput("u");
 
 export default SpellCheckerBuffer;

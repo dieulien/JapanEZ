@@ -44,7 +44,7 @@ const katakanaToRomaji = {
   ロ: "ro",
   ワ: "wa",
   ヲ: "wo",
-  ン: "n",
+  ン: "nn",
 };
 
 const katakanaHint = {

@@ -1,12 +1,244 @@
 import React from "react";
+import { connect } from "react-redux";
 import "../containers/App.css";
 import { Input } from "@material-ui/core";
+import SpellCheckerBuffer from "../inputChecker";
+import { katakanaToRomaji } from "../jap-char";
+import {
+  pressKey,
+  onCorrectChar,
+  onIncorrectChar,
+  typeAnswer,
+  pressSpace,
+  typeWrongAnswer,
+  completeChar,
+  pressEnter,
+  updateChar,
+  updateWord,
+  completeWord,
+} from "../actions";
+
+const mapStatestoProps = (state) => {
+  return {
+    indexCurrentCard: state.changeCardState.indexCurrentCard,
+    romajiList: state.changeCardState.romajiList,
+    cardStateList: state.changeCardState.cardStateList,
+    curWrongChar: state.changeCardState.curWrongChar,
+    onIncorrectCard: state.changeCardState.onIncorrectCard,
+    wordCompleted: state.changeCardState.wordCompleted,
+    onHintedCard: state.changeCardState.onHintedCard,
+    currentRomaji: state.changeCardState.currentRomaji,
+    currentWord: state.changeCardState.currentWord,
+    charTimestamp: state.changeCardState.charTimestamp,
+    audioIsPlaying: state.changeGeneralState.audioIsPlaying,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onKeyPress: (key) => {
+      dispatch(pressKey(key));
+    },
+    onCorrectChar: () => {
+      dispatch(onCorrectChar());
+    },
+    onIncorrectChar: () => {
+      dispatch(onIncorrectChar());
+    },
+    onInputBoxChange: (event) => {
+      dispatch(typeAnswer(event.target.value));
+    },
+    onSpacePress: (context) => {
+      dispatch(pressSpace(context));
+    },
+    onWrongInput: (userChar, currentChar) => {
+      dispatch(typeWrongAnswer(userChar, currentChar));
+    },
+    onSpacePress: (context) => {
+      dispatch(pressSpace(context));
+    },
+    onCompleteChar: (time, type) => {
+      dispatch(completeChar(time, type));
+    },
+    onEnterPress: (time) => {
+      dispatch(pressEnter(time));
+    },
+    setCurrentChar: (japchar, romaji) => {
+      dispatch(updateChar(japchar, romaji));
+    },
+    updateWord: (word, romajiList) => {
+      dispatch(updateWord(word, romajiList));
+    },
+    onWordCompletion: () => {
+      dispatch(completeWord());
+    },
+  };
+};
 
 class CharInput extends React.Component {
   constructor(props) {
     super(props);
     this.formRef = React.createRef();
+    this.sp = new SpellCheckerBuffer(katakanaToRomaji, this.checkFunction);
   }
+
+  componentDidMount() {
+    const {
+      setCurrentChar,
+      romajiList,
+      indexCurrentCard,
+      currentWord,
+    } = this.props;
+
+    const curRomaji = romajiList[indexCurrentCard];
+    const curKana = currentWord[indexCurrentCard];
+    setCurrentChar(curKana, curRomaji);
+  }
+
+  convertTimeToScoreDelta = (charTimestamp) => {
+    return charTimestamp.map((item) => {
+      var score_delta = 20000 / item.time;
+      if (item.type === "hinted") {
+        score_delta *= -1;
+      }
+      return {
+        char: item.char,
+        score_delta: score_delta,
+      };
+    });
+  };
+
+  checkFunction = (char) => {
+    const {
+      romajiList,
+      indexCurrentCard,
+      onCorrectChar,
+      onWrongInput,
+      onWordCompletion,
+      currentWord,
+      setCurrentChar,
+    } = this.props;
+
+    if (char === romajiList[indexCurrentCard]) {
+      onCorrectChar();
+      console.log(`index ${indexCurrentCard} `);
+      const newRomaji = romajiList[indexCurrentCard + 1];
+      const newKana = currentWord[indexCurrentCard + 1];
+      setCurrentChar(newKana, newRomaji);
+      if (indexCurrentCard === romajiList.length - 1) {
+        onWordCompletion();
+      }
+    } else {
+      // onIncorrectChar();
+      onWrongInput(char, romajiList[indexCurrentCard]);
+    }
+  };
+
+  onKeyDown = (event) => {
+    const {
+      onIncorrectCard,
+      curWrongChar,
+      onInputBoxChange,
+      onSpacePress,
+      onCompleteChar,
+      wordCompleted,
+      onHintedCard,
+      currentRomaji,
+      onEnterPress,
+      currentWord,
+      romajiList,
+      indexCurrentCard,
+      setCurrentChar,
+      charTimestamp,
+      updateWord,
+      updateCharScore,
+      updateWordScore,
+      onWordCompletion,
+      audioIsPlaying,
+      user_uid,
+      cardStateList,
+    } = this.props;
+
+    // disable input
+    if (audioIsPlaying) {
+      event.preventDefault();
+      return;
+    }
+
+    if (wordCompleted) {
+      event.preventDefault();
+    }
+    var lastCardState = cardStateList[cardStateList.length - 1];
+
+    if (
+      indexCurrentCard === romajiList.length - 1 &&
+      (lastCardState === "correct" || lastCardState === "hinted")
+    ) {
+      onWordCompletion();
+    }
+
+    // if user types a-z keys
+    if (
+      event.which >= 65 &&
+      event.which <= 90 &&
+      !onIncorrectCard &&
+      !wordCompleted &&
+      !onHintedCard
+    ) {
+      var key = String.fromCharCode(event.which).toLowerCase();
+      this.sp.checkInput(key);
+      this.props.onKeyPress(key);
+    } else {
+      event.preventDefault();
+
+      // handle SPACE press
+      if (event.which === 32) {
+        if (onIncorrectCard) {
+          // continue after error
+          event.target.value = event.target.value.slice(
+            0,
+            -curWrongChar.length
+          );
+          onInputBoxChange(event);
+          onSpacePress("CONTINUE_AFTER_ERROR");
+        } else if (!onIncorrectCard && !onHintedCard && !wordCompleted) {
+          // ask for hint
+          onSpacePress("REQUEST_HINT");
+          onCompleteChar(Date.now(), "hinted");
+        } else if (wordCompleted) {
+          // move on to next word
+          updateWord("", [""]);
+          const scoreDeltaList = this.convertTimeToScoreDelta(charTimestamp);
+          updateCharScore(user_uid, scoreDeltaList);
+          updateWordScore(user_uid, currentWord);
+
+          onSpacePress("CONTINUE_AFTER_COMPLETE");
+
+          event.target.value = "";
+          onInputBoxChange(event);
+          const newRomaji = romajiList[0];
+          const newKana = currentWord[0];
+          setCurrentChar(newKana, newRomaji);
+        }
+      }
+
+      // handle ENTER press
+      if (event.which === 13) {
+        if (onHintedCard) {
+          if (indexCurrentCard === romajiList.length - 1) {
+            onWordCompletion();
+          }
+          // autofill correct answer
+          event.target.value = event.target.value.concat(currentRomaji);
+          onInputBoxChange(event);
+          onEnterPress(Date.now());
+
+          const curRomaji = romajiList[indexCurrentCard + 1];
+          const curKana = currentWord[indexCurrentCard + 1];
+          setCurrentChar(curKana, curRomaji);
+        }
+      }
+    }
+  };
 
   render() {
     return (
@@ -15,7 +247,8 @@ class CharInput extends React.Component {
           placeholder="Start typing here..."
           inputProps={{ "aria-label": "description" }}
           onChange={this.props.onInputChange}
-          onKeyDown={this.props.onSpecialKeyPress}
+          // onKeyDown={this.props.onSpecialKeyPress}
+          onKeyDown={this.onKeyDown}
           autoFocus
           inputRef={this.formRef}
           onPaste={(event) => {
@@ -27,4 +260,4 @@ class CharInput extends React.Component {
   }
 }
 
-export default CharInput;
+export default connect(mapStatestoProps, mapDispatchToProps)(CharInput);

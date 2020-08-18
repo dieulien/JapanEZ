@@ -46,6 +46,7 @@ const mapStateToProps = (state) => {
     currentWord: state.changeCardState.currentWord,
     charTimestamp: state.changeCardState.charTimestamp,
     audioIsPlaying: state.changeGeneralState.audioIsPlaying,
+    indexCurrentCard: state.changeCardState.indexCurrentCard,
   };
 };
 
@@ -69,8 +70,8 @@ const mapDispatchToProps = (dispatch) => {
     onWordCompletion: () => {
       dispatch(completeWord());
     },
-    updateWord: (word) => {
-      dispatch(updateWord(word));
+    updateWord: (word, romajiList) => {
+      dispatch(updateWord(word, romajiList));
     },
     onCompleteChar: (time, type) => {
       dispatch(completeChar(time, type));
@@ -164,6 +165,10 @@ class App extends Component {
   };
 
   requestNewWord = () => {
+    console.log("REQUESTING NEW WORD");
+    const { setCurrentChar, indexCurrentCard, currentWord } = this.props;
+    var romajiList = [];
+
     fetch(GETWORD_URL, {
       method: "post",
       headers: { "Content-Type": "application/json" },
@@ -174,7 +179,18 @@ class App extends Component {
       .then((res) => res.json())
       .then((word) => {
         var unix_time = Date.now();
-        this.props.updateWord(word.vocab_kana);
+        romajiList = this.parseJapaneseWord(word.vocab_kana).map(
+          (item) => item.romaji
+        );
+        // this.props.updateWord(this.parseJapaneseWord(word.vocab_kana));
+        this.props.updateWord(word.vocab_kana, romajiList);
+        const curRomaji = romajiList[indexCurrentCard];
+        const curKana = word.vocab_kana.charAt(indexCurrentCard);
+        console.log(currentWord);
+        console.log(indexCurrentCard);
+        console.log(word.vocab_kana);
+        setCurrentChar(curKana, curRomaji);
+
         this.setState({ currentWordInfo: word });
         this.setState({ currentWord_unix_time: unix_time });
         const word_audio = new Audio(
@@ -185,9 +201,9 @@ class App extends Component {
             word_audio_duration: event.target.duration,
           });
         });
-        console.log(
-          `Request new word: ${word.vocab_kana} at time ${unix_time}`
-        );
+        // console.log(
+        //   `Request new word: ${word.vocab_kana} at time ${unix_time}`
+        // );
         console.log(
           "CURRENT WORD CHEAT",
           this.parseJapaneseWord(word.vocab_kana)
@@ -274,18 +290,18 @@ class App extends Component {
   };
 
   // refocus on inputbox when pressing ENTER or SPACE
-  keypressGlobalHandler = (event) => {
-    const { wordCompleted } = this.props;
+  // keypressGlobalHandler = (event) => {
+  //   const { wordCompleted } = this.props;
 
-    if (this.state.route === "home") {
-      if (event.which === 32 || wordCompleted) {
-      }
-      if (event.which === 32 || event.which === 13) {
-        event.preventDefault();
-        this.focusInputBox();
-      }
-    }
-  };
+  //   if (this.state.route === "home") {
+  //     if (event.which === 32 || wordCompleted) {
+  //     }
+  //     if (event.which === 32 || event.which === 13) {
+  //       event.preventDefault();
+  //       this.focusInputBox();
+  //     }
+  //   }
+  // };
 
   focusInputBox = () => {
     console.log("focus input Box", this);
@@ -293,7 +309,7 @@ class App extends Component {
   };
 
   componentDidMount() {
-    document.addEventListener("keypress", this.keypressGlobalHandler);
+    // document.addEventListener("keypress", this.keypressGlobalHandler);
   }
 
   showHint = () => {
@@ -327,7 +343,7 @@ class App extends Component {
       const userWrongInput = wrongCharList[curWrongChar];
       return (
         <div>
-          <p>{`This character is not "${userWrongInput}"`}</p>
+          <p>{`This character is not "${curWrongChar}"`}</p>
           <p>press SPACE to try again</p>
         </div>
       );
@@ -397,6 +413,9 @@ class App extends Component {
                   onInputChange={this.props.onInputBoxChange}
                   onSpecialKeyPress={this.onSpecialKeyPress}
                   ref={this.charInputRef}
+                  updateCharScore={this.updateCharScore}
+                  updateWordScore={this.updateWordScore}
+                  user_uid={this.state.userInfo.id}
                 />
               </OutsideAlerter>
               <Grid
@@ -407,6 +426,7 @@ class App extends Component {
               >
                 <Grid item>
                   <CharList
+                    testprops={"testprops"}
                     charsToRead={this.parseJapaneseWord(currentWord)}
                     userInput={userInput}
                     hintDisplayOn={onHintedCard}

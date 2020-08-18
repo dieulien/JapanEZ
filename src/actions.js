@@ -62,10 +62,13 @@ export const completeWord = () => {
   };
 };
 
-export const updateWord = (word) => {
+export const updateWord = (word, romajiList) => {
+  const cardStateList = romajiList.map((item) => "");
   return {
     type: "UPDATE_WORD",
     payload: word,
+    romajiList: romajiList,
+    cardStateList: cardStateList,
   };
 };
 
@@ -93,5 +96,24 @@ export const onAudioPlay = () => {
 export const onAudioPause = () => {
   return {
     type: "PAUSE_AUDIO",
+  };
+};
+
+export const pressKey = (key) => {
+  return {
+    type: "PRESS_KEY",
+    payload: key,
+  };
+};
+
+export const onCorrectChar = () => {
+  return {
+    type: "INPUT_CORRECT_CHAR",
+  };
+};
+
+export const onIncorrectChar = () => {
+  return {
+    type: "INPUT_INCORRECT_CHAR",
   };
 };

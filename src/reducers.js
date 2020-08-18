@@ -1,7 +1,9 @@
 import { USER_INPUT } from "./constants";
+// import update from "react-addons-update";
 
 const initialInputBox = {
   inputBox: "",
+  keyPressed: "",
 };
 
 const initialGeneralState = {
@@ -21,6 +23,9 @@ const initialCardState = {
   prevTimestamp: null,
   charTimestamp: [],
   allCharTimestamp: [],
+  romajiList: [],
+  indexCurrentCard: 0,
+  cardStateList: [],
 };
 
 export const changeGeneralState = (
@@ -41,6 +46,8 @@ export const changeInputBox = (state = initialInputBox, action = {}) => {
   switch (action.type) {
     case USER_INPUT:
       return { ...state, inputBox: action.payload };
+    case "PRESS_KEY":
+      return { ...state, keyPressed: action.payload };
     default:
       return state;
   }
@@ -55,20 +62,24 @@ export const changeCardState = (state = initialCardState, action = {}) => {
         currentRomaji: action.currentRomaji,
       };
     case "ENTER_PRESS":
+      state.cardStateList[state.indexCurrentCard] = "hinted";
       return {
         ...state,
         hintedCharList: [...state.hintedCharList, state.currentRomaji],
         onHintedCard: false,
         prevTimestamp: action.time,
+        indexCurrentCard: state.indexCurrentCard + 1,
       };
     case "WRONG_INPUT":
       state.wrongCharList[action.currentChar] = action.userInput;
+      state.cardStateList[state.indexCurrentCard] = "incorrect";
       return {
         ...state,
         onIncorrectCard: true,
-        curWrongChar: action.currentChar,
+        curWrongChar: action.userInput,
       };
     case "SPACE_PRESS_TO_CONTINUE":
+      state.cardStateList[state.indexCurrentCard] = "";
       return { ...state, onIncorrectCard: false };
     case "SPACE_PRESS_FOR_HINT":
       return { ...state, onHintedCard: true };
@@ -84,7 +95,13 @@ export const changeCardState = (state = initialCardState, action = {}) => {
     case "COMPLETE_WORD":
       return { ...state, wordCompleted: true };
     case "UPDATE_WORD":
-      return { ...state, currentWord: action.payload };
+      return {
+        ...state,
+        currentWord: action.payload,
+        romajiList: action.romajiList,
+        cardStateList: action.cardStateList,
+        indexCurrentCard: 0,
+      };
     case "COMPLETE_CHAR":
       const newTimestamp = {
         char: state.currentJapChar,
@@ -99,6 +116,23 @@ export const changeCardState = (state = initialCardState, action = {}) => {
       };
     case "SET_NEW_WORD_TIME":
       return { ...state, prevTimestamp: action.time };
+    case "INPUT_CORRECT_CHAR":
+      // state.cardStateList[state.indexCurrentCard] = "correct";
+      return {
+        ...state,
+        indexCurrentCard: state.indexCurrentCard + 1,
+        cardStateList: state.cardStateList.map((item, idx) =>
+          idx === state.indexCurrentCard ? "correct" : item
+        ),
+      };
+    case "INPUT_INCORRECT_CHAR":
+      // state.cardStateList[state.indexCurrentCard] = "incorrect";
+      return {
+        ...state,
+        cardStateList: state.cardStateList.map((item, idx) =>
+          idx === state.indexCurrentCard ? "incorrect" : item
+        ),
+      };
     default:
       return state;
   }

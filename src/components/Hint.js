@@ -9,19 +9,6 @@ import Music from "./Music";
 import { katakanaToRomaji, katakanaHint } from "../jap-char";
 import { MEDIA_BASE_URL_CHAR } from "../constants";
 
-//original component
-// const Hint = () =>{
-//     return(
-//         <div className = "mw5 center bg-white br3 pa3 ba b--black-10">
-//             <img alt ='character mnemonic' width="200" height="200" src=''/>
-//             <div>
-//                 <hr className="mw3 bb bw1 b--black-10"></hr>
-//                 <p>This will be a brief explanation</p>
-//             </div>
-//         </div>
-//     );
-// }
-
 const useStyles = makeStyles({
   root: {
     maxWidth: 320,
@@ -38,11 +25,13 @@ const parseoutUnderlineText = (sentence) => {
 };
 
 export default function Hint({ currentHintedChar }) {
+  console.log("CURRENT HINT CHAR", currentHintedChar);
   const classes = useStyles();
   const romaji = katakanaToRomaji[currentHintedChar];
   const sentenceFragments = parseoutUnderlineText(
     katakanaHint[currentHintedChar].shortHint
   );
+  const modified_romaji = romaji === "nn" ? "n" : romaji;
 
   return (
     <Card className={classes.root}>
@@ -61,7 +50,11 @@ export default function Hint({ currentHintedChar }) {
             {sentenceFragments[2]}
           </Typography>
           <br></br>
-          <Music audioLink={MEDIA_BASE_URL_CHAR + romaji + ".mp3"} />
+          <Music
+            audioLink={MEDIA_BASE_URL_CHAR + modified_romaji + ".mp3"}
+            delay={0}
+            noStoreUpdateWhenEnded={false}
+          />
         </CardContent>
       </CardActionArea>
       {/* <CardActions>
