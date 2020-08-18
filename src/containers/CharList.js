@@ -1,5 +1,5 @@
 import React from "react";
-import Char from "./Char.js";
+import Char from "../components/Char.js";
 import { Grid } from "@material-ui/core";
 import { connect } from "react-redux";
 import { setNewWordTime } from "../actions";
@@ -30,8 +30,16 @@ class CharList extends React.Component {
   }
 
   componentDidMount = () => {
-    const timeStamp = Date.now();
-    this.props.setNewWordTime(timeStamp);
+    this.props.setNewWordTime(Date.now());
+  };
+
+  componentDidUpdate = (prevProps) => {
+    if (
+      JSON.stringify(this.props.charsToRead) !==
+      JSON.stringify(prevProps.charsToRead)
+    ) {
+      this.props.setNewWordTime(Date.now());
+    }
   };
 
   setCardState = (idx) => {

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import CharList from "../components/CharList.js";
+import CharList from "./CharList.js";
 import CharInput from "./CharInput";
 import NavBar from "../components/NavBar";
 import Hint from "../components/Hint";
@@ -11,6 +11,7 @@ import Register from "../components/Register";
 import WordCard from "../components/WordCard";
 import OutsideAlerter from "../components/OutsideAlerter";
 import "./App.css";
+import { updateChar, updateWord } from "../actions";
 import {
   GETWORD_URL,
   CHARSCORE_URL,
@@ -20,24 +21,9 @@ import {
   MEDIA_BASE_URL_WORD,
 } from "../constants";
 
-import {
-  typeAnswer,
-  pressSpace,
-  updateChar,
-  pressEnter,
-  typeWrongAnswer,
-  completeWord,
-  updateWord,
-  completeChar,
-} from "../actions";
-
 const mapStateToProps = (state) => {
   return {
-    userInput: state.changeInputBox.inputBox,
     currentJapChar: state.changeCardState.currentJapChar,
-    currentRomaji: state.changeCardState.currentRomaji,
-    hintedCharList: state.changeCardState.hintedCharList,
-    wrongCharList: state.changeCardState.wrongCharList,
     onIncorrectCard: state.changeCardState.onIncorrectCard,
     curWrongChar: state.changeCardState.curWrongChar,
     onHintedCard: state.changeCardState.onHintedCard,
@@ -51,29 +37,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onInputBoxChange: (event) => {
-      dispatch(typeAnswer(event.target.value));
-    },
     setCurrentChar: (japchar, romaji) => {
       dispatch(updateChar(japchar, romaji));
     },
-    onEnterPress: (time) => {
-      dispatch(pressEnter(time));
-    },
-    onWrongInput: (userChar, currentChar) => {
-      dispatch(typeWrongAnswer(userChar, currentChar));
-    },
-    onSpacePress: (context) => {
-      dispatch(pressSpace(context));
-    },
-    onWordCompletion: () => {
-      dispatch(completeWord());
-    },
     updateWord: (word, romajiList) => {
       dispatch(updateWord(word, romajiList));
-    },
-    onCompleteChar: (time, type) => {
-      dispatch(completeChar(time, type));
     },
   };
 };
@@ -164,8 +132,7 @@ class App extends Component {
   };
 
   requestNewWord = () => {
-    console.log("REQUESTING NEW WORD");
-    const { setCurrentChar, indexCurrentCard, currentWord } = this.props;
+    const { setCurrentChar, indexCurrentCard, updateWord } = this.props;
     var romajiList = [];
 
     fetch(GETWORD_URL, {
@@ -181,13 +148,9 @@ class App extends Component {
         romajiList = this.parseJapaneseWord(word.vocab_kana).map(
           (item) => item.romaji
         );
-        // this.props.updateWord(this.parseJapaneseWord(word.vocab_kana));
-        this.props.updateWord(word.vocab_kana, romajiList);
+        updateWord(word.vocab_kana, romajiList);
         const curRomaji = romajiList[indexCurrentCard];
         const curKana = word.vocab_kana.charAt(indexCurrentCard);
-        console.log(currentWord);
-        console.log(indexCurrentCard);
-        console.log(word.vocab_kana);
         setCurrentChar(curKana, curRomaji);
 
         this.setState({ currentWordInfo: word });
@@ -213,67 +176,6 @@ class App extends Component {
       });
   };
 
-  onSpecialKeyPress = (event) => {
-    const {
-      currentRomaji,
-      curWrongChar,
-      onIncorrectCard,
-      onHintedCard,
-      onSpacePress,
-      onEnterPress,
-      onInputBoxChange,
-      wordCompleted,
-      onCompleteChar,
-      charTimestamp,
-      currentWord,
-      audioIsPlaying,
-    } = this.props;
-
-    if (audioIsPlaying) {
-      event.preventDefault();
-      return;
-    }
-
-    if (onIncorrectCard || onHintedCard || wordCompleted) {
-      event.preventDefault();
-    }
-
-    // handle SPACE press
-    if (event.which === 32) {
-      event.preventDefault();
-      if (!onIncorrectCard && !onHintedCard && !wordCompleted) {
-        onSpacePress("REQUEST_HINT");
-        onCompleteChar(Date.now(), "hinted");
-      } else if (onIncorrectCard) {
-        // remove wrong input
-        event.target.value = event.target.value.slice(0, -curWrongChar.length);
-        onInputBoxChange(event);
-        onSpacePress("CONTINUE_AFTER_ERROR");
-      } else if (wordCompleted) {
-        this.props.updateWord("");
-        const scoreDeltaList = this.convertTimeToScoreDelta(charTimestamp);
-        this.updateCharScore(this.state.userInfo.id, scoreDeltaList);
-        this.updateWordScore(this.state.userInfo.id, currentWord);
-
-        onSpacePress("CONTINUE_AFTER_COMPLETE");
-
-        event.target.value = "";
-        onInputBoxChange(event);
-      }
-    }
-
-    // handle ENTER press
-    if (event.which === 13) {
-      event.preventDefault();
-      if (onHintedCard) {
-        // autofill correct answer
-        event.target.value = event.target.value.concat(currentRomaji);
-        onInputBoxChange(event);
-        onEnterPress(Date.now());
-      }
-    }
-  };
-
   loadUser = (user) => {
     const { user_uid, name, email, joined } = user;
     this.setState((prevState) => {
@@ -288,28 +190,9 @@ class App extends Component {
     this.requestNewWord();
   };
 
-  // refocus on inputbox when pressing ENTER or SPACE
-  // keypressGlobalHandler = (event) => {
-  //   const { wordCompleted } = this.props;
-
-  //   if (this.state.route === "home") {
-  //     if (event.which === 32 || wordCompleted) {
-  //     }
-  //     if (event.which === 32 || event.which === 13) {
-  //       event.preventDefault();
-  //       this.focusInputBox();
-  //     }
-  //   }
-  // };
-
   focusInputBox = () => {
-    console.log("focus input Box", this);
     this.charInputRef.current.formRef.current.focus();
   };
-
-  componentDidMount() {
-    // document.addEventListener("keypress", this.keypressGlobalHandler);
-  }
 
   showHint = () => {
     if (this.props.onHintedCard) {
@@ -331,7 +214,6 @@ class App extends Component {
   displayMessage = () => {
     const {
       onIncorrectCard,
-      wrongCharList,
       curWrongChar,
       onHintedCard,
       wordCompleted,
@@ -339,7 +221,6 @@ class App extends Component {
     } = this.props;
 
     if (onIncorrectCard) {
-      const userWrongInput = wrongCharList[curWrongChar];
       return (
         <div>
           <p>{`This character is not "${curWrongChar}"`}</p>
@@ -371,17 +252,7 @@ class App extends Component {
           />
         );
       case "home":
-        const {
-          userInput,
-          onHintedCard,
-          setCurrentChar,
-          hintedCharList,
-          onWrongInput,
-          wrongCharList,
-          onIncorrectCard,
-          onWordCompletion,
-          currentWord,
-        } = this.props;
+        const { currentWord } = this.props;
 
         return (
           <div>
@@ -409,8 +280,6 @@ class App extends Component {
               <Paper elevation={0} />
               <OutsideAlerter focusInputBox={this.focusInputBox}>
                 <CharInput
-                  onInputChange={this.props.onInputBoxChange}
-                  onSpecialKeyPress={this.onSpecialKeyPress}
                   updateCharScore={this.updateCharScore}
                   updateWordScore={this.updateWordScore}
                   user_uid={this.state.userInfo.id}
@@ -424,18 +293,7 @@ class App extends Component {
                 alignItems="center"
               >
                 <Grid item>
-                  <CharList
-                    testprops={"testprops"}
-                    charsToRead={this.parseJapaneseWord(currentWord)}
-                    userInput={userInput}
-                    hintDisplayOn={onHintedCard}
-                    updateCurrentChar={setCurrentChar}
-                    hintedCharList={hintedCharList}
-                    onWrongInput={onWrongInput}
-                    wrongCharList={wrongCharList}
-                    onIncorrectCard={onIncorrectCard}
-                    onWordCompletion={onWordCompletion}
-                  />
+                  <CharList charsToRead={this.parseJapaneseWord(currentWord)} />
                 </Grid>
                 <div>{this.displayMessage()}</div>
                 <Grid item>

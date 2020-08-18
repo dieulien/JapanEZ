@@ -18,8 +18,8 @@ class OutsideAlerter extends React.Component {
   };
 
   setWrapperRef = (node) => {
-    console.log("setWrapperRef", node);
-    console.log("this", this);
+    // console.log("setWrapperRef", node);
+    // console.log("this", this);
     this.wrapperRef = node;
   };
 

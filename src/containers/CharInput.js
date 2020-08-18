@@ -35,6 +35,9 @@ const mapStatestoProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
+    onInputBoxChange: (event) => {
+      dispatch(typeAnswer(event.target.value));
+    },
     onKeyPress: (key) => {
       dispatch(pressKey(key));
     },
@@ -43,9 +46,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     onIncorrectChar: () => {
       dispatch(onIncorrectChar());
-    },
-    onInputBoxChange: (event) => {
-      dispatch(typeAnswer(event.target.value));
     },
     onSpacePress: (context) => {
       dispatch(pressSpace(context));
@@ -89,7 +89,6 @@ class CharInput extends React.Component {
       currentWord,
     } = this.props;
 
-    console.log("inputBOx", this);
     const curRomaji = romajiList[indexCurrentCard];
     const curKana = currentWord[indexCurrentCard];
     setCurrentChar(curKana, curRomaji);
@@ -117,11 +116,12 @@ class CharInput extends React.Component {
       onWordCompletion,
       currentWord,
       setCurrentChar,
+      onCompleteChar,
     } = this.props;
 
     if (char === romajiList[indexCurrentCard]) {
       onCorrectChar();
-      console.log(`index ${indexCurrentCard} `);
+      onCompleteChar(Date.now(), "correct");
       const newRomaji = romajiList[indexCurrentCard + 1];
       const newKana = currentWord[indexCurrentCard + 1];
       setCurrentChar(newKana, newRomaji);
@@ -186,8 +186,8 @@ class CharInput extends React.Component {
       !onHintedCard
     ) {
       var key = String.fromCharCode(event.which).toLowerCase();
-      this.sp.checkInput(key);
       this.props.onKeyPress(key);
+      this.sp.checkInput(key);
     } else {
       event.preventDefault();
 
@@ -247,8 +247,7 @@ class CharInput extends React.Component {
         <Input
           placeholder="Start typing here..."
           inputProps={{ "aria-label": "description" }}
-          onChange={this.props.onInputChange}
-          // onKeyDown={this.props.onSpecialKeyPress}
+          onChange={this.props.onInputBoxChange}
           onKeyDown={this.onKeyDown}
           autoFocus
           inputRef={this.formRef}
