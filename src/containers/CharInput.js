@@ -78,7 +78,10 @@ class CharInput extends React.Component {
   constructor(props) {
     super(props);
     this.formRef = React.createRef();
-    this.sp = new SpellCheckerBuffer(katakanaToRomaji, this.checkFunction);
+    this.inputChecker = new SpellCheckerBuffer(
+      katakanaToRomaji,
+      this.checkFunction
+    );
   }
 
   componentDidMount() {
@@ -177,7 +180,7 @@ class CharInput extends React.Component {
       onWordCompletion();
     }
 
-    // if user types a-z keys
+    // keycode 65 to 90 represents a-z
     if (
       event.which >= 65 &&
       event.which <= 90 &&
@@ -187,14 +190,14 @@ class CharInput extends React.Component {
     ) {
       var key = String.fromCharCode(event.which).toLowerCase();
       this.props.onKeyPress(key);
-      this.sp.checkInput(key);
+      this.inputChecker.checkInput(key);
     } else {
       event.preventDefault();
 
       // handle SPACE press
       if (event.which === 32) {
         if (onIncorrectCard) {
-          // continue after error
+          // delete wrong input from inputBox
           event.target.value = event.target.value.slice(
             0,
             -curWrongChar.length
@@ -205,6 +208,15 @@ class CharInput extends React.Component {
           // ask for hint
           onSpacePress("REQUEST_HINT");
           onCompleteChar(Date.now(), "hinted");
+
+          // clear inputBox
+          event.target.value = this.inputChecker.buffer.length
+            ? event.target.value.slice(0, -this.inputChecker.buffer.length)
+            : event.target.value;
+          onInputBoxChange(event);
+
+          // clear inputChecker buffer
+          this.inputChecker.checkInput("clearBuffer");
         } else if (wordCompleted) {
           // move on to next word
           updateWord("", [""]);

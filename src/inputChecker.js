@@ -204,6 +204,7 @@ class SpellCheckerBuffer {
   checkInput(char) {
     if (char === "clearBuffer") {
       this.buffer = "";
+      return;
     }
     this.buffer += char;
     if (this.charTrie.contains(this.buffer)) {
