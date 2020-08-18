@@ -10,6 +10,7 @@ import Signin from "../components/Signin";
 import Register from "../components/Register";
 import WordCard from "../components/WordCard";
 import OutsideAlerter from "../components/OutsideAlerter";
+import Footer from "../components/Footer";
 import "./App.css";
 import { updateChar, updateWord } from "../actions";
 import {
@@ -255,63 +256,60 @@ class App extends Component {
         const { currentWord } = this.props;
 
         return (
-          <div>
-            <NavBar onRouteChange={this.onRouteChange} />
-            <div className="tmw5 center bg-white br3 pa1 ma1 ba b--black-10 o-40 tl">
-              <Paper elevation={0} />
-              <p>Welcome, {this.state.userInfo.name}! </p>
-              <ul>
-                <li>
-                  Press SPACE to learn the character in the highlighted card
-                </li>
-                <li>
-                  Type the character as fast as you can if you've already known
-                  the character
-                </li>
-              </ul>
-            </div>
+          <div className="page-container" style={{ position: "relative" }}>
+            <div className="content-wrap">
+              <NavBar onRouteChange={this.onRouteChange} />
+              <div className="tmw5 center bg-white br3 pa1 ma1 ba b--black-10 o-40 tl">
+                <Paper elevation={0} />
+                <p>Welcome, {this.state.userInfo.name}! </p>
+                <ul>
+                  <li>
+                    Press SPACE to learn the character in the highlighted card
+                  </li>
+                  <li>
+                    Type the character as fast as you can if you've already
+                    known the character
+                  </li>
+                </ul>
+              </div>
 
-            <Grid
-              container
-              direction="column"
-              justify="center"
-              alignItems="center"
-            >
-              <Paper elevation={0} />
-              <OutsideAlerter focusInputBox={this.focusInputBox}>
-                <CharInput
-                  updateCharScore={this.updateCharScore}
-                  updateWordScore={this.updateWordScore}
-                  user_uid={this.state.userInfo.id}
-                  ref={this.charInputRef}
-                />
-              </OutsideAlerter>
               <Grid
                 container
                 direction="column"
                 justify="center"
                 alignItems="center"
+                style={{ paddingBottom: "100px" }}
               >
-                <Grid item>
-                  <CharList charsToRead={this.parseJapaneseWord(currentWord)} />
+                <Paper elevation={0} />
+                <OutsideAlerter focusInputBox={this.focusInputBox}>
+                  <CharInput
+                    updateCharScore={this.updateCharScore}
+                    updateWordScore={this.updateWordScore}
+                    user_uid={this.state.userInfo.id}
+                    ref={this.charInputRef}
+                  />
+                </OutsideAlerter>
+                <Grid
+                  container
+                  direction="column"
+                  justify="center"
+                  alignItems="center"
+                >
+                  <Grid item>
+                    <CharList
+                      charsToRead={this.parseJapaneseWord(currentWord)}
+                    />
+                  </Grid>
+                  <div>{this.displayMessage()}</div>
+                  <Grid item>
+                    <Paper elevation={1} />
+                    {this.showHint()}
+                  </Grid>
+                  <Grid item>{this.displayWordInfo()}</Grid>
                 </Grid>
-                <div>{this.displayMessage()}</div>
-                <Grid item>
-                  <Paper elevation={1} />
-                  {this.showHint()}
-                </Grid>
-                <div>{this.displayWordInfo()}</div>
               </Grid>
-            </Grid>
-            <footer id="footer">
-              <p>
-                Mnemonics taken from <a href={TOFUGU_LINK}>tofugu.com</a>
-              </p>
-              <p>
-                Japanese words taken from{" "}
-                <a href={WORD_LINK}>reddit.com/r/LearnJapanese</a>
-              </p>
-            </footer>
+            </div>
+            <Footer />
           </div>
         );
       default:
