@@ -3,7 +3,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import { Button } from "@material-ui/core";
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,13 +18,20 @@ const NavBar = ({ onRouteChange }) => {
   const classes = useStyles();
 
   return (
-    <div className = {classes.root}>
+    <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" color="inherit" className={classes.title} align="left">
+          <Typography
+            variant="h6"
+            color="inherit"
+            className={classes.title}
+            align="left"
+            style={{ color: "white" }}
+          >
             Japanese vs. English words
           </Typography>
           <Button
+            style={{ color: "white" }}
             color="inherit"
             onClick={() => onRouteChange("signin")}
           >

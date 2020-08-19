@@ -12,7 +12,19 @@ import {
   changeInputBox,
   changeCardState,
 } from "./reducers";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 //import "typeface-roboto";
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#1CB0F6",
+    },
+    secondary: {
+      main: "#43A6DF",
+    },
+  },
+});
 
 const rootReducer = combineReducers({
   changeGeneralState,
@@ -26,7 +38,9 @@ const store = createStore(rootReducer, applyMiddleware(logger));
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
   </Provider>,
   document.getElementById("root")
 );

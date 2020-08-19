@@ -143,6 +143,7 @@ class App extends Component {
   requestNewWord = () => {
     const { setCurrentChar, updateWord } = this.props;
     var romajiList = [];
+    this.setState({ clickedJapChar: "" });
 
     fetch(GETWORD_URL, {
       method: "post",
@@ -195,7 +196,16 @@ class App extends Component {
     this.charInputRef.current.formRef.current.focus();
   };
 
+  onClickCard = (event) => {
+    const kana = event.target.innerText;
+    this.setState({ clickedJapChar: kana });
+  };
+
   showHint = () => {
+    // once completed word, can review hint card
+    if (this.props.wordCompleted && this.state.clickedJapChar) {
+      return <Hint currentHintedChar={this.state.clickedJapChar} />;
+    }
     if (this.props.onHintedCard) {
       return <Hint currentHintedChar={this.props.currentJapChar} />;
     }
@@ -220,20 +230,42 @@ class App extends Component {
       wordCompleted,
       audioIsPlaying,
     } = this.props;
-
+    if (audioIsPlaying) {
+      return (
+        <p>
+          <b>♬ playing audio ♬</b>
+        </p>
+      );
+    }
     if (onIncorrectCard) {
       return (
         <div>
-          <p>{`This character is not "${curWrongChar}"`}</p>
-          <p>press SPACE to try again</p>
+          <p>
+            <b>{`This character is not "${curWrongChar}"`}</b>
+          </p>
+          <p>
+            <b>press SPACE to try again</b>
+          </p>
         </div>
       );
     } else if (onHintedCard && !audioIsPlaying) {
-      return <p>press ENTER to continue</p>;
+      return (
+        <p>
+          <b>press ENTER to continue</b>
+        </p>
+      );
     } else if (wordCompleted && !audioIsPlaying) {
-      return <p>press SPACE to continue</p>;
+      return (
+        <p>
+          <b>press SPACE to continue</b>
+        </p>
+      );
     } else if (!onHintedCard && !wordCompleted) {
-      return <p>You can press SPACE for hint</p>;
+      return (
+        <p>
+          <b>You can press SPACE for hint</b>
+        </p>
+      );
     } else {
       return <p></p>;
     }
@@ -259,7 +291,10 @@ class App extends Component {
           <div className="page-container" style={{ position: "relative" }}>
             <div className="content-wrap">
               <NavBar onRouteChange={this.onRouteChange} />
-              <div className="tmw5 center bg-white br3 pa1 ma1 ba b--black-10 o-40 tl">
+              <div
+                className="tmw5 center bg-white br3 pa1 ma1 ba b--black-10 tl"
+                style={{ color: "#5D5D5D" }}
+              >
                 <Paper elevation={0} />
                 <p>Welcome, {this.state.userInfo.name}! </p>
                 <ul>
@@ -272,6 +307,7 @@ class App extends Component {
                   </li>
                 </ul>
               </div>
+              <br />
 
               <Grid
                 container
@@ -298,14 +334,26 @@ class App extends Component {
                   <Grid item>
                     <CharList
                       charsToRead={this.parseJapaneseWord(currentWord)}
+                      onClickCard={this.onClickCard}
+                      clickedJapChar={this.state.clickedJapChar}
                     />
                   </Grid>
                   <div>{this.displayMessage()}</div>
-                  <Grid item>
-                    <Paper elevation={1} />
-                    {this.showHint()}
+                  <Grid
+                    container
+                    direction="row"
+                    justify="center"
+                    alignItems="center"
+                    spacing="1"
+                  >
+                    <Grid item>
+                      <Paper elevation={1} />
+                      {this.showHint()}
+                    </Grid>
+                    <br />
+
+                    <Grid item>{this.displayWordInfo()}</Grid>
                   </Grid>
-                  <Grid item>{this.displayWordInfo()}</Grid>
                 </Grid>
               </Grid>
             </div>

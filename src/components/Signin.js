@@ -174,6 +174,7 @@ class Signin extends React.Component {
                 color="primary"
                 className={classes.submit}
                 onClick={this.onSignIn}
+                style={{ color: "white" }}
               >
                 Sign In
               </Button>

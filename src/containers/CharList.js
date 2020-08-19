@@ -11,6 +11,7 @@ const mapStateToProps = (state) => {
     indexCurrentCard: state.changeCardState.indexCurrentCard,
     cardStateList: state.changeCardState.cardStateList,
     onHintedCard: state.changeCardState.onHintedCard,
+    wordCompleted: state.changeCardState.wordCompleted,
   };
 };
 
@@ -43,9 +44,18 @@ class CharList extends React.Component {
     }
   };
 
-  setCardState = (idx) => {
-    const { indexCurrentCard, cardStateList, onHintedCard } = this.props;
+  setCardState = (idx, char) => {
+    const {
+      indexCurrentCard,
+      cardStateList,
+      onHintedCard,
+      wordCompleted,
+    } = this.props;
     var className = "";
+
+    if (char === this.props.clickedJapChar && wordCompleted) {
+      className = className.concat(` clicked `);
+    }
     if (idx === indexCurrentCard) {
       className = className.concat(` highlighted `);
     } else {
@@ -60,7 +70,13 @@ class CharList extends React.Component {
     const charsArrayDisplay = this.props.charsToRead.map((item, idx) => {
       return (
         <Grid item key={idx}>
-          <Char char={item.char} key={idx} cardState={this.setCardState(idx)} />
+          <Char
+            char={item.char}
+            key={idx}
+            cardState={this.setCardState(idx, item.char)}
+            onClickCard={this.props.onClickCard}
+            wordCompleted={this.props.wordCompleted}
+          />
         </Grid>
       );
     });
