@@ -193,6 +193,7 @@ class Register extends React.Component {
                 color="primary"
                 className={classes.submit}
                 onClick={this.onFormSubmit}
+                style={{ color: "#ffffff" }}
               >
                 Register
               </Button>

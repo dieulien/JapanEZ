@@ -61,7 +61,12 @@ class Music extends React.Component {
   render() {
     return (
       <div>
-        <Button variant="contained" color="primary" onClick={this.togglePlay}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={this.togglePlay}
+          style={{ color: "#ffffff" }}
+        >
           {this.state.play ? "Pause Audio" : "Play Audio"}
         </Button>
       </div>
