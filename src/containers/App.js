@@ -256,9 +256,14 @@ class App extends Component {
       );
     } else if (wordCompleted && !audioIsPlaying) {
       return (
-        <p>
-          <b>press SPACE to continue</b>
-        </p>
+        <div>
+          <p>
+            <b>click on card to review mnemonic</b>
+          </p>
+          <p>
+            <b>press SPACE to continue</b>
+          </p>
+        </div>
       );
     } else if (!onHintedCard && !wordCompleted) {
       return (
