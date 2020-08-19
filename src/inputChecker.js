@@ -109,7 +109,7 @@ Trie.prototype.insert = function (word) {
     node = node.children[word[i]];
 
     // finally, we check to see if it's the last word.
-    if (i == word.length - 1) {
+    if (i === word.length - 1) {
       // if it is, we set the end flag to true.
       node.end = true;
     }
@@ -217,14 +217,6 @@ class SpellCheckerBuffer {
         this.buffer = "";
       }
     }
-  }
-}
-
-function isCorrect(char) {
-  if (Object.values(katakanaToRomaji).includes(char)) {
-    console.log(`${char} true`);
-  } else {
-    console.log(`${char} false`);
   }
 }
 

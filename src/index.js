@@ -13,7 +13,7 @@ import {
   changeCardState,
 } from "./reducers";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
-//import "typeface-roboto";
+import "typeface-roboto";
 
 const theme = createMuiTheme({
   palette: {

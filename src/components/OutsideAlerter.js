@@ -2,13 +2,9 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import { isCompositeComponent } from "react-dom/test-utils";
+// import { isCompositeComponent } from "react-dom/test-utils";
 
 class OutsideAlerter extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount = () => {
     document.addEventListener("mousedown", this.handleClickOutside);
   };

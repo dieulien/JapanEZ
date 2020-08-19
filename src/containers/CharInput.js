@@ -54,9 +54,6 @@ const mapDispatchToProps = (dispatch) => {
     onWrongInput: (userChar, currentChar) => {
       dispatch(typeWrongAnswer(userChar, currentChar));
     },
-    onSpacePress: (context) => {
-      dispatch(pressSpace(context));
-    },
     onCompleteChar: (time, type) => {
       dispatch(completeChar(time, type));
     },

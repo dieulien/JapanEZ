@@ -11,7 +11,6 @@ import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import { withStyles } from "@material-ui/core/styles";
 import { SIGNIN_URL } from "../constants";
-import { sizing } from "@material-ui/system";
 
 const useStyles = (theme) => ({
   container: {
