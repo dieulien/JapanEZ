@@ -8,8 +8,9 @@ import Typography from "@material-ui/core/Typography";
 import Music from "./Music";
 import { katakanaToRomaji, katakanaHint } from "../jap-char";
 import { MEDIA_BASE_URL_CHAR } from "../constants";
+import { withStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles({
+const styles = (theme) => ({
   root: {
     maxWidth: 320,
   },
@@ -24,46 +25,58 @@ const parseoutUnderlineText = (sentence) => {
   return sentence.split(",");
 };
 
-export default function Hint({ currentHintedChar }) {
-  const classes = useStyles();
-  const romaji = katakanaToRomaji[currentHintedChar];
-  const sentenceFragments = parseoutUnderlineText(
-    katakanaHint[currentHintedChar].shortHint
-  );
-  const modified_romaji = romaji === "nn" ? "n" : romaji;
+class Hint extends React.Component {
+  state = {
+    clickedHintCard: false,
+  };
 
-  return (
-    <Card className={classes.root}>
-      <CardActionArea>
-        <CardMedia
-          className={classes.media}
-          component="img"
-          alt="Hint for character"
-          image={katakanaHint[currentHintedChar].imageLink}
-          title="Hint for character"
-        />
-        <CardContent>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {sentenceFragments[0]}
-            <u>{sentenceFragments[1]}</u>
-            {sentenceFragments[2]}
-          </Typography>
-          <br></br>
-          <Music
-            audioLink={MEDIA_BASE_URL_CHAR + modified_romaji + ".mp3"}
-            delay={0}
-            noStoreUpdateWhenEnded={false}
+  onClickHandler = () => {
+    this.setState({ clickedHintCard: !this.state.clickedHintCard });
+  };
+
+  render() {
+    const { classes } = this.props;
+    const romaji = katakanaToRomaji[this.props.currentHintedChar];
+    const sentenceFragments = parseoutUnderlineText(
+      katakanaHint[this.props.currentHintedChar].shortHint
+    );
+    const modified_romaji = romaji === "nn" ? "n" : romaji;
+    return (
+      <Card className={classes.root} onClick={this.onClickHandler}>
+        <CardActionArea>
+          <CardMedia
+            className={classes.media}
+            component="img"
+            alt="Hint for character"
+            image={katakanaHint[this.props.currentHintedChar].imageLink}
+            title="Hint for character"
           />
-        </CardContent>
-      </CardActionArea>
-      {/* <CardActions>
-        <Button size="small" color="primary">
-          Share
-        </Button>
-        <Button size="small" color="primary">
-          Learn More
-        </Button>
-      </CardActions> */}
-    </Card>
-  );
+          <CardContent>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {sentenceFragments[0]}
+              <u>{sentenceFragments[1]}</u>
+              {sentenceFragments[2]}
+            </Typography>
+            <br></br>
+            <Music
+              audioLink={MEDIA_BASE_URL_CHAR + modified_romaji + ".mp3"}
+              delay={0}
+              noStoreUpdateWhenEnded={false}
+              clickedHintCard={this.state.clickedHintCard}
+            />
+          </CardContent>
+        </CardActionArea>
+        {/* <CardActions>
+          <Button size="small" color="primary">
+            Share
+          </Button>
+          <Button size="small" color="primary">
+            Learn More
+          </Button>
+        </CardActions> */}
+      </Card>
+    );
+  }
 }
+
+export default withStyles(styles, { withTheme: true })(Hint);

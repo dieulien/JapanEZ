@@ -46,6 +46,13 @@ class Music extends React.Component {
     );
   }
 
+  componentDidUpdate = (prevProps) => {
+    if (prevProps.clickedHintCard !== this.props.clickedHintCard) {
+      this.state.audio.play();
+      this.props.onAudioPlay();
+    }
+  };
+
   togglePlay = () => {
     this.setState({ play: !this.state.play }, () => {
       if (this.state.play) {

@@ -6,7 +6,7 @@
 .char {
   font-size: 5em;
 }
-#footer {
+/* #footer {
   position: absolute;
   left: 0;
   right: 0;
@@ -17,7 +17,7 @@
   background: #3f51b5;
   color: white;
   font-size: 0.9em;
-}
+} */
 
 .page-container {
   display: flex;
