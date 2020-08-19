@@ -15,7 +15,7 @@ const Footer = () => {
         </p>
       </div>
       <hr />
-      <div>
+      <div className="copyright">
         <small>Copyright © 2020 Tuan Le, Lien Tran. All Rights Reserved</small>
       </div>
 

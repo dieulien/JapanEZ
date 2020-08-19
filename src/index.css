@@ -8,7 +8,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background: #ffffff;
   color: #4b4b4b;
-  overflow-y: scroll; /* prevent issue in chrome where vertical scrollbar keep disappear/reappear */
+  overflow-x: hidden; /* hide horizontal overflow */
+  overflow-y: scroll;
 }
 
 code {

@@ -36,11 +36,15 @@ a:hover {
   padding-left: 1%;
 }
 
-.copyright {
+.copyright2 {
   margin-top: auto;
   padding-bottom: 1em;
   text-align: right;
   padding-right: 1%;
+}
+
+.copyright {
+  padding-bottom: 0.5em;
 }
 
 hr {
