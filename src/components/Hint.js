@@ -1,5 +1,4 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
@@ -26,14 +25,6 @@ const parseoutUnderlineText = (sentence) => {
 };
 
 class Hint extends React.Component {
-  state = {
-    clickedHintCard: false,
-  };
-
-  onClickHandler = () => {
-    this.setState({ clickedHintCard: !this.state.clickedHintCard });
-  };
-
   render() {
     const { classes } = this.props;
     const romaji = katakanaToRomaji[this.props.currentHintedChar];
@@ -42,32 +33,28 @@ class Hint extends React.Component {
     );
     const modified_romaji = romaji === "nn" ? "n" : romaji;
     const audioLink = MEDIA_BASE_URL_CHAR + modified_romaji + ".mp3";
-    const audio = new Audio(`${audioLink}`);
     return (
       <Card className={classes.root} onClick={this.onClickHandler}>
-        <CardActionArea>
-          <CardMedia
-            className={classes.media}
-            component="img"
-            alt="Hint for character"
-            image={katakanaHint[this.props.currentHintedChar].imageLink}
-            title="Hint for character"
+        <CardMedia
+          className={classes.media}
+          component="img"
+          alt="Hint for character"
+          image={katakanaHint[this.props.currentHintedChar].imageLink}
+          title="Hint for character"
+        />
+        <CardContent>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {sentenceFragments[0]}
+            <u>{sentenceFragments[1]}</u>
+            {sentenceFragments[2]}
+          </Typography>
+          <br></br>
+          <Music
+            audioLink={audioLink}
+            delay={0}
+            noStoreUpdateWhenEnded={false}
           />
-          <CardContent>
-            <Typography variant="body2" color="textSecondary" component="p">
-              {sentenceFragments[0]}
-              <u>{sentenceFragments[1]}</u>
-              {sentenceFragments[2]}
-            </Typography>
-            <br></br>
-            <Music
-              audioLink={audioLink}
-              delay={0}
-              noStoreUpdateWhenEnded={false}
-              clickedHintCard={this.state.clickedHintCard}
-            />
-          </CardContent>
-        </CardActionArea>
+        </CardContent>
         {/* <CardActions>
           <Button size="small" color="primary">
             Share

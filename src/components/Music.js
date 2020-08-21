@@ -24,17 +24,23 @@ const mapDispatchToProps = (dispatch) => {
 class Music extends React.Component {
   state = {
     play: false,
-    audio: new Audio(`${this.props.audioLink}`),
+    audio: new Audio(this.props.audioLink),
+  };
+
+  stopAudioHandler = () => {
+    this.setState({ play: false });
+    if (!this.props.noStoreUpdateWhenEnded) {
+      this.props.onAudioPause();
+    }
+  };
+
+  simpleStopAudioHandler = () => {
+    this.setState({ play: false });
+    this.props.onAudioPause();
   };
 
   componentDidMount() {
-    this.state.audio.addEventListener("ended", () => {
-      this.setState({ play: false });
-      if (!this.props.noStoreUpdateWhenEnded) {
-        console.log("in componentDidMount");
-        this.props.onAudioPause();
-      }
-    });
+    this.state.audio.addEventListener("ended", this.stopAudioHandler);
     setTimeout(() => {
       this.state.audio.play();
       this.props.onAudioPlay();
@@ -42,33 +48,20 @@ class Music extends React.Component {
   }
 
   componentDidUpdate = (prevProps) => {
-    if (prevProps.clickedHintCard !== this.props.clickedHintCard) {
-      this.state.audio.play();
-      this.props.onAudioPlay();
-    }
-    // if new audio provided as props
     if (prevProps.audioLink !== this.props.audioLink) {
-      this.setState({ audio: new Audio(`${this.props.audioLink}`) });
+      var newAudio = new Audio(this.props.audioLink);
+      newAudio.addEventListener("ended", this.stopAudioHandler);
+      this.setState({ audio: newAudio });
       setTimeout(() => {
         this.state.audio.play();
         this.props.onAudioPlay();
       }, this.props.delay);
-
-      console.log("add event listener", this.state.audio);
-      this.state.audio.addEventListener("ended", () => {
-        this.setState({ play: false });
-        if (!this.props.noStoreUpdateWhenEnded) {
-          console.log("in componentDidUpdate");
-          this.props.onAudioPause();
-        }
-      });
     }
   };
 
   componentWillUnmount() {
-    this.state.audio.removeEventListener("ended", () =>
-      this.setState({ play: false })
-    );
+    this.state.audio.removeEventListener("ended", this.stopAudioHandler);
+    this.state.audio.removeEventListener("ended", this.simpleStopAudioHandler);
   }
 
   togglePlay = () => {
@@ -76,9 +69,16 @@ class Music extends React.Component {
       if (this.state.play) {
         this.state.audio.play();
         this.props.onAudioPlay();
+
+        // this is a wacky way of doing it, but basically I'm replacing the "ended" event listener
+        this.state.audio.removeEventListener("ended", this.stopAudioHandler);
+        this.state.audio.removeEventListener(
+          "ended",
+          this.simpleStopAudioHandler
+        );
+        this.state.audio.addEventListener("ended", this.simpleStopAudioHandler);
       } else {
         this.state.audio.pause();
-        console.log("in togglePlay");
         this.props.onAudioPause();
       }
     });
