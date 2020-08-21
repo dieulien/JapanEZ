@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import "./App.css";
+import "../scss/containers/App.scss";
 import { Input } from "@material-ui/core";
 import SpellCheckerBuffer from "../inputChecker";
 import { katakanaToRomaji } from "../jap-char";

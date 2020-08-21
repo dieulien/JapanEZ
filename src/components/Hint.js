@@ -41,6 +41,8 @@ class Hint extends React.Component {
       katakanaHint[this.props.currentHintedChar].shortHint
     );
     const modified_romaji = romaji === "nn" ? "n" : romaji;
+    const audioLink = MEDIA_BASE_URL_CHAR + modified_romaji + ".mp3";
+    const audio = new Audio(`${audioLink}`);
     return (
       <Card className={classes.root} onClick={this.onClickHandler}>
         <CardActionArea>
@@ -59,7 +61,7 @@ class Hint extends React.Component {
             </Typography>
             <br></br>
             <Music
-              audioLink={MEDIA_BASE_URL_CHAR + modified_romaji + ".mp3"}
+              audioLink={audioLink}
               delay={0}
               noStoreUpdateWhenEnded={false}
               clickedHintCard={this.state.clickedHintCard}

@@ -31,6 +31,7 @@ class Music extends React.Component {
     this.state.audio.addEventListener("ended", () => {
       this.setState({ play: false });
       if (!this.props.noStoreUpdateWhenEnded) {
+        console.log("in componentDidMount");
         this.props.onAudioPause();
       }
     });
@@ -40,18 +41,35 @@ class Music extends React.Component {
     }, this.props.delay);
   }
 
-  componentWillUnmount() {
-    this.state.audio.removeEventListener("ended", () =>
-      this.setState({ play: false })
-    );
-  }
-
   componentDidUpdate = (prevProps) => {
     if (prevProps.clickedHintCard !== this.props.clickedHintCard) {
       this.state.audio.play();
       this.props.onAudioPlay();
     }
+    // if new audio provided as props
+    if (prevProps.audioLink !== this.props.audioLink) {
+      this.setState({ audio: new Audio(`${this.props.audioLink}`) });
+      setTimeout(() => {
+        this.state.audio.play();
+        this.props.onAudioPlay();
+      }, this.props.delay);
+
+      console.log("add event listener", this.state.audio);
+      this.state.audio.addEventListener("ended", () => {
+        this.setState({ play: false });
+        if (!this.props.noStoreUpdateWhenEnded) {
+          console.log("in componentDidUpdate");
+          this.props.onAudioPause();
+        }
+      });
+    }
   };
+
+  componentWillUnmount() {
+    this.state.audio.removeEventListener("ended", () =>
+      this.setState({ play: false })
+    );
+  }
 
   togglePlay = () => {
     this.setState({ play: !this.state.play }, () => {
@@ -60,6 +78,7 @@ class Music extends React.Component {
         this.props.onAudioPlay();
       } else {
         this.state.audio.pause();
+        console.log("in togglePlay");
         this.props.onAudioPause();
       }
     });

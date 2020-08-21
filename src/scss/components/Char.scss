@@ -1,0 +1,41 @@
+@import "../variables.scss";
+
+.char {
+  font-size: 5em;
+}
+
+.card {
+  border: 2px solid $card-border-neutral-color;
+}
+
+.correct {
+  color: $correct-color;
+}
+
+.incorrect {
+  color: $incorrect-color !important;
+  border: 2px solid $incorrect-color !important;
+  box-shadow: 0 0 10px $incorrect-color !important;
+}
+
+.hinted {
+  color: $hinted-color;
+}
+
+.highlighted {
+  border: 2px solid $primary-color;
+  color: $primary-color;
+  box-shadow: 0 0 10px $primary-color; // glow-effect
+}
+
+.hovered {
+  cursor: pointer;
+  background-color: $card-background-hovered-color;
+  opacity: 1 !important;
+}
+
+.clicked {
+  border: 2px solid $primary-color;
+  background-color: $card-background-highlight-color;
+  color: $primary-color !important;
+}

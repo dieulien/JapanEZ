@@ -1,5 +1,7 @@
+@import "../variables.scss";
+
 .main-footer {
-  background: #1cb0f6;
+  background: $primary-color;
   color: white;
   position: relative;
   bottom: 0;
@@ -11,7 +13,7 @@ a {
 }
 
 a:hover {
-  color: #5d5d5d;
+  color: $link-hovered-color;
 }
 
 .sources {

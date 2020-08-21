@@ -11,7 +11,7 @@ import Register from "../components/Register";
 import WordCard from "../components/WordCard";
 import OutsideAlerter from "../components/OutsideAlerter";
 import Footer from "../components/Footer";
-import "./App.css";
+import "../scss/containers/App.scss";
 import { updateChar, updateWord, resetStore } from "../actions";
 import {
   GETWORD_URL,
@@ -199,6 +199,11 @@ class App extends Component {
   onClickCard = (event) => {
     const kana = event.target.innerText;
     this.setState({ clickedJapChar: kana });
+
+    // unclick
+    if (this.state.clickedJapChar === kana) {
+      this.setState({ clickedJapChar: "" });
+    }
   };
 
   showHint = () => {

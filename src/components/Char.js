@@ -1,6 +1,6 @@
 import React from "react";
-import "../containers/App.css";
-import "./Char.css";
+import "../scss/containers/App.scss";
+import "../scss/components/Char.scss";
 
 class Char extends React.Component {
   constructor(props) {

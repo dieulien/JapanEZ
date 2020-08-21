@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { createLogger } from "redux-logger";
-import "./index.css";
+import "./scss/index.scss";
 import * as serviceWorker from "./serviceWorker";
 import "tachyons";
 import App from "./containers/App.js";

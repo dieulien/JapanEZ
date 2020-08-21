@@ -53,8 +53,12 @@ class CharList extends React.Component {
     } = this.props;
     var className = "";
 
-    if (char === this.props.clickedJapChar && wordCompleted) {
-      className = className.concat(` clicked `);
+    if (wordCompleted && this.props.clickedJapChar !== "") {
+      if (char === this.props.clickedJapChar) {
+        className = className.concat(` clicked `);
+      } else {
+        className = className.concat(` o-30 `);
+      }
     }
     if (idx === indexCurrentCard) {
       className = className.concat(` highlighted `);

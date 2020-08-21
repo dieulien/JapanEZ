@@ -1,5 +1,5 @@
 import React from "react";
-import "./Footer.css";
+import "../scss/components/Footer.scss";
 import { TOFUGU_LINK, WORD_LINK } from "../constants";
 
 const Footer = () => {
