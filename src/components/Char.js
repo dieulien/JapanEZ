@@ -20,7 +20,9 @@ class Char extends React.Component {
 
   render() {
     const hovered = this.state.isHovered ? "hovered" : "";
-    const className = `card tmw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10 ${this.props.cardState} ${hovered}`;
+    const className = `card tmw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10 ${
+      this.props.cardState
+    } ${this.props.wordCompleted ? "card-button" : ""}`;
     return (
       <div
         className={className}

@@ -8,6 +8,21 @@
   border: 2px solid $card-border-neutral-color;
 }
 
+.card-button {
+  box-shadow: 0 $card-shadow-depth $card-border-neutral-color;
+}
+
+.card-button:hover {
+  cursor: pointer;
+  background-color: $card-background-hovered-color;
+  opacity: 1 !important;
+}
+
+.card-button:active {
+  transform: translateY($card-shadow-depth);
+  box-shadow: none !important;
+}
+
 .correct {
   color: $correct-color;
 }
@@ -36,6 +51,7 @@
 
 .clicked {
   border: 2px solid $primary-color;
-  background-color: $card-background-highlight-color;
+  background-color: $card-background-highlight-color !important;
   color: $primary-color !important;
+  box-shadow: 0 $card-shadow-depth $primary-color !important;
 }
