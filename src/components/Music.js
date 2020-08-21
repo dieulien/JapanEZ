@@ -62,6 +62,7 @@ class Music extends React.Component {
   componentWillUnmount() {
     this.state.audio.removeEventListener("ended", this.stopAudioHandler);
     this.state.audio.removeEventListener("ended", this.simpleStopAudioHandler);
+    this.props.onAudioPause();
   }
 
   togglePlay = () => {
