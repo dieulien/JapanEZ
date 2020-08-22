@@ -9,6 +9,7 @@ import zIndex from "@material-ui/core/styles/zIndex";
 
 const useStyles = makeStyles({
   tinyCard: {
+    userSelect: "none",
     cursor: "pointer",
     background: (props) => {
       return props.correctPercent === 0 && props.hintedPercent === 0
@@ -39,9 +40,13 @@ const useStyles = makeStyles({
       content: '""',
     },
     "&:hover": {
-      "&:before": {
-        opacity: 1,
-      },
+      opacity: 0.8,
+      // "&:before": {
+      //   opacity: 1,
+      // },
+    },
+    "&:active": {
+      transform: "scale(1.05)",
     },
   },
   "@keyframes myEffect": {
@@ -51,18 +56,11 @@ const useStyles = makeStyles({
 });
 
 function SmallChar(props) {
-  const { correctPercent, hintedPercent, char } = props;
   const classes = useStyles(props);
-  var background = "";
-  if (correctPercent === 0 && hintedPercent === 0) {
-    background = `#d6d6d6`;
-  } else {
-    background = `linear-gradient(0deg, green 0% ${correctPercent}%, #f2b50c ${correctPercent}% ${hintedPercent}%)`;
-  }
 
   return (
     <div className={`${classes.tinyCard}`}>
-      <b>{char}</b>
+      <b>{props.char}</b>
     </div>
   );
 }

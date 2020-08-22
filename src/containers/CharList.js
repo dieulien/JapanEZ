@@ -57,7 +57,7 @@ class CharList extends React.Component {
       if (char === this.props.clickedJapChar) {
         className = className.concat(` clicked `);
       } else {
-        className = className.concat(` o-30 `);
+        className = className.concat(` o-100 `); // default o-100
       }
     }
     if (idx === indexCurrentCard) {

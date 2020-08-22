@@ -49,7 +49,6 @@ class SmallCharList extends React.Component {
     if (Object.keys(this.state.charResultList).length === 0) {
       return <div>Fetching Data...</div>;
     }
-    console.log("LIST", this.state.charResultList);
     const charsArrayDisplay = Object.keys(katakanaToRomaji).map((kana, idx) => {
       if (kana !== "clearBuffer") {
         var correctPercentage = 0;
