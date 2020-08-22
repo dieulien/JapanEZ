@@ -1,6 +1,5 @@
 import React from "react";
 import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
@@ -55,14 +54,6 @@ class Hint extends React.Component {
             noStoreUpdateWhenEnded={false}
           />
         </CardContent>
-        {/* <CardActions>
-          <Button size="small" color="primary">
-            Share
-          </Button>
-          <Button size="small" color="primary">
-            Learn More
-          </Button>
-        </CardActions> */}
       </Card>
     );
   }

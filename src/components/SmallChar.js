@@ -10,23 +10,19 @@ class SmallChar extends React.Component {
     };
   }
 
-  onMouseOver = () => {
-    if (this.props.wordCompleted) this.setState({ isHovered: true });
-  };
-
-  onMouseLeave = () => {
-    this.setState({ isHovered: false });
-  };
-
   render() {
+    const { correctPercent, hintedPercent } = this.props;
+    var background = "";
+    if (correctPercent === 0 && hintedPercent === 0) {
+      background = `#d6d6d6`;
+    } else {
+      background = `linear-gradient(0deg, green 0% ${correctPercent}%, #f2b50c ${correctPercent}% ${hintedPercent}%)`;
+    }
     return (
       <div
         className={"small-card"}
-        onClick={this.props.onClickCard}
-        onMouseOver={this.onMouseOver}
-        onMouseLeave={this.onMouseLeave}
         style={{
-          background: "linear-gradient(0deg, green 50%, #f2b50c 50%)",
+          background: background,
         }}
       >
         <b>{this.props.char}</b>

@@ -286,7 +286,8 @@ class App extends Component {
         return (
           <div>
             <NavBar onRouteChange={this.onRouteChange} />
-            <SmallCharList />
+            <br />
+            <SmallCharList user_uid={this.state.userInfo.id} />
           </div>
         );
       case "signin":
