@@ -284,10 +284,14 @@ class App extends Component {
     switch (route) {
       case "progress":
         return (
-          <div>
-            <NavBar onRouteChange={this.onRouteChange} />
-            <br />
-            <SmallCharList user_uid={this.state.userInfo.id} />
+          <div className="progress-flex-container">
+            <div className="progress-flex-item1">
+              <NavBar onRouteChange={this.onRouteChange} />
+            </div>
+            <div className="progress-flex-item2">
+              <SmallCharList user_uid={this.state.userInfo.id} />
+            </div>
+            <Footer />
           </div>
         );
       case "signin":

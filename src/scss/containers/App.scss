@@ -13,3 +13,23 @@
 .content-wrap {
   flex: 1;
 }
+
+.progress-flex-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  // justify-content: space-around;
+  // align-items: center;
+}
+
+.progress-flex-item1 {
+  flex: 1;
+}
+
+.progress-flex-item2 {
+  flex: 5;
+}
+
+.word-card {
+  padding: 20px;
+}

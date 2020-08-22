@@ -46,20 +46,24 @@ class SmallCharList extends React.Component {
   };
 
   render() {
+    if (Object.keys(this.state.charResultList).length === 0) {
+      return <div>Fetching Data...</div>;
+    }
+    console.log("LIST", this.state.charResultList);
     const charsArrayDisplay = Object.keys(katakanaToRomaji).map((kana, idx) => {
       if (kana !== "clearBuffer") {
         var correctPercentage = 0;
+        var hintedPercentage = 0;
         if (Object.keys(this.state.charResultList).length > 0) {
           correctPercentage = this.computeCorrectPercentage(
             this.state.charResultList[kana]
           );
+          hintedPercentage = 100 - correctPercentage;
+          if (correctPercentage === -1) {
+            correctPercentage = 0;
+            hintedPercentage = 0;
+          }
         }
-        var hintedPercentage = 100 - correctPercentage;
-        if (correctPercentage === -1) {
-          hintedPercentage = 0;
-          correctPercentage = 0;
-        }
-        // console.log(`DEBUG ${kana} ${correctPercentage} ${hintedPercentage}`);
         return (
           <Grid item key={idx}>
             <SmallChar

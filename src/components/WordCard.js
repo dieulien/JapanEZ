@@ -41,7 +41,7 @@ export default function OutlinedCard({ wordInfo, word_audio_duration }) {
   };
 
   return (
-    <Card className={classes.root}>
+    <Card className={`${classes.root} word-card `}>
       <CardContent>
         <Typography
           className={classes.title}
