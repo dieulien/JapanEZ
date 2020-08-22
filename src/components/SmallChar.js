@@ -1,15 +1,12 @@
 import React from "react";
-import "../scss/containers/App.scss";
 import "../scss/components/SmallChar.scss";
 import { makeStyles } from "@material-ui/core/styles";
-import zIndex from "@material-ui/core/styles/zIndex";
 
 // links below shows how to transition between gradient background
 // https://medium.com/@dave_lunny/animating-css-gradients-using-only-css-d2fd7671e759
 
 const useStyles = makeStyles({
   tinyCard: {
-    userSelect: "none",
     cursor: "pointer",
     background: (props) => {
       return props.correctPercent === 0 && props.hintedPercent === 0
@@ -59,7 +56,7 @@ function SmallChar(props) {
   const classes = useStyles(props);
 
   return (
-    <div className={`${classes.tinyCard}`}>
+    <div className={`${classes.tinyCard} noselect`}>
       <b>{props.char}</b>
     </div>
   );
