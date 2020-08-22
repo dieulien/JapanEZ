@@ -71,7 +71,7 @@ const katakanaHint = {
     imageLink:
       "https://s3.amazonaws.com/image.japanesereading.com/%E3%82%A8.jpg",
     shortHint:
-      "Imagine this is the girders an <u>e</u> engineer would use to build buildings",
+      "Imagine this is the girders an <u>e</u>ngineer would use to build buildings",
   },
   オ: {
     imageLink:

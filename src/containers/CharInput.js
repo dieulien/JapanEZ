@@ -109,6 +109,8 @@ class CharInput extends React.Component {
       return {
         char: item.char,
         score_delta: score_delta,
+        result_type: item.type,
+        result_time: item.time,
       };
     });
   };
