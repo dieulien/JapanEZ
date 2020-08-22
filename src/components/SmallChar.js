@@ -1,11 +1,16 @@
 import React from "react";
 import "../scss/components/SmallChar.scss";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
+import Popover from "@material-ui/core/Popover";
+import Typography from "@material-ui/core/Typography";
 
 // links below shows how to transition between gradient background
 // https://medium.com/@dave_lunny/animating-css-gradients-using-only-css-d2fd7671e759
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
+  typography: {
+    padding: theme.spacing(2),
+  },
   tinyCard: {
     cursor: "pointer",
     background: (props) => {
@@ -50,14 +55,50 @@ const useStyles = makeStyles({
     "0%": { background: "white" },
     "100%": { background: "#d6d6d6" },
   },
-});
+}));
 
 function SmallChar(props) {
   const classes = useStyles(props);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
 
   return (
-    <div className={`${classes.tinyCard} noselect`}>
-      <b>{props.char}</b>
+    <div>
+      <div
+        className={`${classes.tinyCard} noselect`}
+        id={id}
+        onClick={handleClick}
+      >
+        <b>{props.char}</b>
+      </div>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <Typography className={classes.typography}>
+          {`${props.correctNum} correct, ${props.hintedNum} hinted`}
+        </Typography>
+      </Popover>
     </div>
   );
 }

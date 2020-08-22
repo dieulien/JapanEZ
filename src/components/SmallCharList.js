@@ -45,6 +45,17 @@ class SmallCharList extends React.Component {
     return Math.round((total_correct / resultList.length) * 100);
   };
 
+  computeCorrectNum = (resultList) => {
+    return resultList.length === 0
+      ? 0
+      : resultList.reduce((acc, val) => {
+          if (val === "correct") {
+            acc += 1;
+          }
+          return acc;
+        }, 0);
+  };
+
   render() {
     if (Object.keys(this.state.charResultList).length === 0) {
       return <div>Fetching Data...</div>;
@@ -53,6 +64,13 @@ class SmallCharList extends React.Component {
       if (kana !== "clearBuffer") {
         var correctPercentage = 0;
         var hintedPercentage = 0;
+        console.log("LIST", this.state.charResultList[kana]);
+        var correctNum = this.computeCorrectNum(
+          this.state.charResultList[kana]
+        );
+        console.log("correct", correctNum);
+        var hintedNum = this.state.charResultList[kana].length - correctNum;
+
         if (Object.keys(this.state.charResultList).length > 0) {
           correctPercentage = this.computeCorrectPercentage(
             this.state.charResultList[kana]
@@ -70,6 +88,8 @@ class SmallCharList extends React.Component {
               key={idx}
               hintedPercent={hintedPercentage}
               correctPercent={correctPercentage}
+              correctNum={correctNum}
+              hintedNum={hintedNum}
             />
           </Grid>
         );
