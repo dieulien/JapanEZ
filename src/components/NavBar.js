@@ -33,6 +33,20 @@ const NavBar = ({ onRouteChange }) => {
           <Button
             style={{ color: "white" }}
             color="inherit"
+            onClick={() => onRouteChange("home")}
+          >
+            Home
+          </Button>
+          <Button
+            style={{ color: "white" }}
+            color="inherit"
+            onClick={() => onRouteChange("progress")}
+          >
+            Progress
+          </Button>
+          <Button
+            style={{ color: "white" }}
+            color="inherit"
             onClick={() => onRouteChange("signin")}
           >
             Signout

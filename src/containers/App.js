@@ -1,16 +1,18 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import CharList from "./CharList.js";
+import CharList from "./CharList";
 import CharInput from "./CharInput";
 import NavBar from "../components/NavBar";
 import Hint from "../components/Hint";
 import { Grid, Paper } from "@material-ui/core";
-import { katakanaToRomaji } from "../jap-char.js";
+import { katakanaToRomaji } from "../jap-char";
 import Signin from "../components/Signin";
 import Register from "../components/Register";
 import WordCard from "../components/WordCard";
 import OutsideAlerter from "../components/OutsideAlerter";
 import Footer from "../components/Footer";
+import PieChartComponent from "../components/PieChartComponent";
+import SmallCharList from "../components/SmallCharList";
 import "../scss/containers/App.scss";
 import { updateChar, updateWord, resetStore } from "../actions";
 import {
@@ -280,6 +282,13 @@ class App extends Component {
 
   renderRoute = (route) => {
     switch (route) {
+      case "progress":
+        return (
+          <div>
+            <NavBar onRouteChange={this.onRouteChange} />
+            <SmallCharList />
+          </div>
+        );
       case "signin":
         return (
           <Signin onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
