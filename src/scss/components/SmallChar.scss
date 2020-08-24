@@ -1,14 +1,17 @@
 @import "../variables.scss";
 
-.small-card {
-  border-radius: 0.75rem;
-  font-size: 3rem;
-  padding: 1rem;
-  color: white;
-  // height: 7rem;
-  // text-align: center;
-  // margin: auto;
-  // background: linear-gradient(0deg, green 50%, #f2b50c 50%);
+.dot {
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.correct-color {
+  background: $correct-color;
+}
+.hinted-color {
+  background: $hinted-color;
 }
 
 .noselect {
@@ -18,4 +21,47 @@
   -moz-user-select: none; /* Old versions of Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none;
+}
+
+.flipcard-front {
+  font-size: 40px;
+  padding-top: 18px;
+}
+
+.flipcard-back {
+  font-size: 1rem;
+  transform: rotateY(180deg);
+  background: $primary-color;
+}
+
+.flipcard-front,
+.flipcard-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  color: white;
+  backface-visibility: hidden;
+  border-radius: 15px;
+}
+
+.flipcard {
+  width: 70px;
+  height: 80px;
+  text-align: center;
+  cursor: pointer;
+  perspective: 300px;
+}
+
+.flipcard-content {
+  position: relative;
+  transition: transform 1s;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transform-style: preserve-3d;
+  border-radius: 1rem;
+}
+
+.flipcard:hover .flipcard-content {
+  transform: rotateY(180deg);
 }

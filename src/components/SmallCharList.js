@@ -3,6 +3,7 @@ import SmallChar from "../components/SmallChar.js";
 import { Grid } from "@material-ui/core";
 import { katakanaToRomaji } from "../jap-char";
 import { GETCHARSCORE_URL } from "../constants";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 class SmallCharList extends React.Component {
   constructor(props) {
@@ -58,7 +59,12 @@ class SmallCharList extends React.Component {
 
   render() {
     if (Object.keys(this.state.charResultList).length === 0) {
-      return <div>Fetching Data...</div>;
+      return (
+        <div>
+          <div>Fetching Data...</div>
+          <CircularProgress />
+        </div>
+      );
     }
     const charsArrayDisplay = Object.keys(katakanaToRomaji).map((kana, idx) => {
       if (kana !== "clearBuffer") {

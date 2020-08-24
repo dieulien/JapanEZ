@@ -12,52 +12,23 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
   },
   tinyCard: {
-    cursor: "pointer",
     background: (props) => {
       return props.correctPercent === 0 && props.hintedPercent === 0
         ? "#d6d6d6"
         : `linear-gradient(0deg, green 0% ${props.correctPercent}%, #f2b50c ${props.correctPercent}% ${props.hintedPercent}%)`;
     },
-    borderRadius: "0.75rem",
-    fontSize: "3rem",
-    padding: "1rem",
-    color: "white",
-    zIndex: 100,
-    position: "relative",
-    display: "inline-block",
-    // animation: `$myEffect 1s`,
-    // animationFillMode: "forwards",
-    "&:before": {
-      background: "#1cb0f6",
-      borderRadius: "inherit",
-      opacity: 0,
-      zIndex: -100,
-      transition: "opacity 1s",
-      width: "100%",
-      top: 0,
-      left: 0,
-      position: "absolute",
-      height: "100%",
-      display: "block",
-      content: '""',
-    },
-    "&:hover": {
-      opacity: 0.8,
-      // "&:before": {
-      //   opacity: 1,
-      // },
-    },
-    "&:active": {
-      transform: "scale(1.05)",
-    },
   },
-  "@keyframes myEffect": {
-    "0%": { background: "white" },
-    "100%": { background: "#d6d6d6" },
+  cardBG: {
+    background: (props) => {
+      return props.correctPercent === 0 && props.hintedPercent === 0
+        ? "#d6d6d6"
+        : `linear-gradient(0deg, green 0% ${props.correctPercent}%, #f2b50c ${props.correctPercent}% ${props.hintedPercent}%)`;
+    },
   },
 }));
 
 function SmallChar(props) {
+  const { char, correctNum, hintedNum } = props;
   const classes = useStyles(props);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -74,13 +45,22 @@ function SmallChar(props) {
 
   return (
     <div>
-      <div
-        className={`${classes.tinyCard} noselect`}
-        id={id}
-        onClick={handleClick}
-      >
-        <b>{props.char}</b>
+      <div className={`noselect flipcard`} id={id} onClick={handleClick}>
+        <div className="flipcard-content">
+          <div className={`flipcard-front ${classes.cardBG}`}>
+            <b>{char}</b>
+          </div>
+          <div className="flipcard-back">
+            <p>
+              {correctNum} <span className="dot correct-color"></span>
+            </p>
+            <p>
+              {hintedNum} <span className="dot hinted-color"></span>
+            </p>
+          </div>
+        </div>
       </div>
+
       <Popover
         id={id}
         open={open}
@@ -96,7 +76,7 @@ function SmallChar(props) {
         }}
       >
         <Typography className={classes.typography}>
-          {`${props.correctNum} correct, ${props.hintedNum} hinted`}
+          {`${correctNum} correct, ${hintedNum} hinted`}
         </Typography>
       </Popover>
     </div>

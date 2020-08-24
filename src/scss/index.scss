@@ -12,6 +12,7 @@ body {
   color: $grayish-color;
   overflow-x: hidden; /* hide horizontal overflow */
   overflow-y: scroll;
+  // width: calc(100vw - 0px);
 }
 
 code {
