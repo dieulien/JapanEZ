@@ -64,7 +64,7 @@ const katakanaHint = {
   ウ: {
     romaji: "u",
     imageLink:
-      "https://s3.amazonaws.com/image.japanesereading.com/%E3%82%AB.jpg",
+      "https://s3.amazonaws.com/image.japanesereading.com/%E3%82%A6.jpg",
     shortHint: "ウ looks like う (u)",
   },
   エ: {
