@@ -5,15 +5,11 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Music from "./Music";
 import { MEDIA_BASE_URL_SENTENCE, MEDIA_BASE_URL_WORD } from "../constants";
+import "../scss/components/WordCard.scss";
 
 const useStyles = makeStyles({
   root: {
     minWidth: 275,
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
   },
   title: {
     fontSize: 14,
@@ -48,10 +44,12 @@ export default function OutlinedCard({ wordInfo, word_audio_duration }) {
           color="textSecondary"
           gutterBottom
         >
-          Word Meaning
+          <div className="wordcard-subtext">Word Meaning</div>
         </Typography>
         <Typography variant="h5" component="h2">
-          {wordInfo.vocab_meaning} ({wordInfo.vocab_pos})
+          <div className="wordcard-text">
+            {wordInfo.vocab_meaning} ({wordInfo.vocab_pos})
+          </div>
           <Music
             audioLink={`${MEDIA_BASE_URL_WORD}${parseAudio(
               wordInfo.vocab_sound_local
@@ -60,21 +58,21 @@ export default function OutlinedCard({ wordInfo, word_audio_duration }) {
             noStoreUpdateWhenEnded={true}
           />
         </Typography>
-        <br></br>
-
         <Typography
           className={classes.title}
           color="textSecondary"
           gutterBottom
         >
-          Sample Sentence
+          <div className="wordcard-subtext">Sample Sentence</div>
         </Typography>
         <Typography variant="h5" component="h2">
-          {sentenceSegments[0]}
-          <b>
-            <u>{sentenceSegments[1]}</u>
-          </b>
-          {sentenceSegments[2]}
+          <div className="wordcard-text">
+            {sentenceSegments[0]}
+            <b>
+              <u>{sentenceSegments[1]}</u>
+            </b>
+            {sentenceSegments[2]}
+          </div>
           <Music
             audioLink={`${MEDIA_BASE_URL_SENTENCE}${parseAudio(
               wordInfo.sentence_sound_local
@@ -83,17 +81,17 @@ export default function OutlinedCard({ wordInfo, word_audio_duration }) {
             noStoreUpdateWhenEnded={false}
           />
         </Typography>
-        <br></br>
-
         <Typography
           className={classes.title}
           color="textSecondary"
           gutterBottom
         >
-          Sentence Meaning
+          <div className="wordcard-subtext">Sentence Meaning</div>
         </Typography>
         <Typography variant="body2" component="p">
-          {wordInfo.sentence_meaning}
+          <div style={{ fontSize: "calc(12px + 0.4vh)" }}>
+            {wordInfo.sentence_meaning}
+          </div>
         </Typography>
       </CardContent>
     </Card>

@@ -1,0 +1,13 @@
+.hint-card {
+  min-height: calc(30vh);
+  padding: 2vh;
+}
+
+.hint-card-image {
+  height: calc(75px + 10vh);
+}
+
+.hint-text {
+  font-size: calc(12px + 0.4vh);
+  padding-bottom: calc(10px + 0.5vh);
+}

@@ -3,6 +3,7 @@ import React from "react";
 import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
 import { onAudioPlay, onAudioPause } from "../actions";
+import "../scss/components/Music.scss";
 
 const mapStateToProps = (state) => {
   return {
@@ -86,15 +87,23 @@ class Music extends React.Component {
   };
 
   render() {
+    const buttonStyle = {
+      color: "#ffffff",
+      maxHeight: "30px",
+      fontSize: "1vh",
+    };
     return (
       <div>
         <Button
           variant="contained"
           color="primary"
           onClick={this.togglePlay}
-          style={{ color: "#ffffff" }}
+          className="music-button"
+          // style={buttonStyle}
         >
-          {this.state.play ? "Pause Audio" : "Play Audio"}
+          <div className="button-text">
+            {this.state.play ? "Pause Audio" : "Play Audio"}
+          </div>
         </Button>
       </div>
     );

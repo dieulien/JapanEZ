@@ -11,7 +11,7 @@ import Register from "../components/Register";
 import WordCard from "../components/WordCard";
 import OutsideAlerter from "../components/OutsideAlerter";
 import Footer from "../components/Footer";
-import PieChartComponent from "../components/PieChartComponent";
+import WelcomeBar from "../components/WelcomeBar";
 import SmallCharList from "../components/SmallCharList";
 import "../scss/containers/App.scss";
 import { updateChar, updateWord, resetStore } from "../actions";
@@ -312,24 +312,7 @@ class App extends Component {
           <div className="page-container" style={{ position: "relative" }}>
             <div className="content-wrap">
               <NavBar onRouteChange={this.onRouteChange} />
-              <div
-                className="tmw5 center bg-white br3 pa1 ma1 ba b--black-10 tl"
-                style={{ color: "#5D5D5D" }}
-              >
-                <Paper elevation={0} />
-                <p>Welcome, {this.state.userInfo.name}! </p>
-                <ul>
-                  <li>
-                    Press SPACE to learn the character in the highlighted card
-                  </li>
-                  <li>
-                    Type the character as fast as you can if you've already
-                    known the character
-                  </li>
-                </ul>
-              </div>
-              <br />
-
+              <WelcomeBar userName={this.state.userInfo.name} />
               <Grid
                 container
                 direction="column"
@@ -371,8 +354,6 @@ class App extends Component {
                       <Paper elevation={1} />
                       {this.showHint()}
                     </Grid>
-                    <br />
-
                     <Grid item>{this.displayWordInfo()}</Grid>
                   </Grid>
                 </Grid>

@@ -16,7 +16,7 @@ const Footer = () => {
       </div>
       <hr />
       <div className="copyright">
-        <small>Copyright © 2020 Tuan Le, Lien Tran. All Rights Reserved</small>
+        <small>Copyright © 2020 Tuan Le, Lien Tran. All Rights Reserved.</small>
       </div>
 
       {/* uncomment below for 2nd layout */}

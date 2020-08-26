@@ -1,11 +1,16 @@
 @import "../variables.scss";
 
 .char {
-  font-size: 5em;
+  font-size: calc(30px + 3vh);
+  margin: 0;
 }
 
 .card {
-  border: 2px solid $card-border-neutral-color;
+  border: $card-border-thickness solid $card-border-neutral-color;
+  border-radius: calc(10px + 1vh);
+  padding: 2vh;
+  margin-top: 3vh;
+  margin-bottom: 1vh;
 }
 
 .card-button {
@@ -29,7 +34,7 @@
 
 .incorrect {
   color: $incorrect-color !important;
-  border: 2px solid $incorrect-color !important;
+  border: $card-border-thickness solid $incorrect-color !important;
   box-shadow: 0 0 10px $incorrect-color !important;
 }
 
@@ -38,19 +43,13 @@
 }
 
 .highlighted {
-  border: 2px solid $primary-color;
+  border: $card-border-thickness solid $primary-color;
   color: $primary-color;
-  box-shadow: 0 0 10px $primary-color; // glow-effect
-}
-
-.hovered {
-  cursor: pointer;
-  background-color: $card-background-hovered-color;
-  opacity: 1 !important;
+  // box-shadow: 0 0 10px $primary-color; // uncomment for glow-effect
 }
 
 .clicked {
-  border: 2px solid $primary-color;
+  border: $card-border-thickness solid $primary-color;
   background-color: $card-background-highlight-color !important;
   color: $primary-color !important;
   box-shadow: 0 $card-shadow-depth $primary-color !important;

@@ -4,6 +4,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import "../scss/components/NavBar.scss";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,30 +27,21 @@ const NavBar = ({ onRouteChange }) => {
             color="inherit"
             className={classes.title}
             align="left"
-            style={{ color: "white" }}
           >
-            Japanese vs. English words
+            <div className="navbar-title">Japanese vs. English words</div>
           </Typography>
-          <Button
-            style={{ color: "white" }}
-            color="inherit"
-            onClick={() => onRouteChange("home")}
-          >
-            Home
+          <Button color="inherit" onClick={() => onRouteChange("home")}>
+            <div className="navbar-button-text">Home</div>
+          </Button>
+          <Button color="inherit" onClick={() => onRouteChange("progress")}>
+            <div className="navbar-button-text">Progress</div>
           </Button>
           <Button
-            style={{ color: "white" }}
-            color="inherit"
-            onClick={() => onRouteChange("progress")}
-          >
-            Progress
-          </Button>
-          <Button
-            style={{ color: "white" }}
             color="inherit"
             onClick={() => onRouteChange("signin")}
+            className="nav-button"
           >
-            Signout
+            <div className="navbar-button-text">Signout</div>
           </Button>
         </Toolbar>
       </AppBar>
