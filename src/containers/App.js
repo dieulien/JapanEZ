@@ -318,7 +318,6 @@ class App extends Component {
                 direction="column"
                 justify="center"
                 alignItems="center"
-                style={{ paddingBottom: "100px" }}
               >
                 <Paper elevation={0} />
                 <OutsideAlerter focusInputBox={this.focusInputBox}>
