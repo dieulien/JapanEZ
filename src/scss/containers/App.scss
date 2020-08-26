@@ -1,12 +1,13 @@
 .page-container {
   display: flex;
   flex-direction: column;
-  height: calc(110vh); /* works better than 100vh */
+  height: calc(100vh); /* works better than 100vh */
   // width: calc(100vw - 15px);
 }
 
 .content-wrap {
   flex: 1;
+  padding-bottom: 0px;
 }
 
 .progress-flex-container {
