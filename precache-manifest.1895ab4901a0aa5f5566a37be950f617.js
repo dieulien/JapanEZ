@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "3eac5a11f94c3dc87a423c0c76115288",
+    "revision": "246318c5ebba0e553d8a815ae5259e83",
     "url": "/japanese-reading/index.html"
   },
   {
-    "revision": "1ec59e4f58426f80dfd9",
+    "revision": "9da967af723592d0bc20",
     "url": "/japanese-reading/static/css/2.f69951cd.chunk.css"
   },
   {
-    "revision": "decef1fca936049b5fa9",
-    "url": "/japanese-reading/static/css/main.d19f5feb.chunk.css"
+    "revision": "8287bba3e451c3a0c3c0",
+    "url": "/japanese-reading/static/css/main.bc485558.chunk.css"
   },
   {
-    "revision": "1ec59e4f58426f80dfd9",
-    "url": "/japanese-reading/static/js/2.71a5b45b.chunk.js"
+    "revision": "9da967af723592d0bc20",
+    "url": "/japanese-reading/static/js/2.2014a600.chunk.js"
   },
   {
     "revision": "0749163b59fbee32225059cb60c18af6",
-    "url": "/japanese-reading/static/js/2.71a5b45b.chunk.js.LICENSE.txt"
+    "url": "/japanese-reading/static/js/2.2014a600.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "decef1fca936049b5fa9",
-    "url": "/japanese-reading/static/js/main.4b2f38a1.chunk.js"
+    "revision": "8287bba3e451c3a0c3c0",
+    "url": "/japanese-reading/static/js/main.6a59123c.chunk.js"
   },
   {
     "revision": "e302560d5cd9bb944f5b",
