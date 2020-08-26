@@ -1,6 +1,6 @@
 import React from "react";
 import "../scss/components/SmallChar.scss";
-import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Popover from "@material-ui/core/Popover";
 import Typography from "@material-ui/core/Typography";
 
@@ -10,13 +10,6 @@ import Typography from "@material-ui/core/Typography";
 const useStyles = makeStyles((theme) => ({
   typography: {
     padding: theme.spacing(2),
-  },
-  tinyCard: {
-    background: (props) => {
-      return props.correctPercent === 0 && props.hintedPercent === 0
-        ? "#d6d6d6"
-        : `linear-gradient(0deg, green 0% ${props.correctPercent}%, #f2b50c ${props.correctPercent}% ${props.hintedPercent}%)`;
-    },
   },
   cardBG: {
     background: (props) => {

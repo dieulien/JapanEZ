@@ -5,6 +5,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Music from "./Music";
 import { MEDIA_BASE_URL_SENTENCE, MEDIA_BASE_URL_WORD } from "../constants";
+import Divider from "@material-ui/core/Divider";
 import "../scss/components/WordCard.scss";
 
 const useStyles = makeStyles({
@@ -50,14 +51,15 @@ export default function OutlinedCard({ wordInfo, word_audio_duration }) {
           <div className="wordcard-text">
             {wordInfo.vocab_meaning} ({wordInfo.vocab_pos})
           </div>
-          <Music
-            audioLink={`${MEDIA_BASE_URL_WORD}${parseAudio(
-              wordInfo.vocab_sound_local
-            )}`}
-            delay={0}
-            noStoreUpdateWhenEnded={true}
-          />
         </Typography>
+        <Music
+          audioLink={`${MEDIA_BASE_URL_WORD}${parseAudio(
+            wordInfo.vocab_sound_local
+          )}`}
+          delay={0}
+          noStoreUpdateWhenEnded={true}
+        />
+        <Divider style={{ marginTop: "calc(5px + 0.5vh)" }} />
         <Typography
           className={classes.title}
           color="textSecondary"
@@ -68,19 +70,20 @@ export default function OutlinedCard({ wordInfo, word_audio_duration }) {
         <Typography variant="h5" component="h2">
           <div className="wordcard-text">
             {sentenceSegments[0]}
-            <b>
-              <u>{sentenceSegments[1]}</u>
-            </b>
+            <span className="vocab-word">
+              <b>{sentenceSegments[1]}</b>
+            </span>
             {sentenceSegments[2]}
           </div>
-          <Music
-            audioLink={`${MEDIA_BASE_URL_SENTENCE}${parseAudio(
-              wordInfo.sentence_sound_local
-            )}`}
-            delay={word_audio_duration * 1000 + 750}
-            noStoreUpdateWhenEnded={false}
-          />
         </Typography>
+        <Music
+          audioLink={`${MEDIA_BASE_URL_SENTENCE}${parseAudio(
+            wordInfo.sentence_sound_local
+          )}`}
+          delay={word_audio_duration * 1000 + 750}
+          noStoreUpdateWhenEnded={false}
+        />
+        <Divider style={{ marginTop: "calc(5px + 0.5vh)" }} />
         <Typography
           className={classes.title}
           color="textSecondary"

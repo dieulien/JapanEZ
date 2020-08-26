@@ -4,6 +4,7 @@ import { Grid } from "@material-ui/core";
 import { katakanaToRomaji } from "../jap-char";
 import { GETCHARSCORE_URL } from "../constants";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import "../scss/components/SmallChar.scss";
 
 class SmallCharList extends React.Component {
   constructor(props) {
@@ -99,19 +100,23 @@ class SmallCharList extends React.Component {
             />
           </Grid>
         );
+      } else {
+        return null;
       }
     });
 
     return (
-      <Grid
-        container
-        direction="row"
-        justify="center"
-        alignItems="center"
-        spacing="2"
-      >
-        {charsArrayDisplay}
-      </Grid>
+      <div className="characters-list">
+        <Grid
+          container
+          direction="row"
+          justify="center"
+          alignItems="center"
+          spacing="2"
+        >
+          {charsArrayDisplay}
+        </Grid>
+      </div>
     );
   }
 }

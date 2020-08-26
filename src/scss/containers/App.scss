@@ -1,7 +1,7 @@
 .page-container {
   display: flex;
   flex-direction: column;
-  height: calc(100vh); /* works better than 100vh */
+  height: calc(110vh); /* works better than 100vh */
   // width: calc(100vw - 15px);
 }
 
@@ -26,5 +26,5 @@
 }
 
 .word-card {
-  padding: 12px;
+  padding: 0 1vh 1vh 1vh;
 }

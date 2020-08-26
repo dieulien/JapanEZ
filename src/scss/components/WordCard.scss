@@ -1,9 +1,15 @@
+@import "../variables.scss";
+
 .wordcard-text {
   font-size: calc(10px + 1.5vh);
-  padding-bottom: 10px;
+  padding-bottom: calc(2px + 0.2vh);
 }
 
 .wordcard-subtext {
   font-size: calc(5px + 1vh);
-  padding-top: calc(5px + 1vh);
+  padding-top: calc(5px + 0.5vh);
+}
+
+.vocab-word {
+  color: $primary-color;
 }

@@ -28,9 +28,10 @@ class Hint extends React.Component {
           <img
             src={`${katakanaHint[this.props.currentHintedChar].imageLink}`}
             className={`hint-card-image`}
+            alt="Hint Card"
           />
         </div>
-        <CardContent>
+        <CardContent style={{ paddingTop: 0 }}>
           <Typography variant="body2" component="p">
             <div className="hint-text">
               {sentenceFragments[0]}

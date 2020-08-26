@@ -87,11 +87,6 @@ class Music extends React.Component {
   };
 
   render() {
-    const buttonStyle = {
-      color: "#ffffff",
-      maxHeight: "30px",
-      fontSize: "1vh",
-    };
     return (
       <div>
         <Button
@@ -99,7 +94,6 @@ class Music extends React.Component {
           color="primary"
           onClick={this.togglePlay}
           className="music-button"
-          // style={buttonStyle}
         >
           <div className="button-text">
             {this.state.play ? "Pause Audio" : "Play Audio"}
