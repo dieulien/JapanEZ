@@ -5,7 +5,7 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import { createLogger } from "redux-logger";
 import "./scss/index.scss";
 import * as serviceWorker from "./serviceWorker";
-import "tachyons";
+// import "tachyons"; // mess with material-ui Textfield
 import App from "./containers/App.js";
 import {
   changeGeneralState,

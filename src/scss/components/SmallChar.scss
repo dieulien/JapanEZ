@@ -1,5 +1,10 @@
 @import "../variables.scss";
 
+span {
+  display: table-cell;
+  vertical-align: middle;
+}
+
 .dot {
   height: 12px;
   width: 12px;
@@ -24,17 +29,21 @@
 }
 
 .flipcard-front {
+  display: table;
+  width: 75px;
+  height: 80px;
+  text-align: center;
   font-size: 40px;
-  padding-top: 18px;
   color: white;
 }
 
 .flipcard-back {
   font-size: 0.95rem;
-  transform: rotateY(180deg);
   background: white;
+  box-sizing: border-box; // make border inside of div on not on its edge
   border: 2px solid $primary-color;
   color: $primary-color;
+  transform: rotateY(180deg);
 }
 
 .flipcard-front,

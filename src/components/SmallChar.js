@@ -41,7 +41,9 @@ function SmallChar(props) {
       <div className={`noselect flipcard`} id={id} onClick={handleClick}>
         <div className="flipcard-content">
           <div className={`flipcard-front ${classes.cardBG}`}>
-            <b>{char}</b>
+            <span>
+              <b>{char}</b>
+            </span>
           </div>
           <div className="flipcard-back">
             <p>

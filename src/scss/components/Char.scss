@@ -8,9 +8,9 @@
 .card {
   border: $card-border-thickness solid $card-border-neutral-color;
   border-radius: calc(10px + 1vh);
-  padding: 2vh;
   margin-top: 3vh;
   margin-bottom: 1vh;
+  padding: calc(0px + 0.6vh) calc(6px + 1.2vh);
 }
 
 .card-button {
@@ -53,4 +53,12 @@
   background-color: $card-background-highlight-color !important;
   color: $primary-color !important;
   box-shadow: 0 $card-shadow-depth $primary-color !important;
+}
+
+.o-30 {
+  opacity: 0.3;
+}
+
+.o-100 {
+  opacity: 1;
 }

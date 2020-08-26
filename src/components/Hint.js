@@ -24,27 +24,29 @@ class Hint extends React.Component {
 
     return (
       <Card className={`hint-card`} onClick={this.onClickHandler}>
-        <div>
-          <img
-            src={`${katakanaHint[this.props.currentHintedChar].imageLink}`}
-            className={`hint-card-image`}
-            alt="Hint Card"
-          />
+        <div className="hint-card-content">
+          <div>
+            <img
+              src={`${katakanaHint[this.props.currentHintedChar].imageLink}`}
+              className={`hint-card-image`}
+              alt="Hint Card"
+            />
+          </div>
+          <CardContent style={{ paddingTop: 0, paddingBottom: 0 }}>
+            <Typography variant="body2" component="p">
+              <div className="hint-text">
+                {sentenceFragments[0]}
+                <u>{sentenceFragments[1]}</u>
+                {sentenceFragments[2]}
+              </div>
+            </Typography>
+            <Music
+              audioLink={audioLink}
+              delay={0}
+              noStoreUpdateWhenEnded={false}
+            />
+          </CardContent>
         </div>
-        <CardContent style={{ paddingTop: 0 }}>
-          <Typography variant="body2" component="p">
-            <div className="hint-text">
-              {sentenceFragments[0]}
-              <u>{sentenceFragments[1]}</u>
-              {sentenceFragments[2]}
-            </div>
-          </Typography>
-          <Music
-            audioLink={audioLink}
-            delay={0}
-            noStoreUpdateWhenEnded={false}
-          />
-        </CardContent>
       </Card>
     );
   }

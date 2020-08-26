@@ -4,10 +4,7 @@ import "../scss/components/WelcomeBar.scss";
 
 const WelcomeBar = ({ userName }) => {
   return (
-    <div
-      className="tmw5 center bg-white br3 pa1 ma1 ba b--black-10 tl"
-      style={{ color: "#5D5D5D" }}
-    >
+    <div className="container" style={{ color: "#5D5D5D" }}>
       <Paper elevation={0} />
       <div className="welcome-text">
         <p>Welcome, {userName}! </p>

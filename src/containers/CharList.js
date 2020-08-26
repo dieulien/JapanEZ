@@ -3,6 +3,7 @@ import Char from "../components/Char.js";
 import { Grid } from "@material-ui/core";
 import { connect } from "react-redux";
 import { setNewWordTime } from "../actions";
+import "../scss/components/Char.scss";
 
 const mapStateToProps = (state) => {
   return {
