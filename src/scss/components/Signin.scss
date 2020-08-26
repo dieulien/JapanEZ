@@ -1,0 +1,68 @@
+@import "../variables.scss";
+
+hr {
+  margin-left: 0;
+  margin-right: 0;
+  border: 2px solid red;
+}
+
+.flex-container {
+  background: $primary-color;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-container > div {
+  // border: 2px solid red; // debug
+}
+
+.signin-box {
+  height: 500px;
+  flex: 3;
+  display: flex;
+  justify-content: space-evenly;
+  width: 100vw;
+}
+
+.header {
+  color: white;
+  flex: 1;
+  align-self: center;
+  max-width: 40vw;
+}
+
+.title {
+  font-size: 40px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.subtitle {
+  font-size: 20px;
+  margin-top: 10px;
+}
+
+.signin {
+  flex: 0;
+}
+
+.info-panel {
+  background: white;
+  height: 50vh;
+  flex: 4;
+  color: #717475;
+}
+
+.flex-container-inner {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-evenly;
+}
+
+.flex-container-inner > div {
+  // border: 1px solid green; // debug
+}

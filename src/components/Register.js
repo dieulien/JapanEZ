@@ -16,7 +16,7 @@ const useStyles = (theme) => ({
     backfround: "white",
   },
   paper: {
-    marginTop: theme.spacing(4),
+    marginTop: theme.spacing(5),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -155,7 +155,6 @@ class Register extends React.Component {
                 id="name"
                 label="Your Name"
                 autoFocus
-                required
                 fullWidth
                 onChange={this.onNameInput}
               />
@@ -164,7 +163,6 @@ class Register extends React.Component {
                 helperText={emailErrorMsg}
                 variant="outlined"
                 margin="normal"
-                required
                 fullWidth
                 id="email"
                 label="Email Address"
@@ -177,7 +175,6 @@ class Register extends React.Component {
                 helperText={passwordErrorMsg}
                 variant="outlined"
                 margin="normal"
-                required
                 fullWidth
                 name="password"
                 label="Password"
@@ -204,12 +201,13 @@ class Register extends React.Component {
                 justify="center"
               >
                 <Grid item>
+                  {"Already registered? "}
                   <Link
                     component="button"
                     variant="body2"
                     onClick={() => this.props.onRouteChange("signin")}
                   >
-                    {"Already registered? Sign In"}
+                    {"Sign In"}
                   </Link>
                 </Grid>
               </Grid>
