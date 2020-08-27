@@ -159,7 +159,7 @@ class Signin extends React.Component {
                       label="Email Address"
                       name="email"
                       autoComplete="email"
-                      autoFocus
+                      // autoFocus
                       onChange={this.onEmailInput}
                     />
                     <TextField

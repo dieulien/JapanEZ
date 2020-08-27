@@ -9,6 +9,8 @@ import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import { withStyles } from "@material-ui/core/styles";
 import { REGISTER_URL } from "../constants";
+import "../scss/components/Signin.scss";
+import Divider from "@material-ui/core/Divider";
 
 const useStyles = (theme) => ({
   container: {
@@ -140,81 +142,135 @@ class Register extends React.Component {
     const { classes } = this.props;
     const { nameErrorMsg, emailErrorMsg, passwordErrorMsg } = this.state;
     return (
-      <Paper className={classes.paper2}>
-        <Container component="main" maxWidth="xs" className={classes.container}>
-          <CssBaseline />
-          <div className={classes.paper}>
-            <Typography component="h1" variant="h5">
-              Register
-            </Typography>
-            <form className={classes.form} noValidate>
-              <TextField
-                error={nameErrorMsg}
-                helperText={nameErrorMsg}
-                variant="outlined"
-                id="name"
-                label="Your Name"
-                autoFocus
-                fullWidth
-                onChange={this.onNameInput}
-              />
-              <TextField
-                error={emailErrorMsg}
-                helperText={emailErrorMsg}
-                variant="outlined"
-                margin="normal"
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                onChange={this.onEmailInput}
-              />
-              <TextField
-                error={passwordErrorMsg}
-                helperText={passwordErrorMsg}
-                variant="outlined"
-                margin="normal"
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                onChange={this.onPasswordInput}
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={this.onFormSubmit}
-                style={{ color: "#ffffff" }}
-              >
-                Register
-              </Button>
-              <Grid
-                container
-                alignItems="center"
-                direction="column"
-                justify="center"
-              >
-                <Grid item>
-                  {"Already registered? "}
-                  <Link
-                    component="button"
-                    variant="body2"
-                    onClick={() => this.props.onRouteChange("signin")}
-                  >
-                    {"Sign In"}
-                  </Link>
-                </Grid>
-              </Grid>
-            </form>
+      <div className="flex-container">
+        <div className="signin-box">
+          <div className="header">
+            <h1 className="title">JapanEZ</h1>
+            <p className="subtitle">
+              Learn Japanese Katakana as you explore English-like Japanese words
+            </p>
           </div>
-        </Container>
-      </Paper>
+          <div className="signin">
+            <Paper className={classes.paper2}>
+              <Container
+                component="main"
+                maxWidth="xs"
+                className={classes.container}
+              >
+                <CssBaseline />
+                <div className={classes.paper}>
+                  <Typography component="h1" variant="h5">
+                    Register
+                  </Typography>
+                  <form className={classes.form} noValidate>
+                    <TextField
+                      error={nameErrorMsg}
+                      helperText={nameErrorMsg}
+                      variant="outlined"
+                      id="name"
+                      label="Your Name"
+                      // autoFocus
+                      fullWidth
+                      onChange={this.onNameInput}
+                    />
+                    <TextField
+                      error={emailErrorMsg}
+                      helperText={emailErrorMsg}
+                      variant="outlined"
+                      margin="normal"
+                      fullWidth
+                      id="email"
+                      label="Email Address"
+                      name="email"
+                      autoComplete="email"
+                      onChange={this.onEmailInput}
+                    />
+                    <TextField
+                      error={passwordErrorMsg}
+                      helperText={passwordErrorMsg}
+                      variant="outlined"
+                      margin="normal"
+                      fullWidth
+                      name="password"
+                      label="Password"
+                      type="password"
+                      id="password"
+                      autoComplete="current-password"
+                      onChange={this.onPasswordInput}
+                    />
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      className={classes.submit}
+                      onClick={this.onFormSubmit}
+                      style={{ color: "#ffffff" }}
+                    >
+                      Register
+                    </Button>
+                    <Grid
+                      container
+                      alignItems="center"
+                      direction="column"
+                      justify="center"
+                    >
+                      <Grid item>
+                        {"Already registered? "}
+                        <Link
+                          component="button"
+                          variant="body2"
+                          onClick={() => this.props.onRouteChange("signin")}
+                        >
+                          {"Sign In"}
+                        </Link>
+                      </Grid>
+                    </Grid>
+                  </form>
+                </div>
+              </Container>
+            </Paper>
+          </div>
+        </div>
+        <div className="info-panel">
+          <div className="flex-container-inner">
+            <div>
+              <h2>Tailored to your learning progress</h2>
+              <p>
+                Assesses your progress as you use the tool, and gives you the
+                right content to learn. Either you've just started out or you've
+                been learning for a while, the tool helps you master Katakana in
+                an effective way.
+              </p>
+            </div>
+            <Divider />
+            <div>
+              <h2>Built-in mnemonics and smart feedback</h2>
+              <p>Built-in mnemonics and smart feedback</p>
+              <p>
+                Receive contextual feedback when you input the wrong character.
+              </p>
+            </div>
+            <Divider />
+            <div>
+              <h2>Words that sound like English</h2>
+              <p>
+                Such as kisu (kiss), in'teru (intelligent). You'd be surprised
+                how much Japanese you've already "known".
+              </p>
+            </div>
+            <Divider />
+            <div>
+              <h2>Learn real common Japanese words</h2>
+              <p>
+                You can listen to audio from native speakers. This helps you
+                compare and contrast the pronunciation of Japanese and English.
+                You can also see and hear how a word appears in a sentence.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 }
