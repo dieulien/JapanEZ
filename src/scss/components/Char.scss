@@ -35,7 +35,7 @@
 .incorrect {
   color: $incorrect-color !important;
   border: $card-border-thickness solid $incorrect-color !important;
-  box-shadow: 0 0 10px $incorrect-color !important;
+  // box-shadow: 0 0 10px $incorrect-color !important; // uncomment for glow-effect
 }
 
 .hinted {
@@ -57,6 +57,10 @@
 
 .o-30 {
   opacity: 0.3;
+}
+
+.o-60 {
+  opacity: 0.6;
 }
 
 .o-100 {

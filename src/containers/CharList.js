@@ -64,7 +64,9 @@ class CharList extends React.Component {
     if (idx === indexCurrentCard) {
       className = className.concat(` highlighted `);
     } else {
-      className = className.concat(onHintedCard ? ` o-30 ` : ` o-100 `);
+      className = className.concat(
+        onHintedCard ? ` o-30 ` : wordCompleted ? "" : ` o-60 `
+      );
     }
     var cardState = cardStateList[idx];
     className = className.concat(` ${cardState} `);
