@@ -19,7 +19,7 @@ class Hint extends React.Component {
     const sentenceFragments = parseoutUnderlineText(
       katakanaHint[this.props.currentHintedChar].shortHint
     );
-    const modified_romaji = romaji === "nn" ? "n" : romaji;
+    const modified_romaji = romaji === "n'" ? "n" : romaji;
     const audioLink = MEDIA_BASE_URL_CHAR + modified_romaji + ".mp3";
 
     return (

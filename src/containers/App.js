@@ -33,6 +33,7 @@ const mapStateToProps = (state) => {
     charTimestamp: state.changeCardState.charTimestamp,
     audioIsPlaying: state.changeGeneralState.audioIsPlaying,
     indexCurrentCard: state.changeCardState.indexCurrentCard,
+    romajiNotInDict: state.changeInputBox.romajiNotInDict,
   };
 };
 
@@ -229,6 +230,10 @@ class App extends Component {
     }
   };
 
+  getKeyByValue = (object, value) => {
+    return Object.keys(object).find((key) => object[key] === value);
+  };
+
   displayMessage = () => {
     const {
       onIncorrectCard,
@@ -236,6 +241,8 @@ class App extends Component {
       onHintedCard,
       wordCompleted,
       audioIsPlaying,
+      romajiNotInDict,
+      currentJapChar,
     } = this.props;
     if (audioIsPlaying) {
       return (
@@ -248,7 +255,14 @@ class App extends Component {
       return (
         <div>
           <p>
-            <b>{`This character is not "${curWrongChar}"`}</b>
+            <b>
+              {romajiNotInDict
+                ? `The romaji '${curWrongChar}' does not exist`
+                : `The romaji '${curWrongChar}' corresponds to ${this.getKeyByValue(
+                    katakanaToRomaji,
+                    curWrongChar
+                  )}, not ${currentJapChar}`}
+            </b>
           </p>
           <p>
             <b>press SPACE to try again</b>

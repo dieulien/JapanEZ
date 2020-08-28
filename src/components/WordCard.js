@@ -70,9 +70,7 @@ export default function OutlinedCard({ wordInfo, word_audio_duration }) {
         <Typography variant="h5" component="h2">
           <div className="wordcard-text">
             {sentenceSegments[0]}
-            <span className="vocab-word">
-              <b>{sentenceSegments[1]}</b>
-            </span>
+            <b className="vocab-word">{sentenceSegments[1]}</b>
             {sentenceSegments[2]}
           </div>
         </Typography>

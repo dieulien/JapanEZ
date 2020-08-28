@@ -16,6 +16,8 @@ import {
   updateChar,
   updateWord,
   completeWord,
+  alertRomajiNotInDict,
+  resetRomajiNotInDictAlert,
 } from "../actions";
 
 const mapStatestoProps = (state) => {
@@ -69,6 +71,12 @@ const mapDispatchToProps = (dispatch) => {
     onWordCompletion: () => {
       dispatch(completeWord());
     },
+    alertRomajiNotInDict: () => {
+      dispatch(alertRomajiNotInDict());
+    },
+    resetRomajiNotInDictAlert: () => {
+      dispatch(resetRomajiNotInDictAlert());
+    },
   };
 };
 
@@ -78,7 +86,8 @@ class CharInput extends React.Component {
     this.formRef = React.createRef();
     this.inputChecker = new SpellCheckerBuffer(
       katakanaToRomaji,
-      this.checkFunction
+      this.checkFunction,
+      this.props.alertRomajiNotInDict
     );
   }
 
@@ -126,7 +135,7 @@ class CharInput extends React.Component {
       setCurrentChar,
       onCompleteChar,
     } = this.props;
-
+    console.log("checking", char);
     if (char === romajiList[indexCurrentCard]) {
       onCorrectChar();
       onCompleteChar(Date.now(), "correct");
@@ -165,6 +174,7 @@ class CharInput extends React.Component {
       audioIsPlaying,
       user_uid,
       cardStateList,
+      resetRomajiNotInDictAlert,
     } = this.props;
 
     // disable input
@@ -187,8 +197,7 @@ class CharInput extends React.Component {
 
     // keycode 65 to 90 represents a-z
     if (
-      event.which >= 65 &&
-      event.which <= 90 &&
+      ((event.which >= 65 && event.which <= 90) || event.which === 222) &&
       !onIncorrectCard &&
       !wordCompleted &&
       !onHintedCard
@@ -209,6 +218,7 @@ class CharInput extends React.Component {
           );
           onInputBoxChange(event);
           onSpacePress("CONTINUE_AFTER_ERROR");
+          resetRomajiNotInDictAlert();
         } else if (!onIncorrectCard && !onHintedCard && !wordCompleted) {
           // ask for hint
           onSpacePress("REQUEST_HINT");

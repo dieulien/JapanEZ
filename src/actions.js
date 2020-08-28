@@ -123,3 +123,15 @@ export const resetStore = () => {
     type: "RESET_STORE",
   };
 };
+
+export const alertRomajiNotInDict = () => {
+  return {
+    type: "ALERT_NOT_IN_DICT",
+  };
+};
+
+export const resetRomajiNotInDictAlert = () => {
+  return {
+    type: "RESET_NOT_IN_DICT_ALERT",
+  };
+};

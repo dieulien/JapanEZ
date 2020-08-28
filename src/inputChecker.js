@@ -10,7 +10,7 @@ const katakanaToRomaji = {
   ウ: "u",
   エ: "e",
   オ: "o",
-  ン: "nn",
+  ン: "n'",
   カ: "ka",
   キ: "ki",
   ク: "ku",
@@ -191,11 +191,12 @@ function findAllWords(node, arr) {
 //console.log(trie.find("hell")); // [ 'hello' ]
 
 class SpellCheckerBuffer {
-  constructor(charAndRomaji, checkFunction) {
+  constructor(charAndRomaji, checkFunction, wordNotInDictAlert) {
     this.dict = charAndRomaji;
     this.checkFunction = checkFunction;
     this.buffer = "";
     this.charTrie = new Trie();
+    this.wordNotInDictAlert = wordNotInDictAlert;
     Object.values(this.dict).forEach((element) => {
       this.charTrie.insert(element);
     });
@@ -208,11 +209,14 @@ class SpellCheckerBuffer {
     }
     this.buffer += char;
     if (this.charTrie.contains(this.buffer)) {
+      console.log("DEBUG contain this");
       this.checkFunction(this.buffer);
       this.buffer = "";
     } else {
+      console.log("DEBUG NOT CONTAIN");
       var pendingChars = this.charTrie.find(this.buffer);
       if (!Array.isArray(pendingChars) || !pendingChars.length) {
+        this.wordNotInDictAlert();
         this.checkFunction(this.buffer);
         this.buffer = "";
       }

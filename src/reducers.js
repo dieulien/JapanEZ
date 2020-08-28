@@ -4,6 +4,7 @@ import { USER_INPUT } from "./constants";
 const initialInputBox = {
   inputBox: "",
   keyPressed: "",
+  romajiNotInDict: false,
 };
 
 const initialGeneralState = {
@@ -50,6 +51,10 @@ export const changeInputBox = (state = initialInputBox, action = {}) => {
       return { ...state, keyPressed: action.payload };
     case "RESET_STORE":
       return { ...state, inputBox: "", keyPressed: "" };
+    case "ALERT_NOT_IN_DICT":
+      return { ...state, romajiNotInDict: true };
+    case "RESET_NOT_IN_DICT_ALERT":
+      return { ...state, romajiNotInDict: false };
     default:
       return state;
   }
