@@ -3,6 +3,7 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Music from "./Music";
+import Divider from "@material-ui/core/Divider";
 import { katakanaToRomaji, katakanaHint } from "../jap-char";
 import { MEDIA_BASE_URL_CHAR } from "../constants";
 import "../scss/components/Hint.scss";
@@ -25,6 +26,8 @@ class Hint extends React.Component {
     return (
       <Card className={`hint-card`} onClick={this.onClickHandler}>
         <div className="hint-card-content">
+          <h3 className="hint-card-romaji">{romaji}</h3>
+          <Divider />
           <div>
             <img
               src={`${katakanaHint[this.props.currentHintedChar].imageLink}`}

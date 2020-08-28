@@ -202,7 +202,10 @@ class CharInput extends React.Component {
       !wordCompleted &&
       !onHintedCard
     ) {
-      var key = String.fromCharCode(event.which).toLowerCase();
+      var key =
+        event.which === 222
+          ? "'"
+          : String.fromCharCode(event.which).toLowerCase();
       this.props.onKeyPress(key);
       this.inputChecker.checkInput(key);
     } else {

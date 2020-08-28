@@ -257,8 +257,8 @@ class App extends Component {
           <p>
             <b>
               {romajiNotInDict
-                ? `The romaji '${curWrongChar}' does not exist`
-                : `The romaji '${curWrongChar}' corresponds to ${this.getKeyByValue(
+                ? `The romaji ${curWrongChar} does not exist in the alphabet`
+                : `The romaji ${curWrongChar} corresponds to ${this.getKeyByValue(
                     katakanaToRomaji,
                     curWrongChar
                   )}, not ${currentJapChar}`}
