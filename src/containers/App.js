@@ -286,7 +286,7 @@ class App extends Component {
     } else if (!onHintedCard && !wordCompleted) {
       return (
         <p>
-          <b>You can press SPACE for hint</b>
+          <b>press SPACE to learn the romaji</b>
         </p>
       );
     } else {
@@ -300,7 +300,10 @@ class App extends Component {
         return (
           <div className="progress-flex-container">
             <div className="progress-flex-item1">
-              <NavBar onRouteChange={this.onRouteChange} />
+              <NavBar
+                onRouteChange={this.onRouteChange}
+                currentTab="progress"
+              />
             </div>
             <div className="progress-flex-item2">
               <SmallCharList user_uid={this.state.userInfo.id} />
@@ -325,7 +328,7 @@ class App extends Component {
         return (
           <div className="page-container" style={{ position: "relative" }}>
             <div className="content-wrap">
-              <NavBar onRouteChange={this.onRouteChange} />
+              <NavBar onRouteChange={this.onRouteChange} currentTab="home" />
               <WelcomeBar userName={this.state.userInfo.name} />
               <Grid
                 container

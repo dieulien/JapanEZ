@@ -275,11 +275,12 @@ class CharInput extends React.Component {
     return (
       <form>
         <Input
-          placeholder="Start typing here...."
+          placeholder="Type here if you know it"
           defaultValue={this.props.inputBox}
           inputProps={{ "aria-label": "description" }}
           onChange={this.props.onInputBoxChange}
           onKeyDown={this.onKeyDown}
+          spellCheck={false}
           autoFocus
           inputRef={this.formRef}
           onPaste={(event) => {
