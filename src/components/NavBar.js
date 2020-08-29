@@ -6,11 +6,18 @@ import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import "../scss/components/NavBar.scss";
 
+// make help dialog
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+
 // icons
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import TrendingUpIcon from "@material-ui/icons/TrendingUp";
-import HomeIcon from "@material-ui/icons/Home";
-import AssessmentIcon from "@material-ui/icons/Assessment";
+import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
+import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
+import AssessmentOutlinedIcon from "@material-ui/icons/AssessmentOutlined";
+import HelpOutlineOutlinedIcon from "@material-ui/icons/HelpOutlineOutlined";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,6 +30,16 @@ const useStyles = makeStyles((theme) => ({
 
 const NavBar = ({ onRouteChange, currentTab }) => {
   const classes = useStyles();
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <div className={classes.root}>
@@ -37,10 +54,43 @@ const NavBar = ({ onRouteChange, currentTab }) => {
             <div className="navbar-title">Japanese vs. English words</div>
           </Typography>
           <Button
+            variant="text"
+            color="secondary"
+            onClick={handleClickOpen}
+            startIcon={<HelpOutlineOutlinedIcon />}
+          >
+            <div className="navbar-button-text">Help</div>
+          </Button>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">{"Instruction"}</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                <p>
+                  In this app, you will learn Japanese Katakana alphabet. At
+                  each iteration, the app will display all the Katakana
+                  characters that make up a certain Japanese word.
+                </p>
+                <p>If you know the katakana, simply type romaji </p>
+                <p>If you don't know it, press SPACE to learn the romaji. </p>
+                <p>If your input is incorrect, press SPACE to retry.</p>
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} color="primary" autoFocus>
+                Close
+              </Button>
+            </DialogActions>
+          </Dialog>
+          <Button
             variant={currentTab === "home" ? "outlined" : "text"}
             color="secondary"
             onClick={() => onRouteChange("home")}
-            startIcon={<HomeIcon />}
+            startIcon={<HomeOutlinedIcon />}
           >
             <div className="navbar-button-text">Home</div>
           </Button>
@@ -48,7 +98,7 @@ const NavBar = ({ onRouteChange, currentTab }) => {
             variant={currentTab === "progress" ? "outlined" : "text"}
             color="secondary"
             onClick={() => onRouteChange("progress")}
-            startIcon={<AssessmentIcon />}
+            startIcon={<AssessmentOutlinedIcon />}
           >
             <div className="navbar-button-text">Progress</div>
           </Button>
@@ -57,7 +107,7 @@ const NavBar = ({ onRouteChange, currentTab }) => {
             variant={currentTab === "signout" ? "outlined" : "text"}
             onClick={() => onRouteChange("signin")}
             className="nav-button"
-            startIcon={<ExitToAppIcon />}
+            startIcon={<ExitToAppOutlinedIcon />}
           >
             <div className="navbar-button-text">Signout</div>
           </Button>
