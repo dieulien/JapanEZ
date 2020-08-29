@@ -24,7 +24,6 @@ class SmallCharList extends React.Component {
     })
       .then((res) => res.json())
       .then((charResultList) => {
-        console.log(charResultList);
         this.setState({ charResultList: charResultList });
       })
       .catch((err) => {
@@ -71,11 +70,9 @@ class SmallCharList extends React.Component {
       if (kana !== "clearBuffer") {
         var correctPercentage = 0;
         var hintedPercentage = 0;
-        console.log("LIST", this.state.charResultList[kana]);
         var correctNum = this.computeCorrectNum(
           this.state.charResultList[kana]
         );
-        console.log("correct", correctNum);
         var hintedNum = this.state.charResultList[kana].length - correctNum;
 
         if (Object.keys(this.state.charResultList).length > 0) {

@@ -14,6 +14,9 @@ import {
 } from "./reducers";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import "typeface-roboto";
+import LogRocket from "logrocket";
+
+LogRocket.init("zskhtw/japanese-learning");
 
 const theme = createMuiTheme({
   palette: {
@@ -31,9 +34,14 @@ const rootReducer = combineReducers({
   changeInputBox,
   changeCardState,
 });
+
 const logger = createLogger();
 
-const store = createStore(rootReducer, applyMiddleware(logger));
+// const store = createStore(rootReducer, applyMiddleware(logger));
+const store = createStore(
+  rootReducer,
+  applyMiddleware(logger, LogRocket.reduxMiddleware())
+);
 // const store = createStore(rootReducer);
 
 ReactDOM.render(

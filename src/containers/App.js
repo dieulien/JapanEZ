@@ -22,6 +22,9 @@ import {
   MEDIA_BASE_URL_WORD,
 } from "../constants";
 
+import LogRocket from "logrocket";
+LogRocket.init("zskhtw/japanese-learning");
+
 const mapStateToProps = (state) => {
   return {
     currentJapChar: state.changeCardState.currentJapChar,
@@ -193,6 +196,11 @@ class App extends Component {
       return { userInfo };
     });
     console.log("userInfo", this.state.userInfo);
+    LogRocket.identify(user_uid, {
+      name: name,
+      email: email,
+      joined: joined,
+    });
   };
 
   focusInputBox = () => {
