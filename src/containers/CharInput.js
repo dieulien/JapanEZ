@@ -135,7 +135,6 @@ class CharInput extends React.Component {
       setCurrentChar,
       onCompleteChar,
     } = this.props;
-    console.log("checking", char);
     if (char === romajiList[indexCurrentCard]) {
       onCorrectChar();
       onCompleteChar(Date.now(), "correct");

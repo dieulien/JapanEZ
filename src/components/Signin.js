@@ -224,9 +224,11 @@ class Signin extends React.Component {
               <h2>Tailored to your learning progress</h2>
               <p>
                 Assesses your progress as you use the tool, and gives you the
-                right content to learn. Either you've just started out or you've
-                been learning for a while, the tool helps you master Katakana in
-                an effective way.
+                right content to learn.{" "}
+              </p>
+              <p>
+                Either you've just started out or you've been learning for a
+                while, the tool helps you master Katakana in an effective way.
               </p>
             </div>
             <Divider />
@@ -240,19 +242,20 @@ class Signin extends React.Component {
             <Divider />
             <div>
               <h2>Words that sound like English</h2>
+              <p>Such as kisu (kiss), in'teru (intelligent).</p>
               <p>
-                Such as kisu (kiss), in'teru (intelligent). You'd be surprised
-                how much Japanese you've already "known".
+                You'd be surprised how much Japanese you've already "known".
               </p>
             </div>
             <Divider />
             <div>
               <h2>Learn real common Japanese words</h2>
+              <p>You can listen to audio from native speakers.</p>
               <p>
-                You can listen to audio from native speakers. This helps you
-                compare and contrast the pronunciation of Japanese and English.
-                You can also see and hear how a word appears in a sentence.
+                This helps you compare and contrast the pronunciation of
+                Japanese and English.
               </p>
+              <p>You can also see and hear how a word appears in a sentence.</p>
             </div>
           </div>
         </div>

@@ -4,54 +4,54 @@
 
 // -----------------------------------------
 
-const katakanaToRomaji = {
-  ア: "a",
-  イ: "i",
-  ウ: "u",
-  エ: "e",
-  オ: "o",
-  ン: "n'",
-  カ: "ka",
-  キ: "ki",
-  ク: "ku",
-  ケ: "ke",
-  コ: "ko",
-  サ: "sa",
-  シ: "shi",
-  ス: "su",
-  セ: "se",
-  ソ: "so",
-  タ: "ta",
-  チ: "chi",
-  ツ: "tsu",
-  テ: "te",
-  ト: "to",
-  ナ: "na",
-  ニ: "ni",
-  ヌ: "nu",
-  ネ: "ne",
-  ノ: "no",
-  ハ: "ha",
-  ヒ: "hi",
-  フ: "fu",
-  ヘ: "he",
-  ホ: "ho",
-  マ: "ma",
-  ミ: "mi",
-  ム: "mu",
-  メ: "me",
-  モ: "mo",
-  ヤ: "ya",
-  ユ: "yu",
-  ヨ: "yo",
-  ラ: "ra",
-  リ: "ri",
-  ル: "ru",
-  レ: "re",
-  ロ: "ro",
-  ワ: "wa",
-  ヲ: "wo",
-};
+// const katakanaToRomaji = {
+//   ア: "a",
+//   イ: "i",
+//   ウ: "u",
+//   エ: "e",
+//   オ: "o",
+//   ン: "n'",
+//   カ: "ka",
+//   キ: "ki",
+//   ク: "ku",
+//   ケ: "ke",
+//   コ: "ko",
+//   サ: "sa",
+//   シ: "shi",
+//   ス: "su",
+//   セ: "se",
+//   ソ: "so",
+//   タ: "ta",
+//   チ: "chi",
+//   ツ: "tsu",
+//   テ: "te",
+//   ト: "to",
+//   ナ: "na",
+//   ニ: "ni",
+//   ヌ: "nu",
+//   ネ: "ne",
+//   ノ: "no",
+//   ハ: "ha",
+//   ヒ: "hi",
+//   フ: "fu",
+//   ヘ: "he",
+//   ホ: "ho",
+//   マ: "ma",
+//   ミ: "mi",
+//   ム: "mu",
+//   メ: "me",
+//   モ: "mo",
+//   ヤ: "ya",
+//   ユ: "yu",
+//   ヨ: "yo",
+//   ラ: "ra",
+//   リ: "ri",
+//   ル: "ru",
+//   レ: "re",
+//   ロ: "ro",
+//   ワ: "wa",
+//   ヲ: "wo",
+// };
 
 // we start with the TrieNode
 function TrieNode(key) {
@@ -209,11 +209,9 @@ class SpellCheckerBuffer {
     }
     this.buffer += char;
     if (this.charTrie.contains(this.buffer)) {
-      console.log("DEBUG contain this");
       this.checkFunction(this.buffer);
       this.buffer = "";
     } else {
-      console.log("DEBUG NOT CONTAIN");
       var pendingChars = this.charTrie.find(this.buffer);
       if (!Array.isArray(pendingChars) || !pendingChars.length) {
         this.wordNotInDictAlert();
@@ -224,13 +222,14 @@ class SpellCheckerBuffer {
   }
 }
 
-const sp = new SpellCheckerBuffer(katakanaToRomaji, console.log);
-sp.checkInput("n");
-sp.checkInput("i");
-sp.checkInput("n");
-sp.checkInput("a");
-sp.checkInput("t");
-sp.checkInput("s");
-sp.checkInput("u");
+// uncomment below to test
+// const sp = new SpellCheckerBuffer(katakanaToRomaji, console.log);
+// sp.checkInput("n");
+// sp.checkInput("i");
+// sp.checkInput("n");
+// sp.checkInput("a");
+// sp.checkInput("t");
+// sp.checkInput("s");
+// sp.checkInput("u");
 
 export default SpellCheckerBuffer;
