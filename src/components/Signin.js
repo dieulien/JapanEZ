@@ -13,6 +13,13 @@ import { withStyles } from "@material-ui/core/styles";
 import { SIGNIN_URL } from "../constants";
 import Divider from "@material-ui/core/Divider";
 import "../scss/components/Signin.scss";
+import TextBlock from "./TextBlock";
+
+import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
+import FontDownloadIcon from "@material-ui/icons/FontDownload";
+import FeedbackIcon from "@material-ui/icons/Feedback";
+import TranslateIcon from "@material-ui/icons/Translate";
+import SubtitlesIcon from "@material-ui/icons/Subtitles";
 
 const useStyles = (theme) => ({
   container: {
@@ -219,44 +226,29 @@ class Signin extends React.Component {
           </div>
         </div>
         <div className="info-panel">
-          <div className="flex-container-inner">
-            <div>
-              <h2>Tailored to your learning progress</h2>
-              <p>
-                Assesses your progress as you use the tool, and gives you the
-                right content to learn.{" "}
-              </p>
-              <p>
-                Either you've just started out or you've been learning for a
-                while, the tool helps you master Katakana in an effective way.
-              </p>
-            </div>
-            <Divider />
-            <div>
-              <h2>Built-in mnemonics and smart feedback</h2>
-              <p>Built-in mnemonics and smart feedback</p>
-              <p>
-                Receive contextual feedback when you input the wrong character.
-              </p>
-            </div>
-            <Divider />
-            <div>
-              <h2>Words that sound like English</h2>
-              <p>Such as kisu (kiss), in'teru (intelligent).</p>
-              <p>
-                You'd be surprised how much Japanese you've already "known".
-              </p>
-            </div>
-            <Divider />
-            <div>
-              <h2>Learn real common Japanese words</h2>
-              <p>You can listen to audio from native speakers.</p>
-              <p>
-                This helps you compare and contrast the pronunciation of
-                Japanese and English.
-              </p>
-              <p>You can also see and hear how a word appears in a sentence.</p>
-            </div>
+          <div className="info-panel-inner">
+            <TextBlock
+              icon={<AssignmentIndIcon fontSize="large" />}
+              title="Tailored to your learning progress"
+              description="Either you've just started out or you've been learning for a
+                while, the tool helps you master Katakana in an effective way."
+            />
+            <TextBlock
+              icon={<FeedbackIcon fontSize="large" />}
+              title="Built-in mnemonics and smart feedback"
+              description="Receive contextual feedback when you input the wrong character."
+            />
+            <TextBlock
+              icon={<FontDownloadIcon fontSize="large" />}
+              title="Words that sound like English"
+              description="Such as kisu (kiss), in'teru (intelligent). You'd be surprised how much Japanese you've already known."
+            />
+            <TextBlock
+              icon={<SubtitlesIcon fontSize="large" />}
+              title="Learn real common Japanese words"
+              description="You can listen to audio from native speakers. This helps you compare and contrast the pronunciation of
+                Japanese and English."
+            />
           </div>
         </div>
       </div>
