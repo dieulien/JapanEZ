@@ -7,6 +7,8 @@ var SIGNIN_URL = "https://localhost:3000/signin";
 var PROFILE_URL = "https://localhost:3000/profile/";
 var GETWORD_URL = "https://shrouded-harbor-11572.herokuapp.com/getnextword";
 var CHARSCORE_URL = "https://shrouded-harbor-11572.herokuapp.com/charscore";
+var UPDATECHARSCORE_URL =
+  "https://shrouded-harbor-11572.herokuapp.com/updatecharscore";
 var WORDSCORE_URL = "https://shrouded-harbor-11572.herokuapp.com/wordscore";
 var GETCHARSCORE_URL =
   "https://shrouded-harbor-11572.herokuapp.com/getcharscore";
@@ -52,4 +54,5 @@ export {
   WORD_LINK,
   TOFUGU_LINK,
   GETCHARSCORE_URL,
+  UPDATECHARSCORE_URL,
 };

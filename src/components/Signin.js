@@ -11,14 +11,12 @@ import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import { withStyles } from "@material-ui/core/styles";
 import { SIGNIN_URL } from "../constants";
-import Divider from "@material-ui/core/Divider";
 import "../scss/components/Signin.scss";
 import TextBlock from "./TextBlock";
 
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 import FontDownloadIcon from "@material-ui/icons/FontDownload";
 import FeedbackIcon from "@material-ui/icons/Feedback";
-import TranslateIcon from "@material-ui/icons/Translate";
 import SubtitlesIcon from "@material-ui/icons/Subtitles";
 
 const useStyles = (theme) => ({

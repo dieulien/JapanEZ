@@ -134,8 +134,14 @@ class CharInput extends React.Component {
       currentWord,
       setCurrentChar,
       onCompleteChar,
+      getKeyByValue,
+      updateCharScore2,
+      user_uid,
     } = this.props;
+    const userInputChar = getKeyByValue(katakanaToRomaji, char);
+
     if (char === romajiList[indexCurrentCard]) {
+      updateCharScore2(user_uid, userInputChar, "+1");
       onCorrectChar();
       onCompleteChar(Date.now(), "correct");
       const newRomaji = romajiList[indexCurrentCard + 1];
@@ -147,6 +153,13 @@ class CharInput extends React.Component {
     } else {
       // onIncorrectChar();
       onWrongInput(char, romajiList[indexCurrentCard]);
+      var userWrongChar = getKeyByValue(katakanaToRomaji, char);
+      var currentChar = getKeyByValue(
+        katakanaToRomaji,
+        romajiList[indexCurrentCard]
+      );
+      updateCharScore2(user_uid, userInputChar, "0");
+      updateCharScore2(user_uid, currentChar, "0");
     }
   };
 
@@ -238,7 +251,8 @@ class CharInput extends React.Component {
           // move on to next word
           updateWord("", [""]);
           const scoreDeltaList = this.convertTimeToScoreDelta(charTimestamp);
-          updateCharScore(user_uid, scoreDeltaList);
+          console.log("DEBUG", charTimestamp);
+          // updateCharScore(user_uid, scoreDeltaList);
           updateWordScore(user_uid, currentWord);
 
           onSpacePress("CONTINUE_AFTER_COMPLETE");

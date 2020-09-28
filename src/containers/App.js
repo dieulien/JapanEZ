@@ -13,11 +13,21 @@ import OutsideAlerter from "../components/OutsideAlerter";
 import Footer from "../components/Footer";
 import WelcomeBar from "../components/WelcomeBar";
 import SmallCharList from "../components/SmallCharList";
+
+// make help dialog
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import { Button } from "@material-ui/core";
+
 import "../scss/containers/App.scss";
 import { updateChar, updateWord, resetStore } from "../actions";
 import {
   GETWORD_URL,
   CHARSCORE_URL,
+  UPDATECHARSCORE_URL,
   WORDSCORE_URL,
   MEDIA_BASE_URL_WORD,
 } from "../constants";
@@ -66,6 +76,7 @@ class App extends Component {
         joined: "",
       },
       currentWordInfo: null,
+      open: false,
     };
     this.charInputRef = React.createRef();
   }
@@ -74,6 +85,12 @@ class App extends Component {
     if (this.state.userInfo.id !== prevState.userInfo.id) {
       this.props.resetStore();
       this.requestNewWord();
+    }
+    if (this.state.route === "home") {
+      setTimeout(() => {
+        console.log("5 sec has passed");
+        this.setState({ open: true });
+      }, 5000);
     }
   };
 
@@ -110,6 +127,25 @@ class App extends Component {
       body: JSON.stringify({
         user_uid: user_uid,
         charScoreDeltaList: scoreDeltaList,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Update Char Score:", data);
+      })
+      .catch((error) => {
+        console.log("Failed to update char score", error);
+      });
+  };
+
+  updateCharScore2 = (user_uid, char, score) => {
+    fetch(UPDATECHARSCORE_URL, {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        user_uid: user_uid,
+        char: char,
+        score: score,
       }),
     })
       .then((res) => res.json())
@@ -215,6 +251,10 @@ class App extends Component {
     if (this.state.clickedJapChar === kana) {
       this.setState({ clickedJapChar: "" });
     }
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
   };
 
   showHint = () => {
@@ -336,6 +376,31 @@ class App extends Component {
         return (
           <div className="page-container" style={{ position: "relative" }}>
             <div className="content-wrap">
+              <Dialog
+                open={this.state.open}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">
+                  {"You have used the app for 30 minutes!"}
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    <p>
+                      You have used the app for 30 minutes! Please click the
+                      link below to take a short test that will access your
+                      Katakana knowledge.
+                    </p>
+                    <p> link goes here </p>
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={this.handleClose} color="primary" autoFocus>
+                    Close
+                  </Button>
+                </DialogActions>
+              </Dialog>
+
               <NavBar onRouteChange={this.onRouteChange} currentTab="home" />
               <WelcomeBar userName={this.state.userInfo.name} />
               <Grid
@@ -348,7 +413,9 @@ class App extends Component {
                 <OutsideAlerter focusInputBox={this.focusInputBox}>
                   <CharInput
                     updateCharScore={this.updateCharScore}
+                    updateCharScore2={this.updateCharScore2}
                     updateWordScore={this.updateWordScore}
+                    getKeyByValue={this.getKeyByValue}
                     user_uid={this.state.userInfo.id}
                     ref={this.charInputRef}
                   />

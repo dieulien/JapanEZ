@@ -10,7 +10,6 @@ import Paper from "@material-ui/core/Paper";
 import { withStyles } from "@material-ui/core/styles";
 import { REGISTER_URL } from "../constants";
 import "../scss/components/Signin.scss";
-import Divider from "@material-ui/core/Divider";
 import TextBlock from "./TextBlock";
 
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
