@@ -1,3 +1,5 @@
+@import "../variables.scss";
+
 .page-container {
   display: flex;
   flex-direction: column;
@@ -27,4 +29,12 @@
 
 .word-card {
   padding: 0 1vh 1vh 1vh;
+}
+
+.survey-link {
+  color: $grayish-color;
+}
+
+.survey-link:hover {
+  color: $primary-color;
 }

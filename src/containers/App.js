@@ -77,6 +77,7 @@ class App extends Component {
       },
       currentWordInfo: null,
       open: false,
+      haveTriggered: false,
     };
     this.charInputRef = React.createRef();
   }
@@ -86,12 +87,20 @@ class App extends Component {
       this.props.resetStore();
       this.requestNewWord();
     }
-    if (this.state.route === "home") {
+    if (false) {
       setTimeout(() => {
-        console.log("5 sec has passed");
-        this.setState({ open: true });
-      }, 5000);
+        console.log("HI");
+      }, 1000);
     }
+    if (this.state.route === "home" && !this.state.haveTriggered) {
+      setTimeout(() => {
+        this.setState({ open: true });
+      }, 60000 * 5);
+    }
+  };
+
+  componentDidMount = () => {
+    this.setState({ haveTriggered: false });
   };
 
   onRouteChange = (route) => {
@@ -253,10 +262,6 @@ class App extends Component {
     }
   };
 
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-
   showHint = () => {
     // once completed word, can review hint card
     if (this.props.wordCompleted && this.state.clickedJapChar) {
@@ -382,23 +387,23 @@ class App extends Component {
                 aria-describedby="alert-dialog-description"
               >
                 <DialogTitle id="alert-dialog-title">
-                  {"You have used the app for 30 minutes!"}
+                  {"Time's Up!"}
                 </DialogTitle>
                 <DialogContent>
                   <DialogContentText id="alert-dialog-description">
                     <p>
-                      You have used the app for 30 minutes! Please click the
-                      link below to take a short test that will access your
-                      Katakana knowledge.
+                      You have used the app for 5 minute. Please click the link
+                      below to take a short test that will access your Katakana
+                      knowledge. Thank you for using the app!
                     </p>
-                    <p> link goes here </p>
+                    <a
+                      href="https://harvard.az1.qualtrics.com/jfe/form/SV_2aZI7SwLfhp5nxj"
+                      className="survey-link"
+                    >
+                      https://harvard.az1.qualtrics.com/jfe/form/SV_2aZI7SwLfhp5nxj
+                    </a>
                   </DialogContentText>
                 </DialogContent>
-                <DialogActions>
-                  <Button onClick={this.handleClose} color="primary" autoFocus>
-                    Close
-                  </Button>
-                </DialogActions>
               </Dialog>
 
               <NavBar onRouteChange={this.onRouteChange} currentTab="home" />
