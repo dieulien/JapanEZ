@@ -67,15 +67,6 @@ const mapDispatchToProps = (dispatch) => {
     resetStore: () => {
       dispatch(resetStore());
     },
-    onInputBoxChange: (value) => {
-      dispatch(typeAnswer(value));
-    },
-    onSpacePress: (context) => {
-      dispatch(pressSpace(context));
-    },
-    onCompleteChar: (time, type) => {
-      dispatch(completeChar(time, type));
-    },
   };
 };
 
@@ -302,66 +293,6 @@ class App extends Component {
     const {
       onIncorrectCard,
       curWrongChar,
-      onHintedCard,
-      wordCompleted,
-      audioIsPlaying,
-      romajiNotInDict,
-      currentJapChar,
-    } = this.props;
-    if (audioIsPlaying) {
-      return (
-        <p>
-          <b>♬ playing audio ♬</b>
-        </p>
-      );
-    }
-    if (onIncorrectCard) {
-      return (
-        <div>
-          <p>
-            <b>
-              {romajiNotInDict
-                ? `The romaji ${curWrongChar} does not exist in the alphabet`
-                : `The romaji ${curWrongChar} corresponds to ${this.getKeyByValue(
-                    katakanaToRomaji,
-                    curWrongChar
-                  )}, not ${currentJapChar}`}
-            </b>
-          </p>
-          <p>
-            <b>press SPACE to try again</b>
-          </p>
-        </div>
-      );
-    } else if (onHintedCard && !audioIsPlaying) {
-      return (
-        <p>
-          <b>press SPACE to continue</b>
-        </p>
-      );
-    } else if (wordCompleted && !audioIsPlaying) {
-      return (
-        <div>
-          <p>
-            <b>click on card to review mnemonic or press SPACE to continue</b>
-          </p>
-        </div>
-      );
-    } else if (!onHintedCard && !wordCompleted) {
-      return (
-        <p>
-          <b>press SPACE to learn this character</b>
-        </p>
-      );
-    } else {
-      return <p></p>;
-    }
-  };
-
-  displayMessage2 = () => {
-    const {
-      onIncorrectCard,
-      curWrongChar,
       wordCompleted,
       audioIsPlaying,
       romajiNotInDict,
@@ -511,7 +442,7 @@ class App extends Component {
                       clickedJapChar={this.state.clickedJapChar}
                     />
                   </Grid>
-                  <div>{this.displayMessage2()}</div>
+                  <div>{this.displayMessage()}</div>
                   <Grid item>
                     {!this.props.audioIsPlaying ? (
                       <Button

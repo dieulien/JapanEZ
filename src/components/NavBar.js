@@ -51,7 +51,7 @@ const NavBar = ({ onRouteChange, currentTab }) => {
             className={classes.title}
             align="left"
           >
-            <div className="navbar-title">Japanese vs. English words</div>
+            <div className="navbar-title">JapanEZ</div>
           </Typography>
           <Button
             variant="text"
@@ -94,18 +94,18 @@ const NavBar = ({ onRouteChange, currentTab }) => {
           >
             <div className="navbar-button-text">Home</div>
           </Button>
-          <Button
+          {/* <Button
             variant={currentTab === "progress" ? "outlined" : "text"}
             color="secondary"
             onClick={() => onRouteChange("progress")}
             startIcon={<AssessmentOutlinedIcon />}
           >
             <div className="navbar-button-text">Progress</div>
-          </Button>
+          </Button> */}
           <Button
             color="secondary"
             variant={currentTab === "signout" ? "outlined" : "text"}
-            onClick={() => onRouteChange("signin")}
+            onClick={() => onRouteChange("register")}
             className="nav-button"
             startIcon={<ExitToAppOutlinedIcon />}
           >

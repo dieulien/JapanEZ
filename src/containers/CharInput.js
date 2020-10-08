@@ -104,7 +104,7 @@ class CharInput extends React.Component {
     setCurrentChar(curKana, curRomaji);
 
     // https://stackoverflow.com/questions/37949981/call-child-method-from-parent
-    this.props.setClick(this.spacePressHandler);
+    this.props.setClick(this.ButtonClickOrSpacePressHandler);
   }
 
   componentDidUpdate = (prevProps) => {
@@ -213,12 +213,12 @@ class CharInput extends React.Component {
       event.preventDefault();
 
       if (event.which === 32) {
-        this.spacePressHandler(event.target);
+        this.ButtonClickOrSpacePressHandler(event.target);
       }
     }
   };
 
-  spacePressHandler = (eventTarget) => {
+  ButtonClickOrSpacePressHandler = (eventTarget) => {
     const {
       onIncorrectCard,
       curWrongChar,
