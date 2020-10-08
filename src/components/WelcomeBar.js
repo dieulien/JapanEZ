@@ -9,10 +9,13 @@ const WelcomeBar = ({ userName }) => {
       <div className="welcome-text">
         <p>Welcome, {userName}! </p>
         <ul>
-          <li>Press SPACE to learn the character in the highlighted card</li>
           <li>
             Type the character as fast as you can if you've already known the
             character
+          </li>
+          <li>
+            Tips: You can press SPACE to move on instead of clicking on the main
+            Button
           </li>
         </ul>
       </div>

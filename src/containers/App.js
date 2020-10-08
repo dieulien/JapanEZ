@@ -23,7 +23,15 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { Button } from "@material-ui/core";
 
 import "../scss/containers/App.scss";
-import { updateChar, updateWord, resetStore } from "../actions";
+import {
+  updateChar,
+  updateWord,
+  resetStore,
+  typeAnswer,
+  resetRomajiNotInDictAlert,
+  completeChar,
+  pressSpace,
+} from "../actions";
 import {
   GETWORD_URL,
   CHARSCORE_URL,
@@ -60,6 +68,15 @@ const mapDispatchToProps = (dispatch) => {
     },
     resetStore: () => {
       dispatch(resetStore());
+    },
+    onInputBoxChange: (value) => {
+      dispatch(typeAnswer(value));
+    },
+    onSpacePress: (context) => {
+      dispatch(pressSpace(context));
+    },
+    onCompleteChar: (time, type) => {
+      dispatch(completeChar(time, type));
     },
   };
 };
@@ -321,7 +338,7 @@ class App extends Component {
     } else if (onHintedCard && !audioIsPlaying) {
       return (
         <p>
-          <b>press ENTER to continue</b>
+          <b>press SPACE to continue</b>
         </p>
       );
     } else if (wordCompleted && !audioIsPlaying) {
@@ -343,52 +360,95 @@ class App extends Component {
     }
   };
 
-  handleClickButton = () => {
-    const inputForm = this.charInputRef.current.formRef.current;
-    console.log("TEST", inputForm);
-    console.log("TEST", inputForm.value);
-    console.log("TEST", inputForm.defaultValue);
-
-    const { onIncorrectCard, curWrongChar } = this.props;
-
-    if (onIncorrectCard) {
-      inputForm.value = inputForm.value.slice(0 - curWrongChar.length);
+  displayMessage2 = () => {
+    const {
+      onIncorrectCard,
+      curWrongChar,
+      onHintedCard,
+      wordCompleted,
+      audioIsPlaying,
+      romajiNotInDict,
+      currentJapChar,
+    } = this.props;
+    if (audioIsPlaying) {
+      return <div></div>;
     }
-    // if (onIncorrectCard) {
-    //   // delete wrong input from inputBox
-    //   event.target.value = event.target.value.slice(0, -curWrongChar.length);
-    //   onInputBoxChange(event);
-    //   onSpacePress("CONTINUE_AFTER_ERROR");
-    //   resetRomajiNotInDictAlert();
-    // } else if (!onIncorrectCard && !onHintedCard && !wordCompleted) {
-    //   // ask for hint
-    //   onSpacePress("REQUEST_HINT");
-    //   onCompleteChar(Date.now(), "hinted");
+    if (onIncorrectCard) {
+      return (
+        <div>
+          <p>
+            <b>
+              {romajiNotInDict
+                ? `'${curWrongChar}' does not exist in the alphabet`
+                : `'${curWrongChar}' corresponds to ${this.getKeyByValue(
+                    katakanaToRomaji,
+                    curWrongChar
+                  )}, not ${currentJapChar}`}
+            </b>
+          </p>
+        </div>
+      );
+    } else if (wordCompleted && !audioIsPlaying) {
+      return (
+        <div>
+          <p>
+            <b>Click on a card to view its mnemonic</b>
+          </p>
+        </div>
+      );
+    } else {
+      return <p></p>;
+    }
+  };
 
-    //   // clear inputBox
-    //   event.target.value = this.inputChecker.buffer.length
-    //     ? event.target.value.slice(0, -this.inputChecker.buffer.length)
-    //     : event.target.value;
-    //   onInputBoxChange(event);
-
-    //   // clear inputChecker buffer
-    //   this.inputChecker.checkInput("clearBuffer");
-    // } else if (wordCompleted) {
-    //   // move on to next word
-    //   updateWord("", [""]);
-    //   const scoreDeltaList = this.convertTimeToScoreDelta(charTimestamp);
-    //   console.log("DEBUG", charTimestamp);
-    //   // updateCharScore(user_uid, scoreDeltaList);
-    //   updateWordScore(user_uid, currentWord);
-
-    //   onSpacePress("CONTINUE_AFTER_COMPLETE");
-
-    //   event.target.value = "";
-    //   onInputBoxChange(event);
-    //   const newRomaji = romajiList[0];
-    //   const newKana = currentWord[0];
-    //   setCurrentChar(newKana, newRomaji);
-    // }
+  setButtonText = () => {
+    const {
+      onIncorrectCard,
+      curWrongChar,
+      onHintedCard,
+      wordCompleted,
+      audioIsPlaying,
+      romajiNotInDict,
+      currentJapChar,
+    } = this.props;
+    if (audioIsPlaying) {
+      return (
+        <p>
+          <b>♬</b>
+        </p>
+      );
+    }
+    if (onIncorrectCard) {
+      return (
+        <div>
+          <p>
+            <b>Try Again</b>
+          </p>
+        </div>
+      );
+    } else if (onHintedCard && !audioIsPlaying) {
+      return (
+        <p>
+          <b>Got It</b>
+        </p>
+      );
+    } else if (wordCompleted && !audioIsPlaying) {
+      return (
+        <div>
+          <p>
+            <b>Next Word</b>
+          </p>
+        </div>
+      );
+    } else if (!onHintedCard && !wordCompleted) {
+      return (
+        <p>
+          <b>Learn Character</b>
+        </p>
+      );
+    } else {
+      return <p></p>;
+    }
   };
 
   renderRoute = (route) => {
@@ -467,6 +527,7 @@ class App extends Component {
                     getKeyByValue={this.getKeyByValue}
                     user_uid={this.state.userInfo.id}
                     ref={this.charInputRef}
+                    setClick={(click) => (this.clickChild = click)}
                   />
                 </OutsideAlerter>
                 <Grid
@@ -482,14 +543,23 @@ class App extends Component {
                       clickedJapChar={this.state.clickedJapChar}
                     />
                   </Grid>
-                  <div>{this.displayMessage()}</div>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={this.handleClickButton}
-                  >
-                    Primary afa fsklj fhfj afj ;sjfa sdasda
-                  </Button>
+                  <div>{this.displayMessage2()}</div>
+                  {!this.props.audioIsPlaying ? (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() =>
+                        this.clickChild(
+                          this.charInputRef.current.formRef.current
+                        )
+                      }
+                      // style={{ color: "white" }}
+                    >
+                      {this.setButtonText()}
+                    </Button>
+                  ) : (
+                    <div></div>
+                  )}
                   <Grid
                     container
                     direction="row"

@@ -38,8 +38,8 @@ const mapStatestoProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    onInputBoxChange: (event) => {
-      dispatch(typeAnswer(event.target.value));
+    onInputBoxChange: (value) => {
+      dispatch(typeAnswer(value));
     },
     onKeyPress: (key) => {
       dispatch(pressKey(key));
@@ -102,6 +102,9 @@ class CharInput extends React.Component {
     const curRomaji = romajiList[indexCurrentCard];
     const curKana = currentWord[indexCurrentCard];
     setCurrentChar(curKana, curRomaji);
+
+    // https://stackoverflow.com/questions/37949981/call-child-method-from-parent
+    this.props.setClick(this.spacePressHandler);
   }
 
   componentDidUpdate = (prevProps) => {
@@ -223,64 +226,102 @@ class CharInput extends React.Component {
     } else {
       event.preventDefault();
 
-      // handle SPACE press
       if (event.which === 32) {
-        if (onIncorrectCard) {
-          // delete wrong input from inputBox
-          event.target.value = event.target.value.slice(
-            0,
-            -curWrongChar.length
-          );
-          onInputBoxChange(event);
-          onSpacePress("CONTINUE_AFTER_ERROR");
-          resetRomajiNotInDictAlert();
-        } else if (!onIncorrectCard && !onHintedCard && !wordCompleted) {
-          // ask for hint
-          onSpacePress("REQUEST_HINT");
-          onCompleteChar(Date.now(), "hinted");
-
-          // clear inputBox
-          event.target.value = this.inputChecker.buffer.length
-            ? event.target.value.slice(0, -this.inputChecker.buffer.length)
-            : event.target.value;
-          onInputBoxChange(event);
-
-          // clear inputChecker buffer
-          this.inputChecker.checkInput("clearBuffer");
-        } else if (wordCompleted) {
-          // move on to next word
-          updateWord("", [""]);
-          const scoreDeltaList = this.convertTimeToScoreDelta(charTimestamp);
-          console.log("DEBUG", charTimestamp);
-          // updateCharScore(user_uid, scoreDeltaList);
-          updateWordScore(user_uid, currentWord);
-
-          onSpacePress("CONTINUE_AFTER_COMPLETE");
-
-          event.target.value = "";
-          onInputBoxChange(event);
-          const newRomaji = romajiList[0];
-          const newKana = currentWord[0];
-          setCurrentChar(newKana, newRomaji);
-        }
+        this.spacePressHandler(event.target);
       }
 
       // handle ENTER press (13)
-      if (event.which === 32) {
-        if (onHintedCard) {
-          if (indexCurrentCard === romajiList.length - 1) {
-            onWordCompletion();
-          }
-          // autofill correct answer
-          event.target.value = event.target.value.concat(currentRomaji);
-          onInputBoxChange(event);
-          onEnterPress(Date.now());
+      // if (event.which === 13) {
+      //   if (onHintedCard) {
+      //     if (indexCurrentCard === romajiList.length - 1) {
+      //       onWordCompletion();
+      //     }
+      //     // autofill correct answer
+      //     event.target.value = event.target.value.concat(currentRomaji);
+      //     onInputBoxChange(event.target.value);
+      //     onEnterPress(Date.now());
 
-          const curRomaji = romajiList[indexCurrentCard + 1];
-          const curKana = currentWord[indexCurrentCard + 1];
-          setCurrentChar(curKana, curRomaji);
-        }
+      //     const curRomaji = romajiList[indexCurrentCard + 1];
+      //     const curKana = currentWord[indexCurrentCard + 1];
+      //     setCurrentChar(curKana, curRomaji);
+      //   }
+      // }
+    }
+  };
+
+  spacePressHandler = (eventTarget) => {
+    const {
+      onIncorrectCard,
+      curWrongChar,
+      onInputBoxChange,
+      onSpacePress,
+      onCompleteChar,
+      wordCompleted,
+      onHintedCard,
+      currentRomaji,
+      onEnterPress,
+      currentWord,
+      romajiList,
+      indexCurrentCard,
+      setCurrentChar,
+      charTimestamp,
+      updateWord,
+      updateCharScore,
+      updateWordScore,
+      onWordCompletion,
+      audioIsPlaying,
+      user_uid,
+      cardStateList,
+      resetRomajiNotInDictAlert,
+    } = this.props;
+    // handle SPACE press
+
+    if (onIncorrectCard) {
+      // delete wrong input from inputBox
+      eventTarget.value = eventTarget.value.slice(0, -curWrongChar.length);
+      onInputBoxChange(eventTarget.value);
+      onSpacePress("CONTINUE_AFTER_ERROR");
+      resetRomajiNotInDictAlert();
+    } else if (!onIncorrectCard && !onHintedCard && !wordCompleted) {
+      // ask for hint
+      onSpacePress("REQUEST_HINT");
+      onCompleteChar(Date.now(), "hinted");
+
+      // clear inputBox
+      eventTarget.value = this.inputChecker.buffer.length
+        ? eventTarget.value.slice(0, -this.inputChecker.buffer.length)
+        : eventTarget.value;
+      onInputBoxChange(eventTarget.value);
+
+      // clear inputChecker buffer
+      this.inputChecker.checkInput("clearBuffer");
+    } else if (wordCompleted) {
+      // move on to next word
+      updateWord("", [""]);
+      const scoreDeltaList = this.convertTimeToScoreDelta(charTimestamp);
+      console.log("DEBUG", charTimestamp);
+      // updateCharScore(user_uid, scoreDeltaList);
+      updateWordScore(user_uid, currentWord);
+
+      onSpacePress("CONTINUE_AFTER_COMPLETE");
+
+      eventTarget.value = "";
+      onInputBoxChange(eventTarget.value);
+      const newRomaji = romajiList[0];
+      const newKana = currentWord[0];
+      setCurrentChar(newKana, newRomaji);
+    } else if (onHintedCard) {
+      if (indexCurrentCard === romajiList.length - 1) {
+        onWordCompletion();
       }
+      // autofill correct answer
+      eventTarget.value = eventTarget.value.concat(currentRomaji);
+      onInputBoxChange(eventTarget.value);
+      onEnterPress(Date.now());
+
+      const curRomaji = romajiList[indexCurrentCard + 1];
+      const curKana = currentWord[indexCurrentCard + 1];
+      setCurrentChar(curKana, curRomaji);
     }
   };
 
@@ -289,7 +330,7 @@ class CharInput extends React.Component {
       <form>
         <Input
           placeholder="Your input..."
-          defaultValue={this.props.inputBox}
+          // defaultValue={this.props.inputBox}
           inputProps={{ "aria-label": "description" }}
           onChange={this.props.onInputBoxChange}
           onKeyDown={this.onKeyDown}
