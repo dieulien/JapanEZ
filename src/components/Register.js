@@ -165,7 +165,7 @@ class Register extends React.Component {
                 <CssBaseline />
                 <div className={classes.paper}>
                   <Typography component="h1" variant="h5">
-                    Register
+                    Get Started
                   </Typography>
                   <form className={classes.form} noValidate>
                     <TextField
@@ -212,9 +212,9 @@ class Register extends React.Component {
                       onClick={this.onFormSubmit}
                       style={{ color: "#ffffff" }}
                     >
-                      Register
+                      I'm Ready!
                     </Button>
-                    <Grid
+                    {/* <Grid
                       container
                       alignItems="center"
                       direction="column"
@@ -230,7 +230,7 @@ class Register extends React.Component {
                           {"Sign In"}
                         </Link>
                       </Grid>
-                    </Grid>
+                    </Grid> */}
                   </form>
                 </div>
               </Container>

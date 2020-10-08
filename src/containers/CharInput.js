@@ -265,8 +265,8 @@ class CharInput extends React.Component {
         }
       }
 
-      // handle ENTER press
-      if (event.which === 13) {
+      // handle ENTER press (13)
+      if (event.which === 32) {
         if (onHintedCard) {
           if (indexCurrentCard === romajiList.length - 1) {
             onWordCompletion();
@@ -288,7 +288,7 @@ class CharInput extends React.Component {
     return (
       <form>
         <Input
-          placeholder="Type here if you know it"
+          placeholder="Your input..."
           defaultValue={this.props.inputBox}
           inputProps={{ "aria-label": "description" }}
           onChange={this.props.onInputBoxChange}

@@ -68,7 +68,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      route: "signin",
+      route: "register",
       userInfo: {
         id: "",
         name: "",
@@ -87,11 +87,7 @@ class App extends Component {
       this.props.resetStore();
       this.requestNewWord();
     }
-    if (false) {
-      setTimeout(() => {
-        console.log("HI");
-      }, 1000);
-    }
+
     if (this.state.route === "home" && !this.state.haveTriggered) {
       setTimeout(() => {
         this.setState({ open: true });
@@ -339,12 +335,60 @@ class App extends Component {
     } else if (!onHintedCard && !wordCompleted) {
       return (
         <p>
-          <b>press SPACE to learn the romaji</b>
+          <b>press SPACE to learn this character</b>
         </p>
       );
     } else {
       return <p></p>;
     }
+  };
+
+  handleClickButton = () => {
+    const inputForm = this.charInputRef.current.formRef.current;
+    console.log("TEST", inputForm);
+    console.log("TEST", inputForm.value);
+    console.log("TEST", inputForm.defaultValue);
+
+    const { onIncorrectCard, curWrongChar } = this.props;
+
+    if (onIncorrectCard) {
+      inputForm.value = inputForm.value.slice(0 - curWrongChar.length);
+    }
+    // if (onIncorrectCard) {
+    //   // delete wrong input from inputBox
+    //   event.target.value = event.target.value.slice(0, -curWrongChar.length);
+    //   onInputBoxChange(event);
+    //   onSpacePress("CONTINUE_AFTER_ERROR");
+    //   resetRomajiNotInDictAlert();
+    // } else if (!onIncorrectCard && !onHintedCard && !wordCompleted) {
+    //   // ask for hint
+    //   onSpacePress("REQUEST_HINT");
+    //   onCompleteChar(Date.now(), "hinted");
+
+    //   // clear inputBox
+    //   event.target.value = this.inputChecker.buffer.length
+    //     ? event.target.value.slice(0, -this.inputChecker.buffer.length)
+    //     : event.target.value;
+    //   onInputBoxChange(event);
+
+    //   // clear inputChecker buffer
+    //   this.inputChecker.checkInput("clearBuffer");
+    // } else if (wordCompleted) {
+    //   // move on to next word
+    //   updateWord("", [""]);
+    //   const scoreDeltaList = this.convertTimeToScoreDelta(charTimestamp);
+    //   console.log("DEBUG", charTimestamp);
+    //   // updateCharScore(user_uid, scoreDeltaList);
+    //   updateWordScore(user_uid, currentWord);
+
+    //   onSpacePress("CONTINUE_AFTER_COMPLETE");
+
+    //   event.target.value = "";
+    //   onInputBoxChange(event);
+    //   const newRomaji = romajiList[0];
+    //   const newKana = currentWord[0];
+    //   setCurrentChar(newKana, newRomaji);
+    // }
   };
 
   renderRoute = (route) => {
@@ -364,10 +408,10 @@ class App extends Component {
             <Footer />
           </div>
         );
-      case "signin":
-        return (
-          <Signin onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
-        );
+      // case "signin":
+      //   return (
+      //     <Signin onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
+      //   );
       case "register":
         return (
           <Register
@@ -439,6 +483,13 @@ class App extends Component {
                     />
                   </Grid>
                   <div>{this.displayMessage()}</div>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={this.handleClickButton}
+                  >
+                    Primary afa fsklj fhfj afj ;sjfa sdasda
+                  </Button>
                   <Grid
                     container
                     direction="row"
