@@ -156,7 +156,7 @@ class CharInput extends React.Component {
     } else {
       // onIncorrectChar();
       onWrongInput(char, romajiList[indexCurrentCard]);
-      var userWrongChar = getKeyByValue(katakanaToRomaji, char);
+      // var userWrongChar = getKeyByValue(katakanaToRomaji, char);
       var currentChar = getKeyByValue(
         katakanaToRomaji,
         romajiList[indexCurrentCard]
@@ -169,27 +169,13 @@ class CharInput extends React.Component {
   onKeyDown = (event) => {
     const {
       onIncorrectCard,
-      curWrongChar,
-      onInputBoxChange,
-      onSpacePress,
-      onCompleteChar,
       wordCompleted,
       onHintedCard,
-      currentRomaji,
-      onEnterPress,
-      currentWord,
       romajiList,
       indexCurrentCard,
-      setCurrentChar,
-      charTimestamp,
-      updateWord,
-      updateCharScore,
-      updateWordScore,
       onWordCompletion,
       audioIsPlaying,
-      user_uid,
       cardStateList,
-      resetRomajiNotInDictAlert,
     } = this.props;
 
     // disable input
@@ -229,23 +215,6 @@ class CharInput extends React.Component {
       if (event.which === 32) {
         this.spacePressHandler(event.target);
       }
-
-      // handle ENTER press (13)
-      // if (event.which === 13) {
-      //   if (onHintedCard) {
-      //     if (indexCurrentCard === romajiList.length - 1) {
-      //       onWordCompletion();
-      //     }
-      //     // autofill correct answer
-      //     event.target.value = event.target.value.concat(currentRomaji);
-      //     onInputBoxChange(event.target.value);
-      //     onEnterPress(Date.now());
-
-      //     const curRomaji = romajiList[indexCurrentCard + 1];
-      //     const curKana = currentWord[indexCurrentCard + 1];
-      //     setCurrentChar(curKana, curRomaji);
-      //   }
-      // }
     }
   };
 
@@ -266,12 +235,9 @@ class CharInput extends React.Component {
       setCurrentChar,
       charTimestamp,
       updateWord,
-      updateCharScore,
       updateWordScore,
       onWordCompletion,
-      audioIsPlaying,
       user_uid,
-      cardStateList,
       resetRomajiNotInDictAlert,
     } = this.props;
     // handle SPACE press
@@ -298,7 +264,7 @@ class CharInput extends React.Component {
     } else if (wordCompleted) {
       // move on to next word
       updateWord("", [""]);
-      const scoreDeltaList = this.convertTimeToScoreDelta(charTimestamp);
+      // const scoreDeltaList = this.convertTimeToScoreDelta(charTimestamp);
       console.log("DEBUG", charTimestamp);
       // updateCharScore(user_uid, scoreDeltaList);
       updateWordScore(user_uid, currentWord);

@@ -16,7 +16,6 @@ import SmallCharList from "../components/SmallCharList";
 
 // make help dialog
 import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -28,7 +27,6 @@ import {
   updateWord,
   resetStore,
   typeAnswer,
-  resetRomajiNotInDictAlert,
   completeChar,
   pressSpace,
 } from "../actions";
@@ -364,7 +362,6 @@ class App extends Component {
     const {
       onIncorrectCard,
       curWrongChar,
-      onHintedCard,
       wordCompleted,
       audioIsPlaying,
       romajiNotInDict,
@@ -404,12 +401,9 @@ class App extends Component {
   setButtonText = () => {
     const {
       onIncorrectCard,
-      curWrongChar,
       onHintedCard,
       wordCompleted,
       audioIsPlaying,
-      romajiNotInDict,
-      currentJapChar,
     } = this.props;
 
     if (onIncorrectCard) {

@@ -2,8 +2,6 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
@@ -214,23 +212,6 @@ class Register extends React.Component {
                     >
                       I'm Ready!
                     </Button>
-                    {/* <Grid
-                      container
-                      alignItems="center"
-                      direction="column"
-                      justify="center"
-                    >
-                      <Grid item>
-                        {"Already registered? "}
-                        <Link
-                          component="button"
-                          variant="body2"
-                          onClick={() => this.props.onRouteChange("signin")}
-                        >
-                          {"Sign In"}
-                        </Link>
-                      </Grid>
-                    </Grid> */}
                   </form>
                 </div>
               </Container>

@@ -1,6 +1,5 @@
 import React from "react";
 import "../scss/components/TextBlock.scss";
-import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 
 const TextBlock = ({ title, description, icon }) => {
   return (
