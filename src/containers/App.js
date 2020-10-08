@@ -553,7 +553,7 @@ class App extends Component {
                           this.charInputRef.current.formRef.current
                         )
                       }
-                      // style={{ color: "white" }}
+                      style={{ color: "white" }}
                     >
                       {this.setButtonText()}
                     </Button>
