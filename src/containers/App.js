@@ -411,43 +411,17 @@ class App extends Component {
       romajiNotInDict,
       currentJapChar,
     } = this.props;
-    if (audioIsPlaying) {
-      return (
-        <p>
-          <b>♬</b>
-        </p>
-      );
-    }
+
     if (onIncorrectCard) {
-      return (
-        <div>
-          <p>
-            <b>Try Again</b>
-          </p>
-        </div>
-      );
+      return "Try Again";
     } else if (onHintedCard && !audioIsPlaying) {
-      return (
-        <p>
-          <b>Got It</b>
-        </p>
-      );
+      return "Got It";
     } else if (wordCompleted && !audioIsPlaying) {
-      return (
-        <div>
-          <p>
-            <b>Next Word</b>
-          </p>
-        </div>
-      );
+      return " Next Word";
     } else if (!onHintedCard && !wordCompleted) {
-      return (
-        <p>
-          <b>Learn Character</b>
-        </p>
-      );
+      return "Learn Character";
     } else {
-      return <p></p>;
+      return "";
     }
   };
 
@@ -544,22 +518,26 @@ class App extends Component {
                     />
                   </Grid>
                   <div>{this.displayMessage2()}</div>
-                  {!this.props.audioIsPlaying ? (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() =>
-                        this.clickChild(
-                          this.charInputRef.current.formRef.current
-                        )
-                      }
-                      style={{ color: "white" }}
-                    >
-                      {this.setButtonText()}
-                    </Button>
-                  ) : (
-                    <div></div>
-                  )}
+                  <Grid item>
+                    {!this.props.audioIsPlaying ? (
+                      <Button
+                        size="large"
+                        variant="contained"
+                        color="primary"
+                        onClick={() =>
+                          this.clickChild(
+                            this.charInputRef.current.formRef.current
+                          )
+                        }
+                        style={{ color: "white" }}
+                      >
+                        {this.setButtonText()}
+                      </Button>
+                    ) : (
+                      <div></div>
+                    )}
+                  </Grid>
+
                   <Grid
                     container
                     direction="row"
