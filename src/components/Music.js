@@ -93,7 +93,7 @@ class Music extends React.Component {
     return (
       <div>
         <Button
-          variant="contained"
+          variant="text"
           color="primary"
           onClick={this.togglePlay}
           className="music-button"

@@ -14,16 +14,11 @@ const useStyles = makeStyles((theme) => ({
 
 const KatakanaChar = (props) => {
   const { char } = props;
-  const [anchorElement, setAnchorElement] = React.useState(null)
   const classes = useStyles(props);
-
-  const handleClick = (event) => {
-    setAnchorElement(event.currentTarget);
-  };
 
   return (
   <div>
-    <div className={`noselect flipcard2`} onClick={handleClick}>
+    <div className={`noselect flipcard2`}>
       <div className="flipcard-content2">
         <div className={`flipcard-front2 ${classes.cardBG}`}>
           <span>
