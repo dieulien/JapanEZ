@@ -2,7 +2,6 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-// import { isCompositeComponent } from "react-dom/test-utils";
 
 class OutsideAlerter extends React.Component {
   componentDidMount = () => {
@@ -14,8 +13,6 @@ class OutsideAlerter extends React.Component {
   };
 
   setWrapperRef = (node) => {
-    // console.log("setWrapperRef", node);
-    // console.log("this", this);
     this.wrapperRef = node;
   };
 

@@ -13,32 +13,28 @@ import OutsideAlerter from "../components/OutsideAlerter";
 import Footer from "../components/Footer";
 import WelcomeBar from "../components/WelcomeBar";
 import SmallCharList from "../components/SmallCharList";
+import { Button } from "@material-ui/core";
+import LoadingPopup from "../components/LoadingPopup"
 
 // make help dialog
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { Button } from "@material-ui/core";
-
 import "../scss/containers/App.scss";
 import {
   updateChar,
   updateWord,
   resetStore,
-  typeAnswer,
-  completeChar,
-  pressSpace,
 } from "../actions";
 import {
   GETWORD_URL,
-  CHARSCORE_URL,
   UPDATECHARSCORE_URL,
   WORDSCORE_URL,
   MEDIA_BASE_URL_WORD,
 } from "../constants";
-
 import LogRocket from "logrocket";
+
 LogRocket.init("zskhtw/japanese-learning");
 
 const mapStateToProps = (state) => {
@@ -49,9 +45,7 @@ const mapStateToProps = (state) => {
     onHintedCard: state.changeCardState.onHintedCard,
     wordCompleted: state.changeCardState.wordCompleted,
     currentWord: state.changeCardState.currentWord,
-    charTimestamp: state.changeCardState.charTimestamp,
     audioIsPlaying: state.changeGeneralState.audioIsPlaying,
-    indexCurrentCard: state.changeCardState.indexCurrentCard,
     romajiNotInDict: state.changeInputBox.romajiNotInDict,
   };
 };
@@ -74,88 +68,59 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      route: "register",
+      route: "home", // should be register
       userInfo: {
-        id: "",
-        name: "",
-        email: "",
-        joined: "",
+        id: "ca0cf6b0-658b-410e-a031-522e3116992e",
+        name: "temp",
+        email: "temp@g.com",
+        joined: "2020-10-13T19:21:51.697Z",
       },
       currentWordInfo: null,
-      open: false,
-      haveTriggered: false,
+      openEndDialogue: false,
     };
     this.charInputRef = React.createRef();
   }
 
-  componentDidUpdate = (prevProps, prevState) => {
+  componentDidMount = () => {
+    this.requestNewWord(); // temporary
+  };
+
+  componentDidUpdate = (_, prevState) => {
     if (this.state.userInfo.id !== prevState.userInfo.id) {
       this.props.resetStore();
       this.requestNewWord();
     }
 
-    if (this.state.route === "home" && !this.state.haveTriggered) {
+    if (this.state.route === "home") {
       setTimeout(() => {
-        this.setState({ open: true });
-      }, 60000 * 5);
+        this.setState({ openEndDialogue: true });
+      }, 60000 * 30);
     }
-  };
-
-  componentDidMount = () => {
-    this.setState({ haveTriggered: false });
   };
 
   onRouteChange = (route) => {
     this.setState({ route: route });
   };
 
-  parseJapaneseWord = (word) => {
+  parseJapaneseWord = (katakana_word) => {
     var charsToRead = [];
-    for (const c of word) {
-      var c_romaji = katakanaToRomaji[c] || "??";
-      charsToRead.push({ char: c, romaji: c_romaji });
+    for (const katakana_char of katakana_word) {
+      var katakana_romaji = katakanaToRomaji[katakana_char] || "??";
+      charsToRead.push({ 
+        char: katakana_char, 
+        romaji: katakana_romaji 
+      });
     }
     return charsToRead;
   };
 
-  convertTimeToScoreDelta = (charTimestamp) => {
-    return charTimestamp.map((item) => {
-      var score_delta = 20000 / item.time;
-      if (item.type === "hinted") {
-        score_delta *= -1;
-      }
-      return {
-        char: item.char,
-        score_delta: score_delta,
-      };
-    });
-  };
-
-  updateCharScore = (user_uid, scoreDeltaList) => {
-    fetch(CHARSCORE_URL, {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        user_uid: user_uid,
-        charScoreDeltaList: scoreDeltaList,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Update Char Score:", data);
-      })
-      .catch((error) => {
-        console.log("Failed to update char score", error);
-      });
-  };
-
-  updateCharScore2 = (user_uid, char, score) => {
+  updateCharScore = (user_uid, katakana_char, score) => {
     fetch(UPDATECHARSCORE_URL, {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         user_uid: user_uid,
-        char: char,
+        char: katakana_char,
         score: score,
       }),
     })
@@ -207,19 +172,18 @@ class App extends Component {
     })
       .then((res) => res.json())
       .then((word) => {
-        var unix_time = Date.now();
         romajiList = this.parseJapaneseWord(word.vocab_kana).map(
-          (item) => item.romaji
+          (kana_char) => kana_char.romaji
         );
         updateWord(word.vocab_kana, romajiList);
-        const curRomaji = romajiList[0];
-        const curKana = word.vocab_kana.charAt(0);
-        setCurrentChar(curKana, curRomaji);
+        setCurrentChar(word.vocab_kana.charAt(0), romajiList[0]);
 
         this.setState({ currentWordInfo: word });
-        this.setState({ currentWord_unix_time: unix_time });
+        this.setState({ currentWord_unix_time: Date.now() });
+
         const word_audio = new Audio(
-          `${MEDIA_BASE_URL_WORD}${this.parseAudio(word.vocab_sound_local)}`
+          `${MEDIA_BASE_URL_WORD}
+          ${this.parseAudio(word.vocab_sound_local)}`
         );
         word_audio.addEventListener("loadedmetadata", (event) => {
           this.setState({
@@ -242,12 +206,14 @@ class App extends Component {
       userInfo.joined = joined;
       return { userInfo };
     });
-    console.log("userInfo", this.state.userInfo);
+
     LogRocket.identify(user_uid, {
       name: name,
       email: email,
       joined: joined,
     });
+
+    console.log("userInfo", this.state.userInfo);
   };
 
   focusInputBox = () => {
@@ -255,17 +221,17 @@ class App extends Component {
   };
 
   onClickCard = (event) => {
-    const kana = event.target.innerText;
-    this.setState({ clickedJapChar: kana });
+    const kana_char = event.target.innerText;
+    this.setState({ clickedJapChar: kana_char });
 
     // unclick
-    if (this.state.clickedJapChar === kana) {
+    if (this.state.clickedJapChar === kana_char) {
       this.setState({ clickedJapChar: "" });
     }
   };
 
   showHint = () => {
-    // once completed word, can review hint card
+    // once user completed word, can review hint card
     if (this.props.wordCompleted && this.state.clickedJapChar) {
       return <Hint currentHintedChar={this.state.clickedJapChar} />;
     }
@@ -320,7 +286,7 @@ class App extends Component {
       return (
         <div>
           <p>
-            <b>Click on a card to view its mnemonic</b>
+            <b>{"Click on a card to view its mnemonic"}</b>
           </p>
         </div>
       );
@@ -385,7 +351,7 @@ class App extends Component {
           <div className="page-container" style={{ position: "relative" }}>
             <div className="content-wrap">
               <Dialog
-                open={this.state.open}
+                open={this.state.openEndDialogue}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
               >
@@ -408,6 +374,7 @@ class App extends Component {
                   </DialogContentText>
                 </DialogContent>
               </Dialog>
+              <LoadingPopup></LoadingPopup>
 
               <NavBar onRouteChange={this.onRouteChange} currentTab="home" />
               <WelcomeBar userName={this.state.userInfo.name} />
@@ -421,7 +388,6 @@ class App extends Component {
                 <OutsideAlerter focusInputBox={this.focusInputBox}>
                   <CharInput
                     updateCharScore={this.updateCharScore}
-                    updateCharScore2={this.updateCharScore2}
                     updateWordScore={this.updateWordScore}
                     getKeyByValue={this.getKeyByValue}
                     user_uid={this.state.userInfo.id}

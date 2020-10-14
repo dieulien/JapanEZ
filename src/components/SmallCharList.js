@@ -61,7 +61,7 @@ class SmallCharList extends React.Component {
     if (Object.keys(this.state.charResultList).length === 0) {
       return (
         <div>
-          <div>Fetching Data...</div>
+          <div>{"Fetching Data..."}</div>
           <CircularProgress />
         </div>
       );

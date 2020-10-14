@@ -17,6 +17,8 @@ const parseoutUnderlineText = (sentence) => {
 class Hint extends React.Component {
   render() {
     const romaji = katakanaToRomaji[this.props.currentHintedChar];
+    console.log("DEBUG", this.props.currentHintedChar)
+    console.log("DEBUG2", katakanaHint[this.props.currentHintedChar])
     const sentenceFragments = parseoutUnderlineText(
       katakanaHint[this.props.currentHintedChar].shortHint
     );

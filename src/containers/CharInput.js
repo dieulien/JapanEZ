@@ -7,7 +7,6 @@ import { katakanaToRomaji } from "../jap-char";
 import {
   pressKey,
   onCorrectChar,
-  onIncorrectChar,
   typeAnswer,
   pressSpace,
   typeWrongAnswer,
@@ -31,7 +30,6 @@ const mapStatestoProps = (state) => {
     onHintedCard: state.changeCardState.onHintedCard,
     currentRomaji: state.changeCardState.currentRomaji,
     currentWord: state.changeCardState.currentWord,
-    charTimestamp: state.changeCardState.charTimestamp,
     audioIsPlaying: state.changeGeneralState.audioIsPlaying,
     inputBox: state.changeInputBox.inputBox,
   };
@@ -46,9 +44,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     onCorrectChar: () => {
       dispatch(onCorrectChar());
-    },
-    onIncorrectChar: () => {
-      dispatch(onIncorrectChar());
     },
     onSpacePress: (context) => {
       dispatch(pressSpace(context));
@@ -104,27 +99,12 @@ class CharInput extends React.Component {
     setCurrentChar(curKana, curRomaji);
 
     // https://stackoverflow.com/questions/37949981/call-child-method-from-parent
-    this.props.setClick(this.ButtonClickOrSpacePressHandler);
+    this.props.setClick(this.buttonClickOrSpacePressHandler);
   }
 
   componentDidUpdate = (prevProps) => {
     if (this.props.user_uid === prevProps.user_uid) {
     }
-  };
-
-  convertTimeToScoreDelta = (charTimestamp) => {
-    return charTimestamp.map((item) => {
-      var score_delta = 20000 / item.time;
-      if (item.type === "hinted") {
-        score_delta *= -1;
-      }
-      return {
-        char: item.char,
-        score_delta: score_delta,
-        result_type: item.type,
-        result_time: item.time,
-      };
-    });
   };
 
   checkFunction = (char) => {
@@ -138,31 +118,31 @@ class CharInput extends React.Component {
       setCurrentChar,
       onCompleteChar,
       getKeyByValue,
-      updateCharScore2,
+      updateCharScore,
       user_uid,
     } = this.props;
     const userInputChar = getKeyByValue(katakanaToRomaji, char);
 
     if (char === romajiList[indexCurrentCard]) {
-      updateCharScore2(user_uid, userInputChar, "+1");
+      updateCharScore(user_uid, userInputChar, "+1");
       onCorrectChar();
       onCompleteChar(Date.now(), "correct");
+
       const newRomaji = romajiList[indexCurrentCard + 1];
       const newKana = currentWord[indexCurrentCard + 1];
       setCurrentChar(newKana, newRomaji);
+
       if (indexCurrentCard === romajiList.length - 1) {
         onWordCompletion();
       }
     } else {
-      // onIncorrectChar();
       onWrongInput(char, romajiList[indexCurrentCard]);
-      // var userWrongChar = getKeyByValue(katakanaToRomaji, char);
       var currentChar = getKeyByValue(
         katakanaToRomaji,
         romajiList[indexCurrentCard]
       );
-      updateCharScore2(user_uid, userInputChar, "0");
-      updateCharScore2(user_uid, currentChar, "0");
+      updateCharScore(user_uid, userInputChar, "0");
+      updateCharScore(user_uid, currentChar, "0");
     }
   };
 
@@ -213,12 +193,12 @@ class CharInput extends React.Component {
       event.preventDefault();
 
       if (event.which === 32) {
-        this.ButtonClickOrSpacePressHandler(event.target);
+        this.buttonClickOrSpacePressHandler(event.target);
       }
     }
   };
 
-  ButtonClickOrSpacePressHandler = (eventTarget) => {
+  buttonClickOrSpacePressHandler = (eventTarget) => {
     const {
       onIncorrectCard,
       curWrongChar,
@@ -233,14 +213,12 @@ class CharInput extends React.Component {
       romajiList,
       indexCurrentCard,
       setCurrentChar,
-      charTimestamp,
       updateWord,
       updateWordScore,
       onWordCompletion,
       user_uid,
       resetRomajiNotInDictAlert,
     } = this.props;
-    // handle SPACE press
 
     if (onIncorrectCard) {
       // delete wrong input from inputBox
@@ -264,11 +242,7 @@ class CharInput extends React.Component {
     } else if (wordCompleted) {
       // move on to next word
       updateWord("", [""]);
-      // const scoreDeltaList = this.convertTimeToScoreDelta(charTimestamp);
-      console.log("DEBUG", charTimestamp);
-      // updateCharScore(user_uid, scoreDeltaList);
       updateWordScore(user_uid, currentWord);
-
       onSpacePress("CONTINUE_AFTER_COMPLETE");
 
       eventTarget.value = "";
@@ -296,7 +270,6 @@ class CharInput extends React.Component {
       <form>
         <Input
           placeholder="Your input..."
-          // defaultValue={this.props.inputBox}
           inputProps={{ "aria-label": "description" }}
           onChange={this.props.onInputBoxChange}
           onKeyDown={this.onKeyDown}
