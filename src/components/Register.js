@@ -5,10 +5,13 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
+import Link from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 import { REGISTER_URL } from "../constants";
 import "../scss/components/Signin.scss";
 import TextBlock from "./TextBlock";
+import LoadingPopup from "./LoadingPopup";
 
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 import FontDownloadIcon from "@material-ui/icons/FontDownload";
@@ -59,6 +62,7 @@ class Register extends React.Component {
       nameErrorMsg: "",
       emailErrorMsg: "",
       passwordErrorMsg: "",
+      openLoadingPopup: false,
     };
   }
 
@@ -81,6 +85,7 @@ class Register extends React.Component {
 
   sendFormDataToBackEnd = () => {
     const { name, email, password } = this.state;
+    this.setState({ openLoadingPopup: true })
 
     fetch(REGISTER_URL, {
       method: "post",
@@ -93,6 +98,8 @@ class Register extends React.Component {
     })
       .then((response) => response.json())
       .then((data) => {
+        this.setState({ openLoadingPopup: false })
+
         if (Object.keys(data).length === 4) {
           this.setState({ emailErrorMsg: "" });
           this.props.loadUser(data);
@@ -146,6 +153,7 @@ class Register extends React.Component {
     const { nameErrorMsg, emailErrorMsg, passwordErrorMsg } = this.state;
     return (
       <div className="flex-container">
+        <LoadingPopup isOpen={this.state.openLoadingPopup}></LoadingPopup>
         <div className="signin-box">
           <div className="header">
             <h1 className="title">JapanEZ</h1>
@@ -163,7 +171,7 @@ class Register extends React.Component {
                 <CssBaseline />
                 <div className={classes.paper}>
                   <Typography component="h1" variant="h5">
-                    Get Started
+                    Register
                   </Typography>
                   <form className={classes.form} noValidate>
                     <TextField
@@ -210,8 +218,25 @@ class Register extends React.Component {
                       onClick={this.onFormSubmit}
                       style={{ color: "#ffffff" }}
                     >
-                      I'm Ready!
+                      Get started
                     </Button>
+                    <Grid
+                      container
+                      alignItems="center"
+                      direction="column"
+                      justify="center"
+                    >
+                      <Grid item>
+                        {"Already registered? "}
+                        <Link
+                          component="button"
+                          variant="body2"
+                          onClick={() => this.props.onRouteChange("signin")}
+                        >
+                          {"Sign In"}
+                        </Link>
+                      </Grid>
+                    </Grid>
                   </form>
                 </div>
               </Container>

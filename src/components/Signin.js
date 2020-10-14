@@ -13,6 +13,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { SIGNIN_URL } from "../constants";
 import "../scss/components/Signin.scss";
 import TextBlock from "./TextBlock";
+import LoadingPopup from "./LoadingPopup"
 
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 import FontDownloadIcon from "@material-ui/icons/FontDownload";
@@ -58,6 +59,7 @@ class Signin extends React.Component {
       signInPassword: "",
       emailErrorMsg: "",
       passwordErrorMsg: "",
+      openLoadingPopup: false,
     };
   }
 
@@ -71,6 +73,7 @@ class Signin extends React.Component {
 
   sendSigninInfoToBackend = () => {
     const { signInEmail, signInPassword } = this.state;
+    this.setState({ openLoadingPopup: true })
 
     fetch(SIGNIN_URL, {
       method: "post",
@@ -82,6 +85,8 @@ class Signin extends React.Component {
     })
       .then((response) => response.json())
       .then((data) => {
+        this.setState({ openLoadingPopup: false })
+
         if (Object.keys(data).length === 4) {
           this.props.loadUser(data);
           this.props.onRouteChange("home");
@@ -134,6 +139,7 @@ class Signin extends React.Component {
     const { classes } = this.props;
     return (
       <div className="flex-container">
+        <LoadingPopup isOpen={this.state.openLoadingPopup}></LoadingPopup>
         <div className="signin-box">
           <div className="header">
             <h1 className="title">JapanEZ</h1>
@@ -201,11 +207,6 @@ class Signin extends React.Component {
                       direction="column"
                       justify="center"
                     >
-                      {/* <Grid item xs>
-                        <Link href="#" variant="body2">
-                          {"Forgot password?"}
-                        </Link>
-                      </Grid> */}
                       <Grid item>
                         {"Don't have an account? "}
                         <Link
@@ -213,7 +214,7 @@ class Signin extends React.Component {
                           variant="body2"
                           onClick={() => this.props.onRouteChange("register")}
                         >
-                          {"Sign Up"}
+                          {"Register Here"}
                         </Link>
                       </Grid>
                     </Grid>

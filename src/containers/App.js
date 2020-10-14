@@ -77,6 +77,7 @@ class App extends Component {
       },
       currentWordInfo: null,
       openEndDialogue: false,
+      isFetchingWord: false,
     };
     this.charInputRef = React.createRef();
   }
@@ -162,6 +163,10 @@ class App extends Component {
     const { setCurrentChar, updateWord } = this.props;
     var romajiList = [];
     this.setState({ clickedJapChar: "" });
+    this.setState({ isFetchingWord: true })
+    const wordRequestTime = Date.now();
+    console.log("Word requested at time:", wordRequestTime)
+    this.setState({ wordRequestTimeStamp: wordRequestTime})
 
     fetch(GETWORD_URL, {
       method: "post",
@@ -172,6 +177,8 @@ class App extends Component {
     })
       .then((res) => res.json())
       .then((word) => {
+        this.setState({ isFetchingWord: false })
+
         romajiList = this.parseJapaneseWord(word.vocab_kana).map(
           (kana_char) => kana_char.romaji
         );
@@ -316,6 +323,21 @@ class App extends Component {
     }
   };
 
+  displayLoadingPopup = () => {
+    console.log("Debug", this.state.isFetchingWord)
+    if (this.state.isFetchingWord) {
+      const curTime = Date.now()
+      if (curTime - this.state.wordRequestTimeStamp > 1000) {
+        console.log("word request is taking more than 1 sec")
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
   renderRoute = (route) => {
     switch (route) {
       case "progress":
@@ -333,10 +355,10 @@ class App extends Component {
             <Footer />
           </div>
         );
-      // case "signin":
-      //   return (
-      //     <Signin onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
-      //   );
+      case "signin":
+        return (
+          <Signin onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
+        );
       case "register":
         return (
           <Register
@@ -349,6 +371,8 @@ class App extends Component {
 
         return (
           <div className="page-container" style={{ position: "relative" }}>
+            <LoadingPopup isOpen={this.displayLoadingPopup()}></LoadingPopup>    
+      
             <div className="content-wrap">
               <Dialog
                 open={this.state.openEndDialogue}
@@ -374,7 +398,6 @@ class App extends Component {
                   </DialogContentText>
                 </DialogContent>
               </Dialog>
-              <LoadingPopup></LoadingPopup>
 
               <NavBar onRouteChange={this.onRouteChange} currentTab="home" />
               <WelcomeBar userName={this.state.userInfo.name} />

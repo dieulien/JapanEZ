@@ -105,7 +105,7 @@ const NavBar = ({ onRouteChange, currentTab }) => {
           <Button
             color="secondary"
             variant={currentTab === "signout" ? "outlined" : "text"}
-            onClick={() => onRouteChange("register")}
+            onClick={() => onRouteChange("signin")}
             className="nav-button"
             startIcon={<ExitToAppOutlinedIcon />}
           >

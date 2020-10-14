@@ -4,11 +4,11 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import "../scss/components/LoadingPopup.scss"
 
-const LoadingPopup = () => {
+const LoadingPopup = (props) => {
   return (
     <div>
       <Dialog
-        open={this.props.openLoadingPopup}
+        open={props.isOpen}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
