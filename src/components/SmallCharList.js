@@ -1,10 +1,11 @@
 import React from "react";
 import SmallChar from "../components/SmallChar.js";
 import { Grid } from "@material-ui/core";
-import { katakanaToRomaji } from "../jap-char";
+import { katakanaToRomaji, limitedKatakanaList } from "../jap-char";
 import { GETCHARSCORE_URL } from "../constants";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import "../scss/components/SmallChar.scss";
+import LoadingPopup from "./LoadingPopup";
 
 class SmallCharList extends React.Component {
   constructor(props) {
@@ -59,14 +60,10 @@ class SmallCharList extends React.Component {
 
   render() {
     if (Object.keys(this.state.charResultList).length === 0) {
-      return (
-        <div>
-          <div>{"Fetching Data..."}</div>
-          <CircularProgress />
-        </div>
-      );
+      return <LoadingPopup isOpen={true} />;
     }
-    const charsArrayDisplay = Object.keys(katakanaToRomaji).map((kana, idx) => {
+    // for full katakana list, can use Object.keys(katakanaToRomaji) instead of limitedKatakanaList
+    const charsArrayDisplay = limitedKatakanaList.map((kana, idx) => {
       if (kana !== "clearBuffer") {
         var correctPercentage = 0;
         var hintedPercentage = 0;

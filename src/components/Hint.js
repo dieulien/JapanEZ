@@ -47,6 +47,7 @@ class Hint extends React.Component {
               audioLink={audioLink}
               delay={0}
               noStoreUpdateWhenEnded={false}
+              autoplay={this.props.autoplayAudio}
             />
           </CardContent>
         </div>

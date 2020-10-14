@@ -42,9 +42,12 @@ class Music extends React.Component {
 
   componentDidMount() {
     this.state.audio.addEventListener("ended", this.stopAudioHandler);
+    console.log("TEST",this.props.autoplay)
     setTimeout(() => {
-      // this.state.audio.play();
-      // this.props.onAudioPlay();
+      if (this.props.autoplay) {
+        this.state.audio.play();
+        this.props.onAudioPlay(); 
+      }
     }, this.props.delay);
   }
 

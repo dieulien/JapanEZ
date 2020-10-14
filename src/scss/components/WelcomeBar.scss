@@ -1,15 +1,13 @@
 @import "../variables.scss";
 
 .welcome-text {
-  font-size: calc(10px + 0.5vh);
+  font-size: calc(10px + 1vh);
+  text-align: center;
 }
 
 .container {
   border: 1px solid $card-border-neutral-color;
   border-radius: (10px);
   padding: calc(5px + 0.5vh);
-  padding-left: 30px;
   margin: calc(1px + 0.2vh) 0 calc(15px + 1vh);
 }
-
-// tmw5 center bg-white br3 pa1 ma1 ba b--black-10 tl

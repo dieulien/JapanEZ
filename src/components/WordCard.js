@@ -26,7 +26,7 @@ const parseoutBoldText = (sentence) => {
   return sentence.split(",");
 };
 
-export default function OutlinedCard({ wordInfo, word_audio_duration }) {
+export default function OutlinedCard({ wordInfo, word_audio_duration, autoplayAudio }) {
   const classes = useStyles();
 
   var el = document.createElement("html");
@@ -58,6 +58,7 @@ export default function OutlinedCard({ wordInfo, word_audio_duration }) {
           )}`}
           delay={0}
           noStoreUpdateWhenEnded={true}
+          autoplay={autoplayAudio}
         />
         <Divider style={{ marginTop: "calc(5px + 0.5vh)" }} />
         <Typography
@@ -80,6 +81,7 @@ export default function OutlinedCard({ wordInfo, word_audio_duration }) {
           )}`}
           delay={word_audio_duration * 1000 + 750}
           noStoreUpdateWhenEnded={false}
+          autoplay={autoplayAudio}
         />
         <Divider style={{ marginTop: "calc(5px + 0.5vh)" }} />
         <Typography

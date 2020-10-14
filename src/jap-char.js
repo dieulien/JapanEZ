@@ -48,6 +48,41 @@ const katakanaToRomaji = {
   clearBuffer: "clearBuffer",
 };
 
+const limitedKatakanaList = [
+  "ア",
+  "イ",
+  "ウ",
+  "エ",
+  "オ",
+  "カ",
+  "キ",
+  "ク",
+  "ケ",
+  "コ",
+  "シ",
+  "ス",
+  "ソ",
+  "タ",
+  "テ",
+  "ト",
+  "ナ",
+  "ニ",
+  "ネ",
+  "ハ",
+  "フ",
+  "ホ",
+  "マ",
+  "ミ",
+  "ム",
+  "メ",
+  "モ",
+  "ヤ",
+  "ラ",
+  "リ",
+  "ル",
+  "レ",
+];
+
 const katakanaHint = {
   ア: {
     romaji: "a",
@@ -290,4 +325,4 @@ const katakanaHint = {
   },
 };
 
-export { katakanaToRomaji, katakanaHint };
+export { katakanaToRomaji, katakanaHint, limitedKatakanaList };

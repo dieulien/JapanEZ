@@ -153,7 +153,7 @@ class Register extends React.Component {
     const { nameErrorMsg, emailErrorMsg, passwordErrorMsg } = this.state;
     return (
       <div className="flex-container">
-        <LoadingPopup isOpen={this.state.openLoadingPopup}></LoadingPopup>
+        <LoadingPopup isOpen={this.state.openLoadingPopup} />
         <div className="signin-box">
           <div className="header">
             <h1 className="title">JapanEZ</h1>

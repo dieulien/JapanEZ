@@ -218,6 +218,8 @@ class CharInput extends React.Component {
       onWordCompletion,
       user_uid,
       resetRomajiNotInDictAlert,
+      updateCharScore,
+      getKeyByValue
     } = this.props;
 
     if (onIncorrectCard) {
@@ -230,6 +232,12 @@ class CharInput extends React.Component {
       // ask for hint
       onSpacePress("REQUEST_HINT");
       onCompleteChar(Date.now(), "hinted");
+
+      var currentChar = getKeyByValue(
+        katakanaToRomaji,
+        romajiList[indexCurrentCard]
+      );
+      updateCharScore(user_uid, currentChar, "+0");
 
       // clear inputBox
       eventTarget.value = this.inputChecker.buffer.length

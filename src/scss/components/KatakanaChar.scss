@@ -1,0 +1,68 @@
+@import "../variables.scss";
+
+span {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.noselect2 {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
+}
+
+.flipcard-front2 {
+  width: 75px;
+  height: 80px;
+  display: table;
+  font-size: 40px;
+  color: white;
+}
+
+.flipcard-back2 {
+  width: 75px;
+  height: 80px;
+  display: table; // ??? why need this to center?
+  font-size: 30px;
+  color: white;
+  transform: rotateY(180deg);
+}
+
+.flipcard-front2,
+.flipcard-back2 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 15px;
+}
+
+.flipcard2 {
+  width: 75px;
+  height: 80px;
+  text-align: center;
+  cursor: pointer;
+  perspective: 300px;
+}
+
+.flipcard-content2 {
+  position: relative;
+  transition: transform 0.5s;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transform-style: preserve-3d;
+  border-radius: 1rem;
+}
+
+.flipcard2:hover .flipcard-content2 {
+  transform: rotateY(180deg);
+}
+
+.characters-list {
+  margin-top: 3vh;
+  margin-bottom: 3vh;
+}

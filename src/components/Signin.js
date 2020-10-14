@@ -139,7 +139,7 @@ class Signin extends React.Component {
     const { classes } = this.props;
     return (
       <div className="flex-container">
-        <LoadingPopup isOpen={this.state.openLoadingPopup}></LoadingPopup>
+        <LoadingPopup isOpen={this.state.openLoadingPopup} />
         <div className="signin-box">
           <div className="header">
             <h1 className="title">JapanEZ</h1>

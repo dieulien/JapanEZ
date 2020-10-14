@@ -4,7 +4,7 @@ import CharList from "./CharList";
 import CharInput from "./CharInput";
 import NavBar from "../components/NavBar";
 import Hint from "../components/Hint";
-import { Grid, Paper } from "@material-ui/core";
+import { FormControl, Grid, Paper } from "@material-ui/core";
 import { katakanaToRomaji } from "../jap-char";
 import Signin from "../components/Signin";
 import Register from "../components/Register";
@@ -13,14 +13,18 @@ import OutsideAlerter from "../components/OutsideAlerter";
 import Footer from "../components/Footer";
 import WelcomeBar from "../components/WelcomeBar";
 import SmallCharList from "../components/SmallCharList";
+import KatakanaChart from "../components/KatakanaChart";
 import { Button } from "@material-ui/core";
 import LoadingPopup from "../components/LoadingPopup"
+import Switch from "@material-ui/core/Switch";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
-// make help dialog
+// dialog
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+
 import "../scss/containers/App.scss";
 import {
   updateChar,
@@ -70,14 +74,15 @@ class App extends Component {
     this.state = {
       route: "home", // should be register
       userInfo: {
-        id: "ca0cf6b0-658b-410e-a031-522e3116992e",
-        name: "temp",
-        email: "temp@g.com",
-        joined: "2020-10-13T19:21:51.697Z",
+        id: "a284d3ec-a941-4db0-acf2-b3531dab3f60",
+        name: "newcomer",
+        email: "newcomer@g.com",
+        joined: "2020-10-14T19:27:16.707Z",
       },
       currentWordInfo: null,
       openEndDialogue: false,
       isFetchingWord: false,
+      checkedAudioAutoPlay: true,
     };
     this.charInputRef = React.createRef();
   }
@@ -240,10 +245,20 @@ class App extends Component {
   showHint = () => {
     // once user completed word, can review hint card
     if (this.props.wordCompleted && this.state.clickedJapChar) {
-      return <Hint currentHintedChar={this.state.clickedJapChar} />;
+      return (
+        <Hint 
+          currentHintedChar={this.state.clickedJapChar} 
+          autoplayAudio={this.state.checkedAudioAutoPlay}
+        />
+      );
     }
     if (this.props.onHintedCard) {
-      return <Hint currentHintedChar={this.props.currentJapChar} />;
+      return (
+        <Hint 
+          currentHintedChar={this.props.currentJapChar} 
+          autoplayAudio={this.state.checkedAudioAutoPlay}
+        />
+      );
     }
   };
 
@@ -253,6 +268,7 @@ class App extends Component {
         <WordCard
           wordInfo={this.state.currentWordInfo}
           word_audio_duration={this.state.word_audio_duration}
+          autoplayAudio={this.state.checkedAudioAutoPlay}
         />
       );
     }
@@ -338,6 +354,14 @@ class App extends Component {
     }
   }
 
+  handleAudioAutoplaySwitch = (event) => {
+    console.log("event", event)
+    console.log("event", event.target)
+    console.log("event", event.target.name)
+    console.log("event", event.target.checked)
+    this.setState({ checkedAudioAutoPlay: !this.state.checkedAudioAutoPlay })
+  }
+
   renderRoute = (route) => {
     switch (route) {
       case "progress":
@@ -355,6 +379,21 @@ class App extends Component {
             <Footer />
           </div>
         );
+      case "katakanaChart":
+        return (
+          <div className="progress-flex-container">
+            <div className="progress-flex-item1">
+              <NavBar
+                onRouteChange={this.onRouteChange}
+                currentTab="katakanaChart"
+              />
+            </div>
+            <div className="progress-flex-item2">
+              <KatakanaChart user_uid={this.state.userInfo.id} />
+            </div>
+            <Footer />
+          </div>
+        )
       case "signin":
         return (
           <Signin onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
@@ -371,7 +410,7 @@ class App extends Component {
 
         return (
           <div className="page-container" style={{ position: "relative" }}>
-            <LoadingPopup isOpen={this.displayLoadingPopup()}></LoadingPopup>    
+            <LoadingPopup isOpen={this.displayLoadingPopup()} />   
       
             <div className="content-wrap">
               <Dialog
@@ -401,6 +440,21 @@ class App extends Component {
 
               <NavBar onRouteChange={this.onRouteChange} currentTab="home" />
               <WelcomeBar userName={this.state.userInfo.name} />
+              <FormControlLabel
+                className="audio-control"
+                label="Autoplay Audio"
+                labelPlacement="start"
+                control={
+                  <Switch 
+                    checked={this.state.checkedAudioAutoPlay}
+                    onChange={this.handleAudioAutoplaySwitch}
+                    name="autoplay-audio" 
+                    color="primary"
+                  />
+                }
+              >
+
+              </FormControlLabel>
               <Grid
                 container
                 direction="column"
