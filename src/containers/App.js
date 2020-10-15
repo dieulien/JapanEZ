@@ -93,20 +93,40 @@ class App extends Component {
       initialStep: 0,
       steps: [
         {
-          element: ".introjs-step1-element",
-          intro: "This is a japanese word. The current character is highlighted in blue.",
+          element: ".introjs-step0-element",
+          intro: `Welcome! Click 'Next' to continue with the walkthrough.`,
+          position: "left",
+        },
+        {
+          element: ".japanese-word",
+          intro: "This is a Japanese word. The current character is highlighted in blue.",
           position: "left",
         },
         {
           element: ".introjs-step2-element",
-          intro: "this is the main button. You can use your mouse to click on it or press SPACE",
+          intro: "This is the main button. You can use your mouse to click on it or press SPACE.",
           position: "left",
         },
         {
-          element: ".introjs-step3-element",
-          intro: "type out the highlighted japanese character here if you know it",
+          element: ".input-box",
+          intro: "Type out the highlighted Japanese character here if you know it.",
           position: "left",
-        }
+        },
+        {
+          element: ".introjs-step4-element",
+          intro: "Toggle this switch to enable/disable audio autoplay.",
+          position: "left",
+        },
+        {
+          element: ".nav-button-progress",
+          intro: "Click this tab to view your progress.",
+          position: "bottom",
+        },
+        {
+          element: ".nav-button-katakanaChart",
+          intro: "Click this tab to check which Japanese character you have encoutered.",
+          position: "bottom",
+        },
       ]
     };
     this.charInputRef = React.createRef();
@@ -480,9 +500,13 @@ class App extends Component {
               </Dialog>
 
               <NavBar onRouteChange={this.onRouteChange} currentTab="home" />
-              <WelcomeBar userName={this.state.userInfo.name} />
+              <WelcomeBar
+                className="introjs-step0-element" 
+                userName={this.state.userInfo.name} 
+              />
+
               <FormControlLabel
-                className="audio-control"
+                className="audio-control introjs-step4-element"
                 label="Autoplay Audio"
                 labelPlacement="start"
                 control={

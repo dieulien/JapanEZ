@@ -90,6 +90,7 @@ class CharList extends React.Component {
 
     return (
       <Grid
+        className="japanese-word"
         container
         direction="row"
         justify="center"

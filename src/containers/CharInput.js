@@ -277,6 +277,7 @@ class CharInput extends React.Component {
     return (
       <form>
         <Input
+          className="input-box"
           placeholder="Your input..."
           inputProps={{ "aria-label": "description" }}
           onChange={this.props.onInputBoxChange}

@@ -96,6 +96,7 @@ const NavBar = ({ onRouteChange, currentTab }) => {
             <div className="navbar-button-text">Home</div>
           </Button>
           <Button
+            className="nav-button-progress"
             variant={currentTab === "progress" ? "outlined" : "text"}
             color="secondary"
             onClick={() => onRouteChange("progress")}
@@ -104,6 +105,7 @@ const NavBar = ({ onRouteChange, currentTab }) => {
             <div className="navbar-button-text">Progress</div>
           </Button>
           <Button
+            className="nav-button-katakanaChart"
             variant={currentTab === "katakanaChart" ? "outlined" : "text"}
             color="secondary"
             onClick={() => onRouteChange("katakanaChart")}
