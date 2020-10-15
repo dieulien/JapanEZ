@@ -156,6 +156,7 @@ class CharInput extends React.Component {
       onWordCompletion,
       audioIsPlaying,
       cardStateList,
+      steps1Enabled,
     } = this.props;
 
     // disable input
@@ -181,7 +182,8 @@ class CharInput extends React.Component {
       ((event.which >= 65 && event.which <= 90) || event.which === 222) &&
       !onIncorrectCard &&
       !wordCompleted &&
-      !onHintedCard
+      !onHintedCard &&
+      !steps1Enabled
     ) {
       var key =
         event.which === 222

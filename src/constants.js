@@ -2,6 +2,7 @@ export const USER_INPUT = "USER_INPUT";
 
 const method = "tuanHeroku";
 
+var USER_TIME_LIMIT_IN_MINUTES = 10;
 var REGISTER_URL = "https://localhost:3000/register";
 var SIGNIN_URL = "https://localhost:3000/signin";
 var PROFILE_URL = "https://localhost:3000/profile/";
@@ -55,4 +56,5 @@ export {
   TOFUGU_LINK,
   GETCHARSCORE_URL,
   UPDATECHARSCORE_URL,
+  USER_TIME_LIMIT_IN_MINUTES,
 };

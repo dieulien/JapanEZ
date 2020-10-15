@@ -99,6 +99,7 @@ const NavBar = (props) => {
             </DialogActions>
           </Dialog>
           <Button
+            className="nav-button-home"
             variant={currentTab === "home" ? "outlined" : "text"}
             color="secondary"
             onClick={() => onRouteChange("home")}

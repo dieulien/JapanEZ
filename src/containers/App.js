@@ -4,7 +4,7 @@ import CharList from "./CharList";
 import CharInput from "./CharInput";
 import NavBar from "../components/NavBar";
 import Hint from "../components/Hint";
-import { FormControl, Grid, Paper } from "@material-ui/core";
+import { Grid, Paper } from "@material-ui/core";
 import { katakanaToRomaji } from "../jap-char";
 import Signin from "../components/Signin";
 import Register from "../components/Register";
@@ -36,12 +36,19 @@ import {
   UPDATECHARSCORE_URL,
   WORDSCORE_URL,
   MEDIA_BASE_URL_WORD,
+  USER_TIME_LIMIT_IN_MINUTES,
 } from "../constants";
+import {
+  WALKTHROUGH_PART_1,
+  WALKTHROUGH_PART_2,
+  WALKTHROUGH_PART_3,
+} from "../constants/App-constants"
+
 import LogRocket from "logrocket";
 
 // test introjs
 import 'intro.js/introjs.css';
-import { Steps, Hints } from 'intro.js-react';
+import { Steps } from 'intro.js-react';
 
 LogRocket.init("zskhtw/japanese-learning");
 
@@ -96,70 +103,9 @@ class App extends Component {
       steps3Enabled: false,
       transitionedFromSteps1ToSteps2: false,
       transitionedFromSteps2ToSteps3: false,
-      steps1: [
-        {
-          intro: `Welcome to the walkthrough! Click 'Next' or use the right arrow key to continue.`,
-        },
-        {
-          element: ".japanese-word",
-          intro: "This is a Japanese word. The current character is highlighted in blue.",
-          position: "left",
-        },
-        {
-          element: ".inputbox-div",
-          intro: "This is where you type out the japanese word if you already know it. If not, that's ok!",
-          position: "left",
-        },
-        {
-          element: ".main-button",
-          intro: "Click this button to learn the highlighted character",
-          position: "left",
-        },
-      ],
-      steps2: [
-        {
-          element: ".hint-card",
-          intro: "This is the Character Card. It shows the mnemonics for the highlighted character",
-          position: "left",
-        },
-        {
-          element: ".music-button",
-          intro: "Click this to play the audio",
-          position: "left",
-        },
-        {
-          element: ".main-button",
-          intro: "Click this button again to move on to the next character in the word",
-          position: "left",
-        },
-      ],
-      steps3: [
-        {
-          element: ".japanese-word",
-          intro: "Notice that the first character has been highlighted in yellow indicating that you have used the word card. The next letter is now highlighted in blue",
-          position: "left",
-        },
-        {
-          element: ".inputbox-div",
-          intro: "The previous character has been filled out for you. You can continue to type the next character without space if you know it. Otherwise, keep learning by clicking the main button",
-          position: "left",
-        },
-        {
-          element: ".audio-control",
-          intro: "You can toggle this switch to enable/disable audio autoplay.",
-          position: "left",
-        },
-        {
-          element: ".nav-button-progress",
-          intro: "Click this tab to view your progress.",
-          position: "bottom",
-        },
-        {
-          element: ".nav-button-katakanaChart",
-          intro: "Click this tab to check which Japanese character you have encoutered.",
-          position: "bottom",
-        },
-      ]
+      steps1: WALKTHROUGH_PART_1,
+      steps2: WALKTHROUGH_PART_2,
+      steps3: WALKTHROUGH_PART_3,      
     };
     this.charInputRef = React.createRef();
     this.hintCardRef = React.createRef();
@@ -175,18 +121,15 @@ class App extends Component {
         && prevState.route === "register") {
       this.setState({ walkThroughEnabled: true })
     } 
-
     if (this.state.userInfo.id !== prevState.userInfo.id) {
       this.props.resetStore();
       this.requestNewWord();
     }
-
     if (this.state.route === "home") {
       setTimeout(() => {
         this.setState({ openEndDialogue: true });
-      }, 60000 * 30);
+      }, USER_TIME_LIMIT_IN_MINUTES * 60000);
     }
-
     if (this.state.steps1Enabled === prevState.steps1Enabled
         && !this.state.transitionedFromSteps1ToSteps2) {
       if (this.hintCardRef.current !== null) {
@@ -204,6 +147,25 @@ class App extends Component {
         this.setState({ transitionedFromSteps2ToSteps3: true })
       }
     }
+  };
+
+  loadUser = (user) => {
+    const { user_uid, name, email, joined } = user;
+    this.setState((prevState) => {
+      let userInfo = { ...prevState.userInfo };
+      userInfo.name = name;
+      userInfo.id = user_uid;
+      userInfo.email = email;
+      userInfo.joined = joined;
+      return { userInfo };
+    });
+
+    LogRocket.identify(user_uid, {
+      name: name,
+      email: email,
+      joined: joined,
+    });
+    console.log("userInfo", this.state.userInfo);
   };
 
   onRouteChange = (route) => {
@@ -310,26 +272,6 @@ class App extends Component {
       });
   };
 
-  loadUser = (user) => {
-    const { user_uid, name, email, joined } = user;
-    this.setState((prevState) => {
-      let userInfo = { ...prevState.userInfo };
-      userInfo.name = name;
-      userInfo.id = user_uid;
-      userInfo.email = email;
-      userInfo.joined = joined;
-      return { userInfo };
-    });
-
-    LogRocket.identify(user_uid, {
-      name: name,
-      email: email,
-      joined: joined,
-    });
-
-    console.log("userInfo", this.state.userInfo);
-  };
-
   focusInputBox = () => {
     this.charInputRef.current.formRef.current.focus();
   };
@@ -348,20 +290,26 @@ class App extends Component {
     // once user completed word, can review hint card
     if (this.props.wordCompleted && this.state.clickedJapChar) {
       return (
-        <Hint 
-          currentHintedChar={this.state.clickedJapChar} 
-          autoplayAudio={this.state.checkedAudioAutoPlay}
-          ref={this.hintCardRef}
-        />
+        <Grid item>
+          <Paper elevation={1} />
+          <Hint 
+            currentHintedChar={this.state.clickedJapChar} 
+            autoplayAudio={this.state.checkedAudioAutoPlay}
+            ref={this.hintCardRef}
+          />
+        </Grid>
       );
     }
     if (this.props.onHintedCard) {
       return (
-        <Hint 
-          currentHintedChar={this.props.currentJapChar} 
-          autoplayAudio={this.state.checkedAudioAutoPlay}
-          ref={this.hintCardRef}
-        />
+        <Grid item>
+          <Paper elevation={1} />
+          <Hint 
+            currentHintedChar={this.props.currentJapChar} 
+            autoplayAudio={this.state.checkedAudioAutoPlay}
+            ref={this.hintCardRef}
+          />
+        </Grid>
       );
     }
   };
@@ -369,12 +317,16 @@ class App extends Component {
   displayWordInfo = () => {
     if (this.props.wordCompleted) {
       return (
-        <WordCard
-          wordInfo={this.state.currentWordInfo}
-          word_audio_duration={this.state.word_audio_duration}
-          autoplayAudio={this.state.checkedAudioAutoPlay}
-        />
+        <Grid item>
+          <WordCard
+            wordInfo={this.state.currentWordInfo}
+            word_audio_duration={this.state.word_audio_duration}
+            autoplayAudio={this.state.checkedAudioAutoPlay}
+          />
+        </Grid>
       );
+    } else {
+      return null;
     }
   };
 
@@ -392,7 +344,7 @@ class App extends Component {
       currentJapChar,
     } = this.props;
     if (audioIsPlaying) {
-      return <div></div>;
+      return null;
     }
     if (onIncorrectCard) {
       return (
@@ -413,12 +365,12 @@ class App extends Component {
       return (
         <div>
           <p>
-            <b>{"Click on a card to view its mnemonic"}</b>
+            <b>{"You can click on a character to view its mnemonic card"}</b>
           </p>
         </div>
       );
     } else {
-      return <p></p>;
+      return null;
     }
   };
 
@@ -459,10 +411,6 @@ class App extends Component {
   }
 
   handleAudioAutoplaySwitch = (event) => {
-    console.log("event", event)
-    console.log("event", event.target)
-    console.log("event", event.target.name)
-    console.log("event", event.target.checked)
     this.setState({ checkedAudioAutoPlay: !this.state.checkedAudioAutoPlay })
   }
 
@@ -476,7 +424,7 @@ class App extends Component {
   
   handleClickWalkthrough = () => {
     this.setState({ steps1Enabled: true });
-    this.setState({ walkThroughEnabled: true }); // bad design, but it works
+    this.setState({ walkThroughEnabled: true });
   }
 
   onBeforeChange1 = (nextStepIndex) => {
@@ -600,9 +548,7 @@ class App extends Component {
               ref={steps => (this.steps3 = steps)}
               onBeforeChange={this.onBeforeChange3}
             />
-      
-            <div className="content-wrap">
-              <Dialog
+            <Dialog
                 open={this.state.openEndDialogue}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
@@ -626,15 +572,14 @@ class App extends Component {
                   </DialogContentText>
                 </DialogContent>
               </Dialog>
+
+            <div className="content-wrap">
               <NavBar 
                 onRouteChange={this.onRouteChange} 
                 currentTab="home"
                 handleClickWalkthrough={this.handleClickWalkthrough}
               />
-              <WelcomeBar
-                className="introjs-step0-element" 
-                userName={this.state.userInfo.name} 
-              />
+              <WelcomeBar userName={this.state.userInfo.name} />
               <FormControlLabel
                 className="audio-control"
                 label="Autoplay Audio"
@@ -650,10 +595,12 @@ class App extends Component {
               >
               </FormControlLabel>
               <Grid
+                className="main-content"
                 container
                 direction="column"
                 justify="center"
                 alignItems="center"
+                spacing={2}
               >
                 <Paper elevation={0} />
                 <OutsideAlerter focusInputBox={this.focusInputBox}>
@@ -665,6 +612,7 @@ class App extends Component {
                       user_uid={this.state.userInfo.id}
                       ref={this.charInputRef}
                       setClick={(click) => (this.clickChild = click)}
+                      steps1Enabled={this.state.steps1Enabled}
                     />
                   </div>
                 </OutsideAlerter>
@@ -683,11 +631,9 @@ class App extends Component {
                       />
                     </div>
                   </Grid>
-                  <div>{this.displayMessage()}</div>
-                  <Grid item>
+                  <Grid item className="main-button"> 
                     {!this.props.audioIsPlaying ? (
                       <Button
-                        className="main-button"
                         size="large"
                         variant="contained"
                         color="primary"
@@ -702,8 +648,7 @@ class App extends Component {
                       </Button>
                     ) : (
                       <Button
-                        disabled
-                        className="main-button"
+                        disabled                       
                         size="large"
                         variant="contained"
                         color="primary"
@@ -718,20 +663,19 @@ class App extends Component {
                       </Button>
                     )}
                   </Grid>
-
-                  <Grid
-                    container
-                    direction="row"
-                    justify="center"
-                    alignItems="center"
-                    spacing="2"
-                  >
-                    <Grid item>
-                      <Paper elevation={1} />
+                  <Grid item>
+                    <Grid
+                      container
+                      direction="row"
+                      justify="center"
+                      alignItems="center"
+                      spacing={2}
+                    >                      
                       {this.showHint()}
-                    </Grid>
-                    <Grid item>{this.displayWordInfo()}</Grid>
+                      {this.displayWordInfo()}
+                    </Grid>                  
                   </Grid>
+                  {this.displayMessage()}
                 </Grid>
               </Grid>
             </div>

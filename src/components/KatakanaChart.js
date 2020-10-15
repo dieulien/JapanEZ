@@ -41,7 +41,7 @@ class KatakanaChart extends React.Component {
     }
 
     const katakanaArray = limitedKatakanaList.map((kana, idx) => {
-      const kana_filteredResultList = this.state.charResultList[kana].filter(resultType => resultType != "incorrect")
+      const kana_filteredResultList = this.state.charResultList[kana].filter(resultType => resultType !== "incorrect")
 
       return (
         <Grid item key={idx}>
