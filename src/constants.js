@@ -2,6 +2,9 @@ export const USER_INPUT = "USER_INPUT";
 
 const method = "tuanHeroku";
 
+var PRIMARYCOLOR = "#1cb0f6"
+// var PRIMARYCOLOR = "#45ACE7"
+
 var USER_TIME_LIMIT_IN_MINUTES = 10;
 var REGISTER_URL = "https://localhost:3000/register";
 var SIGNIN_URL = "https://localhost:3000/signin";
@@ -57,4 +60,5 @@ export {
   GETCHARSCORE_URL,
   UPDATECHARSCORE_URL,
   USER_TIME_LIMIT_IN_MINUTES,
+  PRIMARYCOLOR,
 };

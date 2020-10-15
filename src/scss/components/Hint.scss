@@ -2,7 +2,7 @@
   padding-bottom: 3vh;
   padding-left: 1vh;
   padding-right: 1vh;
-  padding-top: 1vh;
+  // padding-top: 1vh;
 }
 
 .hint-card-image {
@@ -16,6 +16,8 @@
 
 .hint-card-romaji {
   color: #5e5e5e;
+  font-size: calc(10px + 1.5vh);
+  margin: 18px;
 }
 
 .hint-card {

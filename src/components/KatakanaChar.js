@@ -2,12 +2,12 @@ import React from "react";
 import { katakanaToRomaji } from "../jap-char"
 import { makeStyles } from "@material-ui/core/styles";
 import "../scss/components/KatakanaChar.scss";
-
+import { PRIMARYCOLOR } from "../constants";
 
 const useStyles = makeStyles((theme) => ({
   cardBG: {
     background: (props) => {
-      return props.isEncountered ? "#1cb0f6" : "#d6d6d6"
+      return props.isEncountered ? PRIMARYCOLOR : "#d6d6d6"
     }
   }
 }))

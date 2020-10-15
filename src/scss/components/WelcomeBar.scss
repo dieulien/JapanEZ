@@ -3,6 +3,7 @@
 .welcome-text {
   font-size: calc(10px + 1vh);
   text-align: center;
+  padding: 5px;
 }
 
 .container {
@@ -10,4 +11,5 @@
   border-radius: (10px);
   padding: calc(5px + 0.5vh);
   margin: calc(1px + 0.2vh) 0 calc(15px + 1vh);
+  height: 80px;
 }

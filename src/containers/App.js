@@ -98,7 +98,7 @@ class App extends Component {
 
       // introjs test
       initialStep: 0,
-      steps1Enabled: true,
+      steps1Enabled: false,
       steps2Enabled: false,
       steps3Enabled: false,
       transitionedFromSteps1ToSteps2: false,
@@ -120,6 +120,7 @@ class App extends Component {
     if (this.state.route !== prevState.route
         && prevState.route === "register") {
       this.setState({ walkThroughEnabled: true })
+      this.setState({ steps1Enabled: true })
     } 
     if (this.state.userInfo.id !== prevState.userInfo.id) {
       this.props.resetStore();
@@ -343,34 +344,21 @@ class App extends Component {
       romajiNotInDict,
       currentJapChar,
     } = this.props;
+
     if (audioIsPlaying) {
-      return null;
+      return `Audio playing...`;
     }
     if (onIncorrectCard) {
-      return (
-        <div>
-          <p>
-            <b>
-              {romajiNotInDict
-                ? `'${curWrongChar}' does not exist in the alphabet`
-                : `'${curWrongChar}' corresponds to ${this.getKeyByValue(
-                    katakanaToRomaji,
-                    curWrongChar
-                  )}, not ${currentJapChar}`}
-            </b>
-          </p>
-        </div>
+      return (romajiNotInDict 
+        ? `${curWrongChar} does not exist in the alphabet.`
+        : `${curWrongChar} corresponds to
+        ${this.getKeyByValue(katakanaToRomaji, curWrongChar)}, 
+        not ${currentJapChar}.`
       );
     } else if (wordCompleted && !audioIsPlaying) {
-      return (
-        <div>
-          <p>
-            <b>{"You can click on a character to view its mnemonic card"}</b>
-          </p>
-        </div>
-      );
+      return "You can click on a character to review its mnemonic card.";
     } else {
-      return null;
+      return `I will be giving you feedback as you use the app.`;
     }
   };
 
@@ -559,15 +547,15 @@ class App extends Component {
                 <DialogContent>
                   <DialogContentText id="alert-dialog-description">
                     <p>
-                      You have used the app for 5 minute. Please click the link
+                      {`You have used the app for ${USER_TIME_LIMIT_IN_MINUTES} minute. Please click the link
                       below to take a short test that will access your Katakana
-                      knowledge. Thank you for using the app!
+                      knowledge. Thank you for using the app!`}
                     </p>
                     <a
                       href="https://harvard.az1.qualtrics.com/jfe/form/SV_2aZI7SwLfhp5nxj"
                       className="survey-link"
                     >
-                      https://harvard.az1.qualtrics.com/jfe/form/SV_2aZI7SwLfhp5nxj
+                      {"https://harvard.az1.qualtrics.com/jfe/form/SV_2aZI7SwLfhp5nxj"}
                     </a>
                   </DialogContentText>
                 </DialogContent>
@@ -579,7 +567,10 @@ class App extends Component {
                 currentTab="home"
                 handleClickWalkthrough={this.handleClickWalkthrough}
               />
-              <WelcomeBar userName={this.state.userInfo.name} />
+              <WelcomeBar 
+                userName={this.state.userInfo.name}
+                message={this.displayMessage()}
+              />
               <FormControlLabel
                 className="audio-control"
                 label="Autoplay Audio"
@@ -675,7 +666,6 @@ class App extends Component {
                       {this.displayWordInfo()}
                     </Grid>                  
                   </Grid>
-                  {this.displayMessage()}
                 </Grid>
               </Grid>
             </div>

@@ -12,6 +12,7 @@ import {
   changeInputBox,
   changeCardState,
 } from "./reducers";
+import { PRIMARYCOLOR } from "./constants.js"
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import "typeface-roboto";
 import LogRocket from "logrocket";
@@ -21,7 +22,7 @@ LogRocket.init("zskhtw/japanese-learning");
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: "#1CB0F6",
+      main: PRIMARYCOLOR,
     },
     secondary: {
       main: "#ffffff",
