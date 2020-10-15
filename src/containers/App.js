@@ -44,6 +44,7 @@ import {
   WALKTHROUGH_PART_1,
   WALKTHROUGH_PART_2,
   WALKTHROUGH_PART_3,
+  WALKTHROUGH_PART_4,
 } from "../constants/App-constants"
 
 import LogRocket from "logrocket";
@@ -108,14 +109,18 @@ class App extends Component {
       steps1Enabled: false,
       steps2Enabled: false,
       steps3Enabled: false,
+      steps4Enabled: false,
       transitionedFromSteps1ToSteps2: false,
       transitionedFromSteps2ToSteps3: false,
+      transitionedFromSteps3ToSteps5: false,
       steps1: WALKTHROUGH_PART_1,
       steps2: WALKTHROUGH_PART_2,
-      steps3: WALKTHROUGH_PART_3,      
+      steps3: WALKTHROUGH_PART_3,
+      steps4: WALKTHROUGH_PART_4,   
     };
     this.charInputRef = React.createRef();
     this.hintCardRef = React.createRef();
+    this.wordCardRef = React.createRef();
   }
 
   componentDidMount = () => {
@@ -130,6 +135,7 @@ class App extends Component {
       this.setState({ steps1Enabled: true })
       this.setState({ steps2Enabled: false })
       this.setState({ steps3Enabled: false })
+      this.setState({ steps4Enabled: false })
     } 
     if (this.state.userInfo.id !== prevState.userInfo.id) {
       this.props.resetStore();
@@ -155,6 +161,17 @@ class App extends Component {
         this.setState({ steps2Enabled: false })
         this.setState({ steps3Enabled: true })
         this.setState({ transitionedFromSteps2ToSteps3: true })
+      }
+    }
+    if (this.state.steps3Enabled === prevState.steps3Enabled
+        && !this.state.transitionedFromSteps3ToSteps4
+        && this.state.transitionedFromSteps1ToSteps2
+        && this.state.transitionedFromSteps2ToSteps3
+        && this.props.currentWord !== "ママ") {
+      if (this.wordCardRef.current === null) {
+        this.setState({ steps3Enabled: false })
+        this.setState({ steps4Enabled: true })
+        this.setState({ transitionedFromSteps3ToSteps4: true })
       }
     }
   };
@@ -332,6 +349,7 @@ class App extends Component {
             wordInfo={this.state.currentWordInfo}
             word_audio_duration={this.state.word_audio_duration}
             autoplayAudio={this.state.checkedAudioAutoPlay}
+            ref={this.wordCardRef}
           />
         </Grid>
       );
@@ -404,9 +422,9 @@ class App extends Component {
     if (onIncorrectCard) {
       return "Try Again";
     } else if (onHintedCard && !audioIsPlaying) {
-      return "Got It";
+      return "Next Character";
     } else if (wordCompleted && !audioIsPlaying) {
-      return " Next Word";
+      return "Next Word";
     } else if (!onHintedCard && !wordCompleted) {
       return "Learn Character";
     } else {
@@ -445,7 +463,8 @@ class App extends Component {
   onExitIntro2 = () => {
     this.setState(() => ({ steps2Enabled: false }));
   }
-  onExitIntro3 = () => {
+  onExitIntro3 = () => {}
+  onExitIntro4 = () => {
     this.setState({walkThroughEnabled: false });
   }
   
@@ -482,6 +501,18 @@ class App extends Component {
   onBeforeChange3 = (nextStepIndex) => {
     if (nextStepIndex) {
       this.steps3.updateStepElement(nextStepIndex);
+    }
+    if (nextStepIndex === 3) {
+      if (this.wordCardRef.current !== null) {
+        return false;
+      } else {
+        this.steps3.updateStepElement(nextStepIndex);
+      }
+    }
+  }
+  onBeforeChange4 = (nextStepIndex) => {
+    if (nextStepIndex) {
+      this.steps4.updateStepElement(nextStepIndex);
     }
   }
   
@@ -534,9 +565,11 @@ class App extends Component {
           steps1Enabled,
           steps2Enabled,
           steps3Enabled,
+          steps4Enabled,
           steps1,
           steps2,
           steps3,
+          steps4,
           initialStep
         } = this.state;
         const generalStepsOptions = {
@@ -574,6 +607,15 @@ class App extends Component {
               options={generalStepsOptions}
               ref={steps => (this.steps3 = steps)}
               onBeforeChange={this.onBeforeChange3}
+            />
+            <Steps
+              enabled={steps4Enabled && this.state.walkThroughEnabled}
+              steps={steps4}
+              initialStep={initialStep}
+              onExit={this.onExitIntro4}
+              options={generalStepsOptions}
+              ref={steps => (this.steps4 = steps)}
+              onBeforeChange={this.onBeforeChange4}
             />
             <Dialog
               open={this.state.openEndDialogue}

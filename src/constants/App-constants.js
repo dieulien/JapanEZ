@@ -48,6 +48,7 @@ const WALKTHROUGH_PART_1 = [
     position: "left",
   },
 ];
+
 const WALKTHROUGH_PART_2 = [
   {
     element: ".hint-card",
@@ -78,12 +79,29 @@ const WALKTHROUGH_PART_3 =  [
   },
   {
     element: ".main-area",
-    intro: "Now try typing something incorrect such as 'j', you will see that the character is now highlighted in red, and you have to click the 'Try Again' button to try again. You already know the answer is 'ma', try typing 'ma' instead. You should see the word card pop up because you have gone through the whole word. Congratz!",
+    intro: "Now try typing something incorrect such as 'j', you will see that the character is highlighted in red and you cannot type any further. You have to click the 'Try Again' button to proceed. You already know the answer is 'ma', try typing 'ma' instead. You should see the word card pop up because you have gone through the whole word. Click 'Next Word' to proceed!",
+    position: "left",
+  },
+]
+
+const WALKTHROUGH_PART_4 = [
+  {
+    intro: "That's it! Just a couple more things before we end this tour.",
+    position: "left",
+  },
+  {
+    element: ".message-bar",
+    intro: `I will be giving feedback here as you use the app.`,
+    position: "bottom,"
+  },
+  {
+    element: ".message-control",
+    intro: `If my feedback bugs you, feel free to disable me here. I won't feel hurt!`,
     position: "left",
   },
   {
     element: ".audio-control",
-    intro: "You can toggle this switch to enable/disable audio autoplay.",
+    intro: "You can also toggle this switch to enable/disable audio autoplay.",
     position: "left",
   },
   {
@@ -102,11 +120,7 @@ const WALKTHROUGH_PART_3 =  [
     position: "bottom",
   },
   {
-    element: ".message-bar",
-    intro: `I will be giving some occasional feedback here.`,
-  },
-  {
-    intro: `That's the end of the walkthrough. You have ${USER_TIME_LIMIT_IN_MINUTES} minutes to play with this webbapp. Have fun!`
+    intro: `That's the end of the walkthrough. You have ${USER_TIME_LIMIT_IN_MINUTES} minutes to play with this webbapp. Have fun! Oh and one last thing: You can use spacebar instead of clicking on the blue button in the middle. Now have fun learning!`
   }
 ];
 
@@ -114,6 +128,7 @@ export {
   WALKTHROUGH_PART_1,
   WALKTHROUGH_PART_2,
   WALKTHROUGH_PART_3,
+  WALKTHROUGH_PART_4,
   listOfPraises,
   listOfSoftPraises,
   listOfEncouragements,

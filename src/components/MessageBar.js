@@ -17,7 +17,7 @@ const useStyles = makeStyles({
     borderRight: "2px solid rgba(255, 255, 255, 0.75)",
     whiteSpace: "nowrap",
     overflow: "hidden",
-    animation: `$typewriter 4s steps(100) 0.25s 1 normal both,
+    animation: `$typewriter 4s steps(100) 0s 1 normal both,
       $blinkTextCursor 1s steps(100) infinite normal`
     ,
     maxWidth: (props) => {
