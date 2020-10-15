@@ -351,9 +351,7 @@ class App extends Component {
     if (onIncorrectCard) {
       return (romajiNotInDict 
         ? `${curWrongChar} does not exist in the alphabet.`
-        : `${curWrongChar} corresponds to
-        ${this.getKeyByValue(katakanaToRomaji, curWrongChar)}, 
-        not ${currentJapChar}.`
+        : `${curWrongChar} corresponds to ${this.getKeyByValue(katakanaToRomaji, curWrongChar)}, not ${currentJapChar}.`
       );
     } else if (wordCompleted && !audioIsPlaying) {
       return "You can click on a character to review its mnemonic card.";
