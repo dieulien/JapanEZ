@@ -11,7 +11,7 @@ import Register from "../components/Register";
 import WordCard from "../components/WordCard";
 import OutsideAlerter from "../components/OutsideAlerter";
 import Footer from "../components/Footer";
-import WelcomeBar from "../components/WelcomeBar";
+import MessageBar from "../components/MessageBar";
 import SmallCharList from "../components/SmallCharList";
 import KatakanaChart from "../components/KatakanaChart";
 import { Button } from "@material-ui/core";
@@ -40,6 +40,7 @@ import {
 } from "../constants";
 import {
   listOfPraises,
+  listOfSoftPraises,
   WALKTHROUGH_PART_1,
   WALKTHROUGH_PART_2,
   WALKTHROUGH_PART_3,
@@ -64,6 +65,9 @@ const mapStateToProps = (state) => {
     audioIsPlaying: state.changeGeneralState.audioIsPlaying,
     romajiNotInDict: state.changeInputBox.romajiNotInDict,
     cardStateList: state.changeCardState.cardStateList,
+    indexCurrentCard: state.changeCardState.indexCurrentCard,
+    wrongCharList: state.changeCardState.wrongCharList,
+    romajiList: state.changeCardState.romajiList,
   };
 };
 
@@ -96,6 +100,7 @@ class App extends Component {
       openEndDialogue: false,
       isFetchingWord: false,
       checkedAudioAutoPlay: false,
+      checkedEnableMessage: true,
       walkThroughEnabled: false,
 
       // introjs test
@@ -339,6 +344,10 @@ class App extends Component {
     return Object.keys(object).find((key) => object[key] === value);
   };
 
+  randomItem = (aList) => {
+    return aList[Math.floor(Math.random() * aList.length)];
+  }
+
   displayMessage = () => {
     const {
       onIncorrectCard,
@@ -349,6 +358,9 @@ class App extends Component {
       romajiNotInDict,
       currentJapChar,
       cardStateList,
+      indexCurrentCard,
+      wrongCharList,
+      romajiList,
     } = this.props;
     if (this.state.walkThroughEnabled) {
       return "..."
@@ -356,21 +368,26 @@ class App extends Component {
     if (audioIsPlaying) {
       return `Playing audio...`;
     }
-
-    const cardStateSet = new Set(cardStateList);
-    if (cardStateSet.size === 1 && cardStateSet.has("correct")) {
-      // return listOfPraises[Math.floor(Math.random() * listOfPraises.length)];
-      return "Well done!"
-    }
     if (onIncorrectCard) {
       return (romajiNotInDict 
-        ? `${curWrongChar} does not exist in the alphabet.`
-        : `${curWrongChar} corresponds to ${this.getKeyByValue(katakanaToRomaji, curWrongChar)}, not ${currentJapChar}.`
+        ? `${curWrongChar} does not exist in the alphabet. Press spacebar to try again.`
+        : `${curWrongChar} corresponds to ${this.getKeyByValue(katakanaToRomaji, curWrongChar)}, not ${currentJapChar}. Press spacebar to try again.`
       );
     } else if (onHintedCard) {
-      return "Press spacebar to continue."
+      return "Press spacebar again to continue."
+    } else if (romajiList[indexCurrentCard] in wrongCharList) {
+      return "Press spacebar to learn the character if you're stuck."
+    } else if (indexCurrentCard > 0 
+      && indexCurrentCard < cardStateList.length
+      && cardStateList[indexCurrentCard - 1] === "correct") {
+        return this.randomItem(listOfSoftPraises);
     } else if (wordCompleted && !audioIsPlaying) {
-      return "You can click on a character to review its mnemonic card.";
+      const cardStateSet = new Set(cardStateList);
+      if (cardStateSet.size === 1 && cardStateSet.has("correct")) {
+        return this.randomItem(listOfPraises);
+      } else {
+        return "You can click on a character to review its mnemonic card.";
+      }
     } else {
       return `I will be giving you feedback as you use the app.`;
     }
@@ -413,7 +430,15 @@ class App extends Component {
   }
 
   handleAudioAutoplaySwitch = (event) => {
-    this.setState({ checkedAudioAutoPlay: !this.state.checkedAudioAutoPlay })
+    this.setState(
+      { checkedAudioAutoPlay: !this.state.checkedAudioAutoPlay }
+    );
+  }
+
+  handleEnableMessageSwitch = () => {
+    this.setState(
+      { checkedEnableMessage: !this.state.checkedEnableMessage }
+    );
   }
 
   onExitIntro1 = () => {}
@@ -551,29 +576,29 @@ class App extends Component {
               onBeforeChange={this.onBeforeChange3}
             />
             <Dialog
-                open={this.state.openEndDialogue}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-              >
-                <DialogTitle id="alert-dialog-title">
-                  {"Time's Up!"}
-                </DialogTitle>
-                <DialogContent>
-                  <DialogContentText id="alert-dialog-description">
-                    <p>
-                      {`You have used the app for ${USER_TIME_LIMIT_IN_MINUTES} minute. Please click the link
-                      below to take a short test that will access your Katakana
-                      knowledge. Thank you for using the app!`}
-                    </p>
-                    <a
-                      href="https://harvard.az1.qualtrics.com/jfe/form/SV_2aZI7SwLfhp5nxj"
-                      className="survey-link"
-                    >
-                      {"https://harvard.az1.qualtrics.com/jfe/form/SV_2aZI7SwLfhp5nxj"}
-                    </a>
-                  </DialogContentText>
-                </DialogContent>
-              </Dialog>
+              open={this.state.openEndDialogue}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                {"Time's Up!"}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  <p>
+                    {`You have used the app for ${USER_TIME_LIMIT_IN_MINUTES} minute. Please click the link
+                    below to take a short test that will access your Katakana
+                    knowledge. Thank you for using the app!`}
+                  </p>
+                  <a
+                    href="https://harvard.az1.qualtrics.com/jfe/form/SV_2aZI7SwLfhp5nxj"
+                    className="survey-link"
+                  >
+                    {"https://harvard.az1.qualtrics.com/jfe/form/SV_2aZI7SwLfhp5nxj"}
+                  </a>
+                </DialogContentText>
+              </DialogContent>
+            </Dialog>
 
             <div className="content-wrap">
               <NavBar 
@@ -582,11 +607,13 @@ class App extends Component {
                 handleClickWalkthrough={this.handleClickWalkthrough}
               />
               <div className="message-bar">
-                <WelcomeBar 
+                <MessageBar 
                   userName={this.state.userInfo.name}
                   message={this.displayMessage()}
+                  displayHelpMessages={this.state.checkedEnableMessage}
                 />
               </div>
+
               <FormControlLabel
                 className="audio-control"
                 label="Autoplay Audio"
@@ -601,42 +628,48 @@ class App extends Component {
                 }
               >
               </FormControlLabel>
+              <FormControlLabel
+                className="message-control"
+                label="Help Message"
+                labelPlacement="start"
+                control={
+                  <Switch 
+                    checked={this.state.checkedEnableMessage}
+                    onChange={this.handleEnableMessageSwitch}
+                    name="enable-message" 
+                    color="primary"
+                  />
+                }
+              >
+              </FormControlLabel>
+
+              {/* <Paper elevation={0} /> */}
               <Grid
-                className="main-content"
                 container
                 direction="column"
                 justify="center"
                 alignItems="center"
-                spacing={2}
               >
-                <Paper elevation={0} />
-                <OutsideAlerter focusInputBox={this.focusInputBox}>
-                  <div className="inputbox-div">
-                    <CharInput
-                      updateCharScore={this.updateCharScore}
-                      updateWordScore={this.updateWordScore}
-                      getKeyByValue={this.getKeyByValue}
-                      user_uid={this.state.userInfo.id}
-                      ref={this.charInputRef}
-                      setClick={(click) => (this.clickChild = click)}
-                      steps1Enabled={this.state.steps1Enabled}
-                    />
-                  </div>
-                </OutsideAlerter>
-                <Grid
-                  container
-                  direction="column"
-                  justify="center"
-                  alignItems="center"
-                >
-                  <Grid item>
-                    <div className="introjs-step1-element" >
-                      <CharList
-                        charsToRead={this.parseJapaneseWord(currentWord)}
-                        onClickCard={this.onClickCard}
-                        clickedJapChar={this.state.clickedJapChar}
+                <div className="main-area">
+                  <Grid item className="inputbox-div">
+                    <OutsideAlerter focusInputBox={this.focusInputBox}>
+                      <CharInput
+                        updateCharScore={this.updateCharScore}
+                        updateWordScore={this.updateWordScore}
+                        getKeyByValue={this.getKeyByValue}
+                        user_uid={this.state.userInfo.id}
+                        ref={this.charInputRef}
+                        setClick={(click) => (this.clickChild = click)}
+                        steps1Enabled={this.state.steps1Enabled}
                       />
-                    </div>
+                    </OutsideAlerter>
+                  </Grid>
+                  <Grid item className="japanese-word-area">
+                    <CharList
+                      charsToRead={this.parseJapaneseWord(currentWord)}
+                      onClickCard={this.onClickCard}
+                      clickedJapChar={this.state.clickedJapChar}
+                    />
                   </Grid>
                   <Grid item className="main-button"> 
                     {!this.props.audioIsPlaying ? (
@@ -670,7 +703,7 @@ class App extends Component {
                       </Button>
                     )}
                   </Grid>
-                  <Grid item>
+                  <Grid item className="card-area">
                     <Grid
                       container
                       direction="row"
@@ -682,7 +715,7 @@ class App extends Component {
                       {this.displayWordInfo()}
                     </Grid>                  
                   </Grid>
-                </Grid>
+                </div>
               </Grid>
             </div>
             <Footer />

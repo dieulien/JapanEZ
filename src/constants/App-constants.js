@@ -5,10 +5,27 @@ const listOfPraises = [
   "You're a pro!",
   "You're getting better!",
   "You're getting good at this!",
-  "You're getting good",
+  "You're getting good!",
   "Well done!",
   "Nicely done!",
   "Good job!",
+]
+
+const listOfSoftPraises = [
+  "Nice!",
+  "Good!",
+  "Awesome!",
+  "Well done!",
+  "Great!",
+  "Good job!",
+  "Correct!",
+]
+
+const listOfEncouragements = [
+  "You got this!",
+  "Let's try again.",
+  "You can do this!",
+  "Try again.",
 ]
 
 const WALKTHROUGH_PART_1 = [
@@ -56,7 +73,12 @@ const WALKTHROUGH_PART_3 =  [
   },
   {
     element: ".inputbox-div",
-    intro: "The previous character has been filled out for you. You can continue to type the next character without space if you know it. Otherwise, keep learning by clicking the \"Learn Character\" button",
+    intro: "The previous character has been filled out for you.",
+    position: "left",
+  },
+  {
+    element: ".main-area",
+    intro: "Now try typing something incorrect such as 'j', you will see that the character is now highlighted in red, and you have to click the 'Try Again' button to try again. You already know the answer is 'ma', try typing 'ma' instead. You should see the word card pop up because you have gone through the whole word. Congratz!",
     position: "left",
   },
   {
@@ -93,4 +115,6 @@ export {
   WALKTHROUGH_PART_2,
   WALKTHROUGH_PART_3,
   listOfPraises,
+  listOfSoftPraises,
+  listOfEncouragements,
 };

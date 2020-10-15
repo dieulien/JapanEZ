@@ -8,11 +8,13 @@ import { PRIMARYCOLOR } from "../constants";
 const useStyles = makeStyles({
   // typing effect taken from 
   // https://css-tricks.com/snippets/css/typewriter-effect/
-  message: {
-    margin: "0 auto",
-    borderRight: "2px solid rgba(255, 255, 255, 0.75)",
+  messageText: {
     fontSize: "calc(10px + 1vh)",
     textAlign: "center",
+    margin: "0 auto",
+  },
+  messageAnimation: {
+    borderRight: "2px solid rgba(255, 255, 255, 0.75)",
     whiteSpace: "nowrap",
     overflow: "hidden",
     animation: `$typewriter 4s steps(100) 0.25s 1 normal both,
@@ -62,17 +64,28 @@ const convertMessageLengthToEm = (message) => {
   return length_in_em;
 }
 
-const WelcomeBar = (props) => {
+const MessageBar = (props) => {
   const classes = useStyles(props);
 
   return (
     <div className="container" style={{ color: "#5D5D5D" }}>
       <Paper elevation={0} />
       <div className="welcome-text">
-        <p className={classes.message} key={shortid.generate()}>{props.message}</p>
+        {props.displayHelpMessages ? (
+          <p 
+            className={`${classes.messageText} ${classes.messageAnimation}`} 
+            key={shortid.generate()}
+          >
+            {props.message}
+          </p>
+        ) : (
+          <p className={`${classes.messageText}`}>
+            {`Welcome, ${props.userName}.`}
+          </p>
+        )}
       </div>
     </div>
   );
 };
 
-export default WelcomeBar;
+export default MessageBar;
