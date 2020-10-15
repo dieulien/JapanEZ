@@ -86,16 +86,14 @@ class App extends Component {
       currentWordInfo: null,
       openEndDialogue: false,
       isFetchingWord: false,
-      checkedAudioAutoPlay: true,
+      checkedAudioAutoPlay: false,
 
       // introjs test
       stepsEnabled: true,
       initialStep: 0,
       steps: [
         {
-          element: ".introjs-step0-element",
-          intro: `Welcome! Click 'Next' to continue with the walkthrough.`,
-          position: "left",
+          intro: `Welcome to the walkthrough! Click 'Next' or use the right arrow key to continue.`,
         },
         {
           element: ".japanese-word",
@@ -103,17 +101,32 @@ class App extends Component {
           position: "left",
         },
         {
-          element: ".introjs-step2-element",
-          intro: "This is the main button. You can use your mouse to click on it or press SPACE.",
+          element: ".main-button",
+          intro: "Click it this button (or press spacebar) to learn the highlighted character",
           position: "left",
         },
         {
-          element: ".input-box",
-          intro: "Type out the highlighted Japanese character here if you know it.",
+          element: ".hint-card",
+          intro: "This is the Character Card. It shows the mnemonics for the highlighted character",
           position: "left",
         },
         {
-          element: ".introjs-step4-element",
+          element: ".music-button",
+          intro: "Click this to play the audio",
+          position: "left",
+        },
+        {
+          element: ".main-button",
+          intro: "Click it this button again (or press spacebar) to move on. The character will be filled out for you",
+          position: "left",
+        },
+        {
+          element: ".inputbox-div",
+          intro: "The previous character has been filled out for you. You can continue to type the next character without space if you know it. Otherwise, keep learning by clicking the main button",
+          position: "left",
+        },
+        {
+          element: ".audio-control",
           intro: "Toggle this switch to enable/disable audio autoplay.",
           position: "left",
         },
@@ -130,6 +143,7 @@ class App extends Component {
       ]
     };
     this.charInputRef = React.createRef();
+    this.hintCardRef = React.createRef();
   }
 
   componentDidMount = () => {
@@ -294,6 +308,7 @@ class App extends Component {
         <Hint 
           currentHintedChar={this.state.clickedJapChar} 
           autoplayAudio={this.state.checkedAudioAutoPlay}
+          ref={this.hintCardRef}
         />
       );
     }
@@ -302,6 +317,7 @@ class App extends Component {
         <Hint 
           currentHintedChar={this.props.currentJapChar} 
           autoplayAudio={this.state.checkedAudioAutoPlay}
+          ref={this.hintCardRef}
         />
       );
     }
@@ -408,8 +424,27 @@ class App extends Component {
   }
 
   onExitIntro = () => {
-    console.log("Exit");
-    this.setState(() => ({ stepsEnabled: false }))
+    this.setState(() => ({ stepsEnabled: false }));
+  }
+
+  handleClickWalkthrough = () => {
+    this.setState({ stepsEnabled: true });
+  }
+
+  onBeforeChange = (nextStepIndex) => {
+    if (nextStepIndex) {
+      // select dynamically created elements
+      this.steps.updateStepElement(nextStepIndex);
+    }
+
+    if (nextStepIndex === 3) {
+      if (!this.hintCardRef.current) {
+        return false;
+      } else {
+        console.log("YES")
+        this.steps.updateStepElement(nextStepIndex);
+      }
+    }
   }
 
   renderRoute = (route) => {
@@ -471,6 +506,14 @@ class App extends Component {
               steps={steps}
               initialStep={initialStep}
               onExit={this.onExitIntro}
+              options={{
+                showStepNumbers: false,
+                hidePrev: true,
+                hideNext: true,
+                exitOnOverlayClick: false,
+              }}
+              ref={steps => (this.steps = steps)}
+              onBeforeChange={this.onBeforeChange}
             />
       
             <div className="content-wrap">
@@ -498,15 +541,17 @@ class App extends Component {
                   </DialogContentText>
                 </DialogContent>
               </Dialog>
-
-              <NavBar onRouteChange={this.onRouteChange} currentTab="home" />
+              <NavBar 
+                onRouteChange={this.onRouteChange} 
+                currentTab="home"
+                handleClickWalkthrough={this.handleClickWalkthrough}
+              />
               <WelcomeBar
                 className="introjs-step0-element" 
                 userName={this.state.userInfo.name} 
               />
-
               <FormControlLabel
-                className="audio-control introjs-step4-element"
+                className="audio-control"
                 label="Autoplay Audio"
                 labelPlacement="start"
                 control={
@@ -518,7 +563,6 @@ class App extends Component {
                   />
                 }
               >
-
               </FormControlLabel>
               <Grid
                 container
@@ -528,7 +572,7 @@ class App extends Component {
               >
                 <Paper elevation={0} />
                 <OutsideAlerter focusInputBox={this.focusInputBox}>
-                  <div className="introjs-step3-element">
+                  <div className="inputbox-div">
                     <CharInput
                       updateCharScore={this.updateCharScore}
                       updateWordScore={this.updateWordScore}
@@ -559,7 +603,7 @@ class App extends Component {
                   <Grid item>
                     {!this.props.audioIsPlaying ? (
                       <Button
-                        className="introjs-step2-element"
+                        className="main-button"
                         size="large"
                         variant="contained"
                         color="primary"

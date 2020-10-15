@@ -19,6 +19,7 @@ import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 import AssessmentOutlinedIcon from "@material-ui/icons/AssessmentOutlined";
 import HelpOutlineOutlinedIcon from "@material-ui/icons/HelpOutlineOutlined";
 import TranslateOutlinedIcon from '@material-ui/icons/TranslateOutlined';
+import DirectionsOutlinedIcon from '@material-ui/icons/DirectionsOutlined';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,8 +30,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NavBar = ({ onRouteChange, currentTab }) => {
+const NavBar = (props) => {
   const classes = useStyles();
+  const { onRouteChange, currentTab, handleClickWalkthrough } = props;
 
   const [open, setOpen] = React.useState(false);
 
@@ -54,6 +56,14 @@ const NavBar = ({ onRouteChange, currentTab }) => {
           >
             <div className="navbar-title">JapanEZ</div>
           </Typography>
+          <Button
+            variant="text"
+            color="secondary"
+            onClick={handleClickWalkthrough}
+            startIcon={<DirectionsOutlinedIcon />}
+          >
+            <div className="navbar-button-text">Walkthrough</div>
+          </Button>
           <Button
             variant="text"
             color="secondary"
