@@ -3,7 +3,6 @@ import SmallChar from "../components/SmallChar.js";
 import { Grid } from "@material-ui/core";
 import { katakanaToRomaji, limitedKatakanaList } from "../jap-char";
 import { GETCHARSCORE_URL } from "../constants";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import "../scss/components/SmallChar.scss";
 import LoadingPopup from "./LoadingPopup";
 

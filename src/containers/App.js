@@ -39,6 +39,10 @@ import {
 } from "../constants";
 import LogRocket from "logrocket";
 
+// test introjs
+import 'intro.js/introjs.css';
+import { Steps, Hints } from 'intro.js-react';
+
 LogRocket.init("zskhtw/japanese-learning");
 
 const mapStateToProps = (state) => {
@@ -83,6 +87,27 @@ class App extends Component {
       openEndDialogue: false,
       isFetchingWord: false,
       checkedAudioAutoPlay: true,
+
+      // introjs test
+      stepsEnabled: true,
+      initialStep: 0,
+      steps: [
+        {
+          element: ".introjs-step1-element",
+          intro: "This is a japanese word. The current character is highlighted in blue.",
+          position: "left",
+        },
+        {
+          element: ".introjs-step2-element",
+          intro: "this is the main button. You can use your mouse to click on it or press SPACE",
+          position: "left",
+        },
+        {
+          element: ".introjs-step3-element",
+          intro: "type out the highlighted japanese character here if you know it",
+          position: "left",
+        }
+      ]
     };
     this.charInputRef = React.createRef();
   }
@@ -362,6 +387,11 @@ class App extends Component {
     this.setState({ checkedAudioAutoPlay: !this.state.checkedAudioAutoPlay })
   }
 
+  onExitIntro = () => {
+    console.log("Exit");
+    this.setState(() => ({ stepsEnabled: false }))
+  }
+
   renderRoute = (route) => {
     switch (route) {
       case "progress":
@@ -407,10 +437,21 @@ class App extends Component {
         );
       case "home":
         const { currentWord } = this.props;
+        const {
+          stepsEnabled,
+          steps,
+          initialStep
+        } = this.state;
 
         return (
           <div className="page-container" style={{ position: "relative" }}>
-            <LoadingPopup isOpen={this.displayLoadingPopup()} />   
+            <LoadingPopup isOpen={this.displayLoadingPopup()}/>
+            <Steps
+              enabled={stepsEnabled}
+              steps={steps}
+              initialStep={initialStep}
+              onExit={this.onExitIntro}
+            />
       
             <div className="content-wrap">
               <Dialog
@@ -463,14 +504,16 @@ class App extends Component {
               >
                 <Paper elevation={0} />
                 <OutsideAlerter focusInputBox={this.focusInputBox}>
-                  <CharInput
-                    updateCharScore={this.updateCharScore}
-                    updateWordScore={this.updateWordScore}
-                    getKeyByValue={this.getKeyByValue}
-                    user_uid={this.state.userInfo.id}
-                    ref={this.charInputRef}
-                    setClick={(click) => (this.clickChild = click)}
-                  />
+                  <div className="introjs-step3-element">
+                    <CharInput
+                      updateCharScore={this.updateCharScore}
+                      updateWordScore={this.updateWordScore}
+                      getKeyByValue={this.getKeyByValue}
+                      user_uid={this.state.userInfo.id}
+                      ref={this.charInputRef}
+                      setClick={(click) => (this.clickChild = click)}
+                    />
+                  </div>
                 </OutsideAlerter>
                 <Grid
                   container
@@ -479,16 +522,20 @@ class App extends Component {
                   alignItems="center"
                 >
                   <Grid item>
-                    <CharList
-                      charsToRead={this.parseJapaneseWord(currentWord)}
-                      onClickCard={this.onClickCard}
-                      clickedJapChar={this.state.clickedJapChar}
-                    />
+                    <div className="introjs-step1-element" >
+                      <CharList
+                        charsToRead={this.parseJapaneseWord(currentWord)}
+                        onClickCard={this.onClickCard}
+                        clickedJapChar={this.state.clickedJapChar}
+                      />
+                    </div>
+                    
                   </Grid>
                   <div>{this.displayMessage()}</div>
                   <Grid item>
                     {!this.props.audioIsPlaying ? (
                       <Button
+                        className="introjs-step2-element"
                         size="large"
                         variant="contained"
                         color="primary"
