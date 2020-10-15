@@ -1,5 +1,16 @@
 import { USER_TIME_LIMIT_IN_MINUTES } from "../constants";
 
+const listOfPraises = [
+  "Great job!",
+  "You're a pro!",
+  "You're getting better!",
+  "You're getting good at this!",
+  "You're getting good",
+  "Well done!",
+  "Nicely done!",
+  "Good job!",
+]
+
 const WALKTHROUGH_PART_1 = [
   {
     intro: `Welcome to the walkthrough! Click 'Next' to continue.`,
@@ -69,6 +80,10 @@ const WALKTHROUGH_PART_3 =  [
     position: "bottom",
   },
   {
+    element: ".message-bar",
+    intro: `I will be giving some occasional feedback here.`,
+  },
+  {
     intro: `That's the end of the walkthrough. You have ${USER_TIME_LIMIT_IN_MINUTES} minutes to play with this webbapp. Have fun!`
   }
 ];
@@ -77,4 +92,5 @@ export {
   WALKTHROUGH_PART_1,
   WALKTHROUGH_PART_2,
   WALKTHROUGH_PART_3,
+  listOfPraises,
 };

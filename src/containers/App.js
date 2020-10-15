@@ -39,6 +39,7 @@ import {
   USER_TIME_LIMIT_IN_MINUTES,
 } from "../constants";
 import {
+  listOfPraises,
   WALKTHROUGH_PART_1,
   WALKTHROUGH_PART_2,
   WALKTHROUGH_PART_3,
@@ -62,6 +63,7 @@ const mapStateToProps = (state) => {
     currentWord: state.changeCardState.currentWord,
     audioIsPlaying: state.changeGeneralState.audioIsPlaying,
     romajiNotInDict: state.changeInputBox.romajiNotInDict,
+    cardStateList: state.changeCardState.cardStateList,
   };
 };
 
@@ -121,6 +123,8 @@ class App extends Component {
         && prevState.route === "register") {
       this.setState({ walkThroughEnabled: true })
       this.setState({ steps1Enabled: true })
+      this.setState({ steps2Enabled: false })
+      this.setState({ steps3Enabled: false })
     } 
     if (this.state.userInfo.id !== prevState.userInfo.id) {
       this.props.resetStore();
@@ -338,21 +342,33 @@ class App extends Component {
   displayMessage = () => {
     const {
       onIncorrectCard,
+      onHintedCard,
       curWrongChar,
       wordCompleted,
       audioIsPlaying,
       romajiNotInDict,
       currentJapChar,
+      cardStateList,
     } = this.props;
-
+    if (this.state.walkThroughEnabled) {
+      return "..."
+    }
     if (audioIsPlaying) {
-      return `Audio playing...`;
+      return `Playing audio...`;
+    }
+
+    const cardStateSet = new Set(cardStateList);
+    if (cardStateSet.size === 1 && cardStateSet.has("correct")) {
+      // return listOfPraises[Math.floor(Math.random() * listOfPraises.length)];
+      return "Well done!"
     }
     if (onIncorrectCard) {
       return (romajiNotInDict 
         ? `${curWrongChar} does not exist in the alphabet.`
         : `${curWrongChar} corresponds to ${this.getKeyByValue(katakanaToRomaji, curWrongChar)}, not ${currentJapChar}.`
       );
+    } else if (onHintedCard) {
+      return "Press spacebar to continue."
     } else if (wordCompleted && !audioIsPlaying) {
       return "You can click on a character to review its mnemonic card.";
     } else {
@@ -565,10 +581,12 @@ class App extends Component {
                 currentTab="home"
                 handleClickWalkthrough={this.handleClickWalkthrough}
               />
-              <WelcomeBar 
-                userName={this.state.userInfo.name}
-                message={this.displayMessage()}
-              />
+              <div className="message-bar">
+                <WelcomeBar 
+                  userName={this.state.userInfo.name}
+                  message={this.displayMessage()}
+                />
+              </div>
               <FormControlLabel
                 className="audio-control"
                 label="Autoplay Audio"

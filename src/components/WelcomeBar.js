@@ -44,10 +44,22 @@ const useStyles = makeStyles({
 })
 
 const convertMessageLengthToEm = (message) => {
-  return (message.includes("corresponds") 
-    ? (message.length/2.29) + 1
-    : (message.length/2.29)
-  );
+  // base em
+  var length_in_em = message.length/2.29;
+
+  // fine-grain adjustment based on message
+  if (message.includes("mnemonic")) {
+    length_in_em += 0.75;
+  } else if (message.includes("corresponds")) {
+    length_in_em += 1.1;
+  } else if (message.includes("exist")) {
+    length_in_em -= 0.2;
+  } else if (message.includes("spacebar")) {
+    length_in_em += 1;
+  } else if (message.includes("!")) {
+    length_in_em += 0.5;
+  }
+  return length_in_em;
 }
 
 const WelcomeBar = (props) => {
@@ -57,7 +69,6 @@ const WelcomeBar = (props) => {
     <div className="container" style={{ color: "#5D5D5D" }}>
       <Paper elevation={0} />
       <div className="welcome-text">
-        {/* <p className="line-1 anim-typewriter" key={shortid.generate()}>{message}</p> */}
         <p className={classes.message} key={shortid.generate()}>{props.message}</p>
       </div>
     </div>
