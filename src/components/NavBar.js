@@ -57,6 +57,7 @@ const NavBar = (props) => {
             <div className="navbar-title">JapanEZ</div>
           </Typography>
           <Button
+            disabled
             variant="text"
             color="secondary"
             onClick={handleClickWalkthrough}

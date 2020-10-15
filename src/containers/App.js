@@ -87,11 +87,16 @@ class App extends Component {
       openEndDialogue: false,
       isFetchingWord: false,
       checkedAudioAutoPlay: false,
+      walkThroughEnabled: false,
 
       // introjs test
-      stepsEnabled: true,
       initialStep: 0,
-      steps: [
+      steps1Enabled: true,
+      steps2Enabled: false,
+      steps3Enabled: false,
+      transitionedFromSteps1ToSteps2: false,
+      transitionedFromSteps2ToSteps3: false,
+      steps1: [
         {
           intro: `Welcome to the walkthrough! Click 'Next' or use the right arrow key to continue.`,
         },
@@ -101,10 +106,17 @@ class App extends Component {
           position: "left",
         },
         {
-          element: ".main-button",
-          intro: "Click it this button (or press spacebar) to learn the highlighted character",
+          element: ".inputbox-div",
+          intro: "This is where you type out the japanese word if you already know it. If not, that's ok!",
           position: "left",
         },
+        {
+          element: ".main-button",
+          intro: "Click this button to learn the highlighted character",
+          position: "left",
+        },
+      ],
+      steps2: [
         {
           element: ".hint-card",
           intro: "This is the Character Card. It shows the mnemonics for the highlighted character",
@@ -117,7 +129,14 @@ class App extends Component {
         },
         {
           element: ".main-button",
-          intro: "Click it this button again (or press spacebar) to move on. The character will be filled out for you",
+          intro: "Click this button again to move on to the next character in the word",
+          position: "left",
+        },
+      ],
+      steps3: [
+        {
+          element: ".japanese-word",
+          intro: "Notice that the first character has been highlighted in yellow indicating that you have used the word card. The next letter is now highlighted in blue",
           position: "left",
         },
         {
@@ -127,7 +146,7 @@ class App extends Component {
         },
         {
           element: ".audio-control",
-          intro: "Toggle this switch to enable/disable audio autoplay.",
+          intro: "You can toggle this switch to enable/disable audio autoplay.",
           position: "left",
         },
         {
@@ -151,6 +170,12 @@ class App extends Component {
   };
 
   componentDidUpdate = (_, prevState) => {
+    // check if it's user's first time logging in
+    if (this.state.route !== prevState.route
+        && prevState.route === "register") {
+      this.setState({ walkThroughEnabled: true })
+    } 
+
     if (this.state.userInfo.id !== prevState.userInfo.id) {
       this.props.resetStore();
       this.requestNewWord();
@@ -160,6 +185,24 @@ class App extends Component {
       setTimeout(() => {
         this.setState({ openEndDialogue: true });
       }, 60000 * 30);
+    }
+
+    if (this.state.steps1Enabled === prevState.steps1Enabled
+        && !this.state.transitionedFromSteps1ToSteps2) {
+      if (this.hintCardRef.current !== null) {
+        this.setState({ steps1Enabled: false })
+        this.setState({ steps2Enabled: true })
+        this.setState({ transitionedFromSteps1ToSteps2: true })
+      }
+    }
+    if (this.state.steps2Enabled === prevState.steps2Enabled
+        && !this.state.transitionedFromSteps2ToSteps3
+        && this.state.transitionedFromSteps1ToSteps2) {
+      if (this.hintCardRef.current === null) {
+        this.setState({ steps2Enabled: false })
+        this.setState({ steps3Enabled: true })
+        this.setState({ transitionedFromSteps2ToSteps3: true })
+      }
     }
   };
 
@@ -404,8 +447,8 @@ class App extends Component {
     console.log("Debug", this.state.isFetchingWord)
     if (this.state.isFetchingWord) {
       const curTime = Date.now()
-      if (curTime - this.state.wordRequestTimeStamp > 1000) {
-        console.log("word request is taking more than 1 sec")
+      if (curTime - this.state.wordRequestTimeStamp > 4000) {
+        console.log("word request is taking more than 4 sec")
         return true;
       } else {
         return false;
@@ -423,30 +466,50 @@ class App extends Component {
     this.setState({ checkedAudioAutoPlay: !this.state.checkedAudioAutoPlay })
   }
 
-  onExitIntro = () => {
-    this.setState(() => ({ stepsEnabled: false }));
+  onExitIntro1 = () => {}
+  onExitIntro2 = () => {
+    this.setState(() => ({ steps2Enabled: false }));
   }
-
+  onExitIntro3 = () => {
+    this.setState({walkThroughEnabled: false });
+  }
+  
   handleClickWalkthrough = () => {
-    this.setState({ stepsEnabled: true });
+    this.setState({ steps1Enabled: true });
+    this.setState({ walkThroughEnabled: true }); // bad design, but it works
   }
 
-  onBeforeChange = (nextStepIndex) => {
+  onBeforeChange1 = (nextStepIndex) => {
     if (nextStepIndex) {
       // select dynamically created elements
-      this.steps.updateStepElement(nextStepIndex);
+      this.steps1.updateStepElement(nextStepIndex);
     }
-
-    if (nextStepIndex === 3) {
+    if (nextStepIndex === 4) {
       if (!this.hintCardRef.current) {
         return false;
       } else {
-        console.log("YES")
-        this.steps.updateStepElement(nextStepIndex);
+        this.steps1.updateStepElement(nextStepIndex);
       }
     }
   }
-
+  onBeforeChange2 = (nextStepIndex) => {
+    if (nextStepIndex) {
+      this.steps2.updateStepElement(nextStepIndex);
+    }
+    if (nextStepIndex === 3) {
+      if (this.hintCardRef.current !== null) {
+        return false;
+      } else {
+        this.steps2.updateStepElement(nextStepIndex);
+      }
+    }
+  }
+  onBeforeChange3 = (nextStepIndex) => {
+    if (nextStepIndex) {
+      this.steps3.updateStepElement(nextStepIndex);
+    }
+  }
+  
   renderRoute = (route) => {
     switch (route) {
       case "progress":
@@ -493,27 +556,49 @@ class App extends Component {
       case "home":
         const { currentWord } = this.props;
         const {
-          stepsEnabled,
-          steps,
+          steps1Enabled,
+          steps2Enabled,
+          steps3Enabled,
+          steps1,
+          steps2,
+          steps3,
           initialStep
         } = this.state;
-
+        const generalStepsOptions = {
+          showStepNumbers: false,
+          hidePrev: true,
+          hideNext: true,
+          exitOnOverlayClick: false,
+        };
         return (
           <div className="page-container" style={{ position: "relative" }}>
             <LoadingPopup isOpen={this.displayLoadingPopup()}/>
             <Steps
-              enabled={stepsEnabled}
-              steps={steps}
+              enabled={steps1Enabled && this.state.walkThroughEnabled}
+              steps={steps1}
               initialStep={initialStep}
-              onExit={this.onExitIntro}
-              options={{
-                showStepNumbers: false,
-                hidePrev: true,
-                hideNext: true,
-                exitOnOverlayClick: false,
-              }}
-              ref={steps => (this.steps = steps)}
-              onBeforeChange={this.onBeforeChange}
+              onExit={this.onExitIntro1}
+              options={generalStepsOptions}
+              ref={steps => (this.steps1 = steps)}
+              onBeforeChange={this.onBeforeChange1}
+            />
+            <Steps
+              enabled={steps2Enabled && this.state.walkThroughEnabled}
+              steps={steps2}
+              initialStep={initialStep}
+              onExit={this.onExitIntro2}
+              options={generalStepsOptions}
+              ref={steps => (this.steps2 = steps)}
+              onBeforeChange={this.onBeforeChange2}
+            />
+            <Steps
+              enabled={steps3Enabled && this.state.walkThroughEnabled}
+              steps={steps3}
+              initialStep={initialStep}
+              onExit={this.onExitIntro3}
+              options={generalStepsOptions}
+              ref={steps => (this.steps3 = steps)}
+              onBeforeChange={this.onBeforeChange3}
             />
       
             <div className="content-wrap">
@@ -597,7 +682,6 @@ class App extends Component {
                         clickedJapChar={this.state.clickedJapChar}
                       />
                     </div>
-                    
                   </Grid>
                   <div>{this.displayMessage()}</div>
                   <Grid item>
@@ -617,7 +701,21 @@ class App extends Component {
                         {this.setButtonText()}
                       </Button>
                     ) : (
-                      <div></div>
+                      <Button
+                        disabled
+                        className="main-button"
+                        size="large"
+                        variant="contained"
+                        color="primary"
+                        onClick={() =>
+                          this.clickChild(
+                            this.charInputRef.current.formRef.current
+                          )
+                        }
+                        style={{ color: "white" }}
+                      >
+                        {"Got it"}
+                      </Button>
                     )}
                   </Grid>
 
