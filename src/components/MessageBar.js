@@ -1,6 +1,6 @@
 import React from "react";
 import { Paper } from "@material-ui/core";
-import "../scss/components/WelcomeBar.scss";
+import "../scss/components/MessageBar.scss";
 import shortid from "shortid";
 import { makeStyles } from "@material-ui/core/styles"
 import { PRIMARYCOLOR } from "../constants";

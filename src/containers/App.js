@@ -643,7 +643,7 @@ class App extends Component {
                 <DialogContentText id="alert-dialog-description">
                   <p>
                     {`You have used the app for ${USER_TIME_LIMIT_IN_MINUTES} minute. Please click the link
-                    below to take a short test that will access your Katakana
+                    below to take a short test that will assess your Katakana
                     knowledge. Thank you for using the app!`}
                   </p>
                   <a
@@ -699,8 +699,6 @@ class App extends Component {
                 }
               >
               </FormControlLabel>
-
-              {/* <Paper elevation={0} /> */}
               <Grid
                 container
                 direction="column"
