@@ -13,6 +13,7 @@ const useStyles = makeStyles({
     textAlign: "center",
     margin: "0 auto",
   },
+  // add this to have typing animation
   messageAnimation: {
     borderRight: "2px solid rgba(255, 255, 255, 0.75)",
     whiteSpace: "nowrap",
@@ -75,7 +76,7 @@ const MessageBar = (props) => {
       <div className="welcome-text">
         {props.displayHelpMessages ? (
           <p 
-            className={`${classes.messageText} ${classes.messageAnimation}`} 
+            className={`${classes.messageText}`} 
             key={shortid.generate()}
           >
             {props.message}

@@ -196,32 +196,22 @@ class CharInput extends React.Component {
 
       if (event.which === 32) {
         this.buttonClickOrSpacePressHandler(event.target);
+      } else if (event.which === 8) {
+        this.deleteIncorrectInput(event.target);
+      } else if (event.which === 13) {
+        this.goToNextWord(event.target);
+        this.fillHintedCharacter(event.target);
       }
     }
   };
 
-  buttonClickOrSpacePressHandler = (eventTarget) => {
+  deleteIncorrectInput(eventTarget) {
     const {
       onIncorrectCard,
       curWrongChar,
       onInputBoxChange,
       onSpacePress,
-      onCompleteChar,
-      wordCompleted,
-      onHintedCard,
-      currentRomaji,
-      onEnterPress,
-      currentWord,
-      romajiList,
-      indexCurrentCard,
-      setCurrentChar,
-      updateWord,
-      updateWordScore,
-      onWordCompletion,
-      user_uid,
       resetRomajiNotInDictAlert,
-      updateCharScore,
-      getKeyByValue
     } = this.props;
 
     if (onIncorrectCard) {
@@ -230,6 +220,81 @@ class CharInput extends React.Component {
       onInputBoxChange(eventTarget.value);
       onSpacePress("CONTINUE_AFTER_ERROR");
       resetRomajiNotInDictAlert();
+    }  
+  };
+
+  goToNextWord(eventTarget) {
+    // move on to next word
+    const {
+      updateWord,
+      updateWordScore,
+      onSpacePress,
+      user_uid,
+      currentWord,
+      onInputBoxChange,
+      romajiList,
+      wordCompleted,
+      setCurrentChar,
+    } = this.props;
+
+    if (wordCompleted) {
+      updateWord("", [""]);
+      updateWordScore(user_uid, currentWord);
+      onSpacePress("CONTINUE_AFTER_COMPLETE");
+
+      eventTarget.value = "";
+      onInputBoxChange(eventTarget.value);
+      const newRomaji = romajiList[0];
+      const newKana = currentWord[0];
+      setCurrentChar(newKana, newRomaji);
+    }
+  }
+
+  fillHintedCharacter = (eventTarget) => {
+    const {
+      onHintedCard,
+      indexCurrentCard,
+      romajiList,
+      onWordCompletion,
+      currentRomaji,
+      onInputBoxChange,
+      onEnterPress,
+      setCurrentChar,
+      currentWord,
+    } = this.props;
+
+    if (onHintedCard) {
+      if (indexCurrentCard === romajiList.length - 1) {
+        onWordCompletion();
+      }
+      // autofill correct answer
+      eventTarget.value = eventTarget.value.concat(currentRomaji);
+      onInputBoxChange(eventTarget.value);
+      onEnterPress(Date.now());
+
+      const curRomaji = romajiList[indexCurrentCard + 1];
+      const curKana = currentWord[indexCurrentCard + 1];
+      setCurrentChar(curKana, curRomaji);
+    }
+  }
+
+  buttonClickOrSpacePressHandler = (eventTarget) => {
+    const {
+      onIncorrectCard,
+      onInputBoxChange,
+      onSpacePress,
+      onCompleteChar,
+      wordCompleted,
+      onHintedCard,
+      romajiList,
+      indexCurrentCard,
+      user_uid,
+      updateCharScore,
+      getKeyByValue
+    } = this.props;
+
+    if (onIncorrectCard) {
+      this.deleteIncorrectInput(eventTarget)
     } else if (!onIncorrectCard && !onHintedCard && !wordCompleted) {
       // ask for hint
       onSpacePress("REQUEST_HINT");
@@ -250,28 +315,9 @@ class CharInput extends React.Component {
       // clear inputChecker buffer
       this.inputChecker.checkInput("clearBuffer");
     } else if (wordCompleted) {
-      // move on to next word
-      updateWord("", [""]);
-      updateWordScore(user_uid, currentWord);
-      onSpacePress("CONTINUE_AFTER_COMPLETE");
-
-      eventTarget.value = "";
-      onInputBoxChange(eventTarget.value);
-      const newRomaji = romajiList[0];
-      const newKana = currentWord[0];
-      setCurrentChar(newKana, newRomaji);
+      this.goToNextWord(eventTarget)
     } else if (onHintedCard) {
-      if (indexCurrentCard === romajiList.length - 1) {
-        onWordCompletion();
-      }
-      // autofill correct answer
-      eventTarget.value = eventTarget.value.concat(currentRomaji);
-      onInputBoxChange(eventTarget.value);
-      onEnterPress(Date.now());
-
-      const curRomaji = romajiList[indexCurrentCard + 1];
-      const curKana = currentWord[indexCurrentCard + 1];
-      setCurrentChar(curKana, curRomaji);
+      this.fillHintedCharacter(eventTarget);
     }
   };
 

@@ -414,7 +414,8 @@ class App extends Component {
         return "You can click on a character to review its mnemonic card.";
       }
     } else {
-      return `I will be giving you feedback as you use the app.`;
+      // return `I will be giving you feedback as you use the app.`;
+      return `...`;
     }
   };
 
@@ -675,6 +676,7 @@ class App extends Component {
                 labelPlacement="start"
                 control={
                   <Switch 
+                    disabled
                     checked={this.state.checkedAudioAutoPlay}
                     onChange={this.handleAudioAutoplaySwitch}
                     name="autoplay-audio" 
