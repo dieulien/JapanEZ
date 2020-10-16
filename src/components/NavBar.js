@@ -57,7 +57,8 @@ const NavBar = (props) => {
             <div className="navbar-title">JapanEZ</div>
           </Typography>
           <Button
-            disabled
+            className="nav-button-walkthrough"
+            // disabled
             variant="text"
             color="secondary"
             onClick={handleClickWalkthrough}
@@ -65,39 +66,14 @@ const NavBar = (props) => {
           >
             <div className="navbar-button-text">Walkthrough</div>
           </Button>
-          <Button
+          {/* <Button
             variant="text"
             color="secondary"
             onClick={handleClickOpen}
             startIcon={<HelpOutlineOutlinedIcon />}
           >
             <div className="navbar-button-text">Help</div>
-          </Button>
-          <Dialog
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">{"Instruction"}</DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                <p>
-                  In this app, you will learn Japanese Katakana alphabet. At
-                  each iteration, the app will display all the Katakana
-                  characters that make up a certain Japanese word.
-                </p>
-                <p>If you know the katakana, simply type romaji </p>
-                <p>If you don't know it, press SPACE to learn the romaji. </p>
-                <p>If your input is incorrect, press SPACE to retry.</p>
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose} color="primary" autoFocus>
-                Close
-              </Button>
-            </DialogActions>
-          </Dialog>
+          </Button> */}
           <Button
             className="nav-button-home"
             variant={currentTab === "home" ? "outlined" : "text"}
@@ -135,6 +111,31 @@ const NavBar = (props) => {
             <div className="navbar-button-text">Signout</div>
           </Button>
         </Toolbar>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{"Instruction"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              <p>
+                In this app, you will learn Japanese Katakana alphabet. At
+                each iteration, the app will display all the Katakana
+                characters that make up a certain Japanese word.
+              </p>
+              <p>If you know the katakana, simply type romaji </p>
+              <p>If you don't know it, press SPACE to learn the romaji. </p>
+              <p>If your input is incorrect, press SPACE to retry.</p>
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary" autoFocus>
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
       </AppBar>
     </div>
   );

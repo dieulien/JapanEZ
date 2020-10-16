@@ -39,12 +39,12 @@ const WALKTHROUGH_PART_1 = [
   },
   {
     element: ".inputbox-div",
-    intro: "This is where you will type out the japanese word if you already know it. For the purpose of this walkthrough, let's assume that you don't know the highlighted character.",
+    intro: "This is where you can type out the Japanese word if you think you know it.",
     position: "left",
   },
   {
     element: ".main-button",
-    intro: "Try clicking on this button to learn the highlighted character",
+    intro: "Try clicking on the blue button to learn the highlighted character",
     position: "left",
   },
 ];
@@ -62,7 +62,7 @@ const WALKTHROUGH_PART_2 = [
   },
   {
     element: ".main-button",
-    intro: "Once you're done perusing the card, click this button again to move on to the next character in the word",
+    intro: "Once you're done perusing the card, click the blue button again to move on to the next character",
     position: "left",
   },
 ];
@@ -79,14 +79,14 @@ const WALKTHROUGH_PART_3 =  [
   },
   {
     element: ".main-area",
-    intro: "Now try typing something incorrect such as 'j', you will see that the character is highlighted in red and you cannot type any further. You have to click the 'Try Again' button to proceed. You already know the answer is 'ma', try typing 'ma' instead. You should see the word card pop up because you have gone through the whole word. Click 'Next Word' to proceed!",
+    intro: "Now try typing something incorrect in the textbox such as 'j', you will see that the character is highlighted in red and you cannot type any further. You have to click the blue button to try again. Keep clicking the blue button to learn the new character. Once you've reached the end of the word, a word card will popup which tells you the meaning of the word. Click the blue button to proceed!",
     position: "left",
   },
 ]
 
 const WALKTHROUGH_PART_4 = [
   {
-    intro: "That's it! Just a couple more things before we end this tour.",
+    intro: "And that's it! Now you know the general flow of the webapp. Just a couple more things before we end this tour.",
     position: "left",
   },
   {
@@ -120,7 +120,12 @@ const WALKTHROUGH_PART_4 = [
     position: "bottom",
   },
   {
-    intro: `That's the end of the walkthrough. You have ${USER_TIME_LIMIT_IN_MINUTES} minutes to play with this webbapp. Have fun! Oh and one last thing: You can use spacebar instead of clicking on the blue button in the middle. Now have fun learning!`
+    element: ".nav-button-walkthrough",
+    intro: "At any point while using the app, you can click this tab to replay  this walkthrough",
+    position: "bottom",
+  },
+  {
+    intro: `Congrats on reaching the end of the walkthrough! You have ${USER_TIME_LIMIT_IN_MINUTES} minutes to play with this webbapp. And one last thing: You can use spacebar instead of clicking on the blue button in the middle. Now have fun learning!`
   }
 ];
 

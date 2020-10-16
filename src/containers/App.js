@@ -90,12 +90,18 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      route: "home", // should be register
+      route: "register", // should be register
+      // userInfo: {
+      //   id: "a284d3ec-a941-4db0-acf2-b3531dab3f60",
+      //   name: "newcomer",
+      //   email: "newcomer@g.com",
+      //   joined: "2020-10-14T19:27:16.707Z",
+      // },
       userInfo: {
-        id: "a284d3ec-a941-4db0-acf2-b3531dab3f60",
-        name: "newcomer",
-        email: "newcomer@g.com",
-        joined: "2020-10-14T19:27:16.707Z",
+        id: "",
+        name: "",
+        email: "",
+        joined: "",
       },
       currentWordInfo: null,
       openEndDialogue: false,
@@ -127,7 +133,7 @@ class App extends Component {
     this.requestNewWord(); // temporary
   };
 
-  componentDidUpdate = (_, prevState) => {
+  componentDidUpdate = (prevProps, prevState) => {
     // check if it's user's first time logging in
     if (this.state.route !== prevState.route
         && prevState.route === "register") {
@@ -167,7 +173,8 @@ class App extends Component {
         && !this.state.transitionedFromSteps3ToSteps4
         && this.state.transitionedFromSteps1ToSteps2
         && this.state.transitionedFromSteps2ToSteps3
-        && this.props.currentWord !== "ママ") {
+        && this.props.currentWord !== "ママ"
+        && this.props.currentWord !== prevProps.currentWord) {
       if (this.wordCardRef.current === null) {
         this.setState({ steps3Enabled: false })
         this.setState({ steps4Enabled: true })
@@ -388,8 +395,8 @@ class App extends Component {
     }
     if (onIncorrectCard) {
       return (romajiNotInDict 
-        ? `${curWrongChar} does not exist in the alphabet. Press spacebar to try again.`
-        : `${curWrongChar} corresponds to ${this.getKeyByValue(katakanaToRomaji, curWrongChar)}, not ${currentJapChar}. Press spacebar to try again.`
+        ? `${curWrongChar} does not exist in the Japanese alphabet.`
+        : `${curWrongChar} corresponds to ${this.getKeyByValue(katakanaToRomaji, curWrongChar)}, not ${currentJapChar}.`
       );
     } else if (onHintedCard) {
       return "Press spacebar again to continue."
@@ -470,7 +477,13 @@ class App extends Component {
   
   handleClickWalkthrough = () => {
     this.setState({ steps1Enabled: true });
+    this.setState({ steps2Enabled: false });
+    this.setState({ steps3Enabled: false });
+    this.setState({ steps4Enabled: false });
     this.setState({ walkThroughEnabled: true });
+    console.log("WALKTHROUGH", this.charInputRef.current.formRef.current)
+    this.props.resetStore();
+    this.requestNewWord();
   }
 
   onBeforeChange1 = (nextStepIndex) => {

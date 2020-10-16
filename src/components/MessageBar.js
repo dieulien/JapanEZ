@@ -56,8 +56,10 @@ const convertMessageLengthToEm = (message) => {
     length_in_em += 1.1;
   } else if (message.includes("exist")) {
     length_in_em -= 0.2;
-  } else if (message.includes("spacebar")) {
-    length_in_em += 1;
+  } else if (message.includes("Press spacebar again")) {
+    length_in_em += 0.8;
+  } else if (message.includes("stuck")) {
+    length_in_em -= 0.2;
   } else if (message.includes("!")) {
     length_in_em += 0.5;
   }
