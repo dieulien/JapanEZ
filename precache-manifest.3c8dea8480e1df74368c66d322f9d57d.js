@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "19c98ad9f7d909bc0950d59543e6047c",
+    "revision": "ed82fb82fd6de36e991a3d2a65c306a8",
     "url": "/japanese-reading/index.html"
   },
   {
@@ -8,8 +8,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/japanese-reading/static/css/2.da848f00.chunk.css"
   },
   {
-    "revision": "a7b0bf0ff4f95e9f1a77",
-    "url": "/japanese-reading/static/css/main.3a732bd8.chunk.css"
+    "revision": "2ab4acc6809e915bfe1d",
+    "url": "/japanese-reading/static/css/main.f8191442.chunk.css"
   },
   {
     "revision": "e424f939169b30abd4e2",
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/japanese-reading/static/js/2.30519631.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "a7b0bf0ff4f95e9f1a77",
-    "url": "/japanese-reading/static/js/main.c2881908.chunk.js"
+    "revision": "2ab4acc6809e915bfe1d",
+    "url": "/japanese-reading/static/js/main.b724ac1f.chunk.js"
   },
   {
     "revision": "e302560d5cd9bb944f5b",
