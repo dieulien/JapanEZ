@@ -4,6 +4,16 @@ object-assign
 @license MIT
 */
 
+/*!
+ * Intro.js v3.0.0-beta.1
+ * https://github.com/usablica/intro.js
+ *
+ * Copyright (C) 2017-2020 Afshin Mehrabani (@afshinmeh).
+ * https://raw.githubusercontent.com/usablica/intro.js/master/license.md
+ *
+ * Date: Tue, 13 Oct 2020 14:58:25 GMT
+ */
+
 /*! ./../../../../node_modules/webpack/buildin/global.js */
 
 /*! ./../../../node_modules/webpack/buildin/global.js */
