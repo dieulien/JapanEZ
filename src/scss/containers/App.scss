@@ -40,15 +40,20 @@
 }
 
 .audio-control {
-  position: absolute;
-  right: 70px;
   top: 240px;
 }
 
 .message-control {
+  top: 200px;
+}
+
+.blue-button-visibility-control {
+  top: 280px;
+}
+
+.switch-control {
   position: absolute;
   right: 70px;
-  top: 200px;
 }
 
 .input-box {

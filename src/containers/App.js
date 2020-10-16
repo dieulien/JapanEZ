@@ -90,24 +90,25 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      route: "register", // should be register
-      // userInfo: {
-      //   id: "a284d3ec-a941-4db0-acf2-b3531dab3f60",
-      //   name: "newcomer",
-      //   email: "newcomer@g.com",
-      //   joined: "2020-10-14T19:27:16.707Z",
-      // },
+      route: "home", // should be register
       userInfo: {
-        id: "",
-        name: "",
-        email: "",
-        joined: "",
+        id: "a284d3ec-a941-4db0-acf2-b3531dab3f60",
+        name: "newcomer",
+        email: "newcomer@g.com",
+        joined: "2020-10-14T19:27:16.707Z",
       },
+      // userInfo: {
+      //   id: "",
+      //   name: "",
+      //   email: "",
+      //   joined: "",
+      // },
       currentWordInfo: null,
       openEndDialogue: false,
       isFetchingWord: false,
       checkedAudioAutoPlay: false,
       checkedEnableMessage: true,
+      checkedEnableBlueButton: true,
       walkThroughEnabled: false,
 
       // introjs test
@@ -418,7 +419,6 @@ class App extends Component {
       return `...`;
     }
   };
-
   setButtonText = () => {
     const {
       onIncorrectCard,
@@ -430,7 +430,7 @@ class App extends Component {
     if (onIncorrectCard) {
       return "Try Again";
     } else if (onHintedCard && !audioIsPlaying) {
-      return "Next Character";
+      return "Got it";
     } else if (wordCompleted && !audioIsPlaying) {
       return "Next Word";
     } else if (!onHintedCard && !wordCompleted) {
@@ -439,7 +439,6 @@ class App extends Component {
       return "";
     }
   };
-
   displayLoadingPopup = () => {
     console.log("Debug", this.state.isFetchingWord)
     if (this.state.isFetchingWord) {
@@ -454,17 +453,20 @@ class App extends Component {
       return false;
     }
   }
-
   handleAudioAutoplaySwitch = (event) => {
     this.setState(
       { checkedAudioAutoPlay: !this.state.checkedAudioAutoPlay }
     );
   }
-
   handleEnableMessageSwitch = () => {
     this.setState(
       { checkedEnableMessage: !this.state.checkedEnableMessage }
     );
+  }
+  handleEnableBlueButtonSwitch = () => {
+    this.setState(
+      {checkedEnableBlueButton: !this.state.checkedEnableBlueButton }
+    )
   }
 
   onExitIntro1 = () => {}
@@ -591,6 +593,16 @@ class App extends Component {
           hidePrev: true,
           hideNext: true,
           exitOnOverlayClick: false,
+          exitOnEsc: false,
+          showButtons: false,
+          overlayOpacity: 0.2,
+        };
+        const lastStepsOptions = {
+          showStepNumbers: false,
+          hidePrev: true,
+          hideNext: true,
+          showButtons: false,
+          overlayOpacity: 0.2,
         };
         return (
           <div className="page-container" style={{ position: "relative" }}>
@@ -627,7 +639,7 @@ class App extends Component {
               steps={steps4}
               initialStep={initialStep}
               onExit={this.onExitIntro4}
-              options={generalStepsOptions}
+              options={lastStepsOptions}
               ref={steps => (this.steps4 = steps)}
               onBeforeChange={this.onBeforeChange4}
             />
@@ -671,7 +683,7 @@ class App extends Component {
               </div>
 
               <FormControlLabel
-                className="audio-control"
+                className="audio-control switch-control"
                 label="Autoplay Audio"
                 labelPlacement="start"
                 control={
@@ -686,7 +698,7 @@ class App extends Component {
               >
               </FormControlLabel>
               <FormControlLabel
-                className="message-control"
+                className="message-control switch-control"
                 label="Help Message"
                 labelPlacement="start"
                 control={
@@ -694,6 +706,20 @@ class App extends Component {
                     checked={this.state.checkedEnableMessage}
                     onChange={this.handleEnableMessageSwitch}
                     name="enable-message" 
+                    color="primary"
+                  />
+                }
+              >
+              </FormControlLabel>
+              <FormControlLabel
+                className="blue-button-visibility-control switch-control"
+                label="Show Blue Button"
+                labelPlacement="start"
+                control={
+                  <Switch 
+                    checked={this.state.checkedEnableBlueButton}
+                    onChange={this.handleEnableBlueButtonSwitch}
+                    name="enable-bluebutton" 
                     color="primary"
                   />
                 }
@@ -726,7 +752,7 @@ class App extends Component {
                       clickedJapChar={this.state.clickedJapChar}
                     />
                   </Grid>
-                  <Grid item className="main-button"> 
+                  {this.state.checkedEnableBlueButton ? (<Grid item className="main-button"> 
                     {!this.props.audioIsPlaying ? (
                       <Button
                         size="large"
@@ -757,7 +783,7 @@ class App extends Component {
                         {"Got it"}
                       </Button>
                     )}
-                  </Grid>
+                  </Grid>) : null}
                   <Grid item className="card-area">
                     <Grid
                       container

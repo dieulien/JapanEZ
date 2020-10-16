@@ -30,7 +30,8 @@ const listOfEncouragements = [
 
 const WALKTHROUGH_PART_1 = [
   {
-    intro: `Welcome to the walkthrough! Click 'Next' to continue.`,
+    intro: `Welcome to the walkthrough!
+    Press the right arrow key to continue.`,
   },
   {
     element: ".japanese-word",
@@ -39,7 +40,7 @@ const WALKTHROUGH_PART_1 = [
   },
   {
     element: ".inputbox-div",
-    intro: "This is where you will type out the Japanese word.",
+    intro: "This is where you can type out what you think word is. For example, you will type 'kisu' for 'キス'.",
     position: "left",
   },
   {
@@ -86,7 +87,7 @@ const WALKTHROUGH_PART_3 =  [
 
 const WALKTHROUGH_PART_4 = [
   {
-    intro: "Now you know the general flow of the webapp. Just one last thing, instead of clicking the blue button, pressing the spacebar will work the same.",
+    intro: "Now you know the general flow of the webapp. Just one last thing: You can press spacebar instead of clicking the blue button.",
     position: "left",
   },
   // {
@@ -125,7 +126,7 @@ const WALKTHROUGH_PART_4 = [
   //   position: "bottom",
   // },
   {
-    intro: `You have ${USER_TIME_LIMIT_IN_MINUTES} minutes to learn. Have fun!`
+    intro: `You have ${USER_TIME_LIMIT_IN_MINUTES} minutes to learn. Press Esc or click outside this box to exit this tutorial.`
   }
 ];
 
