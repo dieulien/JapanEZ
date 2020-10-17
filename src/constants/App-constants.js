@@ -80,7 +80,7 @@ const WALKTHROUGH_PART_3 =  [
   },
   {
     element: ".main-area",
-    intro: "Keep clicking the blue button. Once you've reached the end of the word, a word card will appear which tells you the meaning of the word. Click the blue button to proceed!",
+    intro: "Try typing something in the input box. If you're stuck, just keep clicking the blue button to learn each character. Once you've reached the end of the word, a word card will appear. Then you can click the 'Next Word' button to proceed.",
     position: "left",
   },
 ]

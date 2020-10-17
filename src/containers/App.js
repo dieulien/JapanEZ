@@ -123,7 +123,8 @@ class App extends Component {
       steps1: WALKTHROUGH_PART_1,
       steps2: WALKTHROUGH_PART_2,
       steps3: WALKTHROUGH_PART_3,
-      steps4: WALKTHROUGH_PART_4,   
+      steps4: WALKTHROUGH_PART_4,
+      disableAllAction: false,
     };
     this.charInputRef = React.createRef();
     this.hintCardRef = React.createRef();
@@ -443,8 +444,8 @@ class App extends Component {
     console.log("Debug", this.state.isFetchingWord)
     if (this.state.isFetchingWord) {
       const curTime = Date.now()
-      if (curTime - this.state.wordRequestTimeStamp > 4000) {
-        console.log("word request is taking more than 4 sec")
+      if (curTime - this.state.wordRequestTimeStamp > 1000) {
+        console.log("word request is taking more than 1 sec")
         return true;
       } else {
         return false;
@@ -479,12 +480,17 @@ class App extends Component {
   }
   
   handleClickWalkthrough = () => {
+    // this.clickChild(this.charInputRef.current.formRef.current);
+    this.clearFormInput(this.charInputRef.current.formRef.current);
     this.setState({ steps1Enabled: true });
     this.setState({ steps2Enabled: false });
     this.setState({ steps3Enabled: false });
     this.setState({ steps4Enabled: false });
+    this.setState({ transitionedFromSteps1ToSteps2: false });
+    this.setState({ transitionedFromSteps2ToSteps3: false });
+    this.setState({ transitionedFromSteps3ToSteps4: false });
     this.setState({ walkThroughEnabled: true });
-    console.log("WALKTHROUGH", this.charInputRef.current.formRef.current)
+    this.setState({ checkedEnableBlueButton: true });
     this.props.resetStore();
     this.requestNewWord();
   }
@@ -529,6 +535,13 @@ class App extends Component {
   onBeforeChange4 = (nextStepIndex) => {
     if (nextStepIndex) {
       this.steps4.updateStepElement(nextStepIndex);
+    }
+  }
+  onChangeInSteps = (specialIndex) => (index, _) => {
+    if (index !== specialIndex) {
+      this.setState({ disableAllAction: true });
+    } else {
+      this.setState({ disableAllAction: false });
     }
   }
   
@@ -615,6 +628,7 @@ class App extends Component {
               options={generalStepsOptions}
               ref={steps => (this.steps1 = steps)}
               onBeforeChange={this.onBeforeChange1}
+              onChange={this.onChangeInSteps(3)}
             />
             <Steps
               enabled={steps2Enabled && this.state.walkThroughEnabled}
@@ -624,6 +638,7 @@ class App extends Component {
               options={generalStepsOptions}
               ref={steps => (this.steps2 = steps)}
               onBeforeChange={this.onBeforeChange2}
+              onChange={this.onChangeInSteps(2)}
             />
             <Steps
               enabled={steps3Enabled && this.state.walkThroughEnabled}
@@ -633,6 +648,7 @@ class App extends Component {
               options={generalStepsOptions}
               ref={steps => (this.steps3 = steps)}
               onBeforeChange={this.onBeforeChange3}
+              onChange={this.onChangeInSteps(2)}
             />
             <Steps
               enabled={steps4Enabled && this.state.walkThroughEnabled}
@@ -667,7 +683,6 @@ class App extends Component {
                 </DialogContentText>
               </DialogContent>
             </Dialog>
-
             <div className="content-wrap">
               <NavBar 
                 onRouteChange={this.onRouteChange} 
@@ -681,7 +696,6 @@ class App extends Component {
                   displayHelpMessages={this.state.checkedEnableMessage}
                 />
               </div>
-
               <FormControlLabel
                 className="audio-control switch-control"
                 label="Autoplay Audio"
@@ -741,7 +755,8 @@ class App extends Component {
                         user_uid={this.state.userInfo.id}
                         ref={this.charInputRef}
                         setClick={(click) => (this.clickChild = click)}
-                        steps1Enabled={this.state.steps1Enabled}
+                        matchClearFormInputFunction={(childFunc) => (this.clearFormInput = childFunc)}
+                        disableAllAction={this.state.disableAllAction}
                       />
                     </OutsideAlerter>
                   </Grid>
@@ -758,11 +773,7 @@ class App extends Component {
                         size="large"
                         variant="contained"
                         color="primary"
-                        onClick={() =>
-                          this.clickChild(
-                            this.charInputRef.current.formRef.current
-                          )
-                        }
+                        onClick={() => this.clickChild(this.charInputRef.current.formRef.current)}
                         style={{ color: "white" }}
                       >
                         {this.setButtonText()}

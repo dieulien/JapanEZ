@@ -100,6 +100,7 @@ class CharInput extends React.Component {
 
     // https://stackoverflow.com/questions/37949981/call-child-method-from-parent
     this.props.setClick(this.buttonClickOrSpacePressHandler);
+    this.props.matchClearFormInputFunction(this.clearInputBox);
   }
 
   componentDidUpdate = (prevProps) => {
@@ -156,34 +157,30 @@ class CharInput extends React.Component {
       onWordCompletion,
       audioIsPlaying,
       cardStateList,
-      steps1Enabled,
+      disableAllAction,
     } = this.props;
 
     // disable input
-    if (audioIsPlaying) {
+    if (audioIsPlaying || disableAllAction) {
       event.preventDefault();
       return;
     }
-
     if (wordCompleted) {
       event.preventDefault();
     }
     var lastCardState = cardStateList[cardStateList.length - 1];
-
     if (
       indexCurrentCard === romajiList.length - 1 &&
       (lastCardState === "correct" || lastCardState === "hinted")
     ) {
       onWordCompletion();
     }
-
     // keycode 65 to 90 represents a-z
     if (
       ((event.which >= 65 && event.which <= 90) || event.which === 222) &&
       !onIncorrectCard &&
       !wordCompleted &&
-      !onHintedCard &&
-      !steps1Enabled
+      !onHintedCard
     ) {
       var key =
         event.which === 222
@@ -197,7 +194,7 @@ class CharInput extends React.Component {
       if (event.which === 32) {
         this.buttonClickOrSpacePressHandler(event.target);
       } else if (event.which === 8) {
-        this.deleteIncorrectInput(event.target);
+        this.clearInputBox(event.target);
       } else if (event.which === 13) {
         this.goToNextWord(event.target);
         this.fillHintedCharacter(event.target);
@@ -221,6 +218,10 @@ class CharInput extends React.Component {
       onSpacePress("CONTINUE_AFTER_ERROR");
       resetRomajiNotInDictAlert();
     }  
+  };
+
+  clearInputBox(eventTarget) {
+    eventTarget.value = "";
   };
 
   goToNextWord(eventTarget) {
@@ -290,8 +291,13 @@ class CharInput extends React.Component {
       indexCurrentCard,
       user_uid,
       updateCharScore,
-      getKeyByValue
+      getKeyByValue,
+      disableAllAction,
     } = this.props;
+
+    if (disableAllAction) {
+      return;
+    }
 
     if (onIncorrectCard) {
       this.deleteIncorrectInput(eventTarget)
