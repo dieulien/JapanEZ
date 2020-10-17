@@ -137,7 +137,7 @@ class App extends Component {
 
   componentDidUpdate = (prevProps, prevState) => {
     // check if it's user's first time logging in
-    if (this.state.route !== prevState.route
+    if (this.state.route === "home"
         && prevState.route === "register") {
       this.setState({ walkThroughEnabled: true })
       this.setState({ steps1Enabled: true })
