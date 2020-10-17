@@ -493,6 +493,21 @@ class App extends Component {
     this.requestNewWord();
   }
 
+  endWalkThrough = () => {
+    this.clearFormInput(this.charInputRef.current.formRef.current);
+    this.setState({ steps1Enabled: false });
+    this.setState({ steps2Enabled: false });
+    this.setState({ steps3Enabled: false });
+    this.setState({ steps4Enabled: false });
+    this.setState({ transitionedFromSteps1ToSteps2: false });
+    this.setState({ transitionedFromSteps2ToSteps3: false });
+    this.setState({ transitionedFromSteps3ToSteps4: false });
+    this.setState({ walkThroughEnabled: false });
+    this.setState({ checkedEnableBlueButton: true });
+    this.props.resetStore();
+    this.requestNewWord();
+  }
+
   onBeforeChange1 = (nextStepIndex) => {
     if (nextStepIndex) {
       // select dynamically created elements
@@ -755,6 +770,8 @@ class App extends Component {
                         setClick={(click) => (this.clickChild = click)}
                         matchClearFormInputFunction={(childFunc) => (this.clearFormInput = childFunc)}
                         disableAllAction={this.state.disableAllAction}
+                        endWalkThrough={this.endWalkThrough}
+                        walkThroughEnabled={this.state.walkThroughEnabled}
                       />
                     </OutsideAlerter>
                   </Grid>

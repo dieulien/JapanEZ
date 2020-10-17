@@ -158,10 +158,21 @@ class CharInput extends React.Component {
       audioIsPlaying,
       cardStateList,
       disableAllAction,
+      walkThroughEnabled,
+      endWalkThrough,
     } = this.props;
 
+    if (walkThroughEnabled) {
+      event.preventDefault();
+      if (event.which === 27) {
+        endWalkThrough();
+      } else if (disableAllAction) {
+        return;
+      }
+    }
+
     // disable input
-    if (audioIsPlaying || disableAllAction) {
+    if (audioIsPlaying) {
       event.preventDefault();
       return;
     }
