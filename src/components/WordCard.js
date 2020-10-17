@@ -26,9 +26,8 @@ const parseoutBoldText = (sentence) => {
   return sentence.split(",");
 };
 
-export default function OutlinedCard({ wordInfo, word_audio_duration, autoplayAudio }) {
+export default function WordCard({ wordInfo, word_audio_duration, autoplayAudio }) {
   const classes = useStyles();
-
   var el = document.createElement("html");
   el.innerHTML = "<b>bolded text</b>";
   const sentenceSegments = parseoutBoldText(wordInfo.sentence_expression);

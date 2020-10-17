@@ -90,23 +90,23 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      route: "home", // should be register
-      userInfo: {
-        id: "a284d3ec-a941-4db0-acf2-b3531dab3f60",
-        name: "newcomer",
-        email: "newcomer@g.com",
-        joined: "2020-10-14T19:27:16.707Z",
-      },
+      route: "register", // should be register
       // userInfo: {
-      //   id: "",
-      //   name: "",
-      //   email: "",
-      //   joined: "",
+      //   id: "a284d3ec-a941-4db0-acf2-b3531dab3f60",
+      //   name: "newcomer",
+      //   email: "newcomer@g.com",
+      //   joined: "2020-10-14T19:27:16.707Z",
       // },
+      userInfo: {
+        id: "",
+        name: "",
+        email: "",
+        joined: "",
+      },
       currentWordInfo: null,
       openEndDialogue: false,
       isFetchingWord: false,
-      checkedAudioAutoPlay: false,
+      checkedAudioAutoPlay: true,
       checkedEnableMessage: true,
       checkedEnableBlueButton: true,
       walkThroughEnabled: false,
@@ -292,12 +292,11 @@ class App extends Component {
 
         this.setState({ currentWordInfo: word });
         this.setState({ currentWord_unix_time: Date.now() });
-
-        const word_audio = new Audio(
-          `${MEDIA_BASE_URL_WORD}
-          ${this.parseAudio(word.vocab_sound_local)}`
-        );
+        const audio_url = `${MEDIA_BASE_URL_WORD}${this.parseAudio(word.vocab_sound_local)}`
+        const word_audio = new Audio(audio_url);
+    
         word_audio.addEventListener("loadedmetadata", (event) => {
+          console.log("audio duration", event.target.duration)
           this.setState({
             word_audio_duration: event.target.duration,
           });
@@ -441,11 +440,10 @@ class App extends Component {
     }
   };
   displayLoadingPopup = () => {
-    console.log("Debug", this.state.isFetchingWord)
     if (this.state.isFetchingWord) {
       const curTime = Date.now()
       if (curTime - this.state.wordRequestTimeStamp > 1000) {
-        console.log("word request is taking more than 1 sec")
+        console.log("Word Request is taking more than 1 sec")
         return true;
       } else {
         return false;
@@ -702,7 +700,7 @@ class App extends Component {
                 labelPlacement="start"
                 control={
                   <Switch 
-                    disabled
+                    // disabled
                     checked={this.state.checkedAudioAutoPlay}
                     onChange={this.handleAudioAutoplaySwitch}
                     name="autoplay-audio" 

@@ -42,7 +42,6 @@ class Music extends React.Component {
 
   componentDidMount() {
     this.state.audio.addEventListener("ended", this.stopAudioHandler);
-    console.log("TEST",this.props.autoplay)
     setTimeout(() => {
       if (this.props.autoplay) {
         this.state.audio.play();

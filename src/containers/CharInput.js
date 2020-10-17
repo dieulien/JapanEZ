@@ -194,7 +194,7 @@ class CharInput extends React.Component {
       if (event.which === 32) {
         this.buttonClickOrSpacePressHandler(event.target);
       } else if (event.which === 8) {
-        this.clearInputBox(event.target);
+        this.deleteIncorrectInput(event.target);
       } else if (event.which === 13) {
         this.goToNextWord(event.target);
         this.fillHintedCharacter(event.target);
