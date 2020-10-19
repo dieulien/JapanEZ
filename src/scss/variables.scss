@@ -2,6 +2,7 @@
 // $primary-color: #45ace7;
 $primary-color: #1cb0f6;
 $grayish-color: #5e5e5e;
+$grayish-color: #5e5e5e;
 
 // card colors
 $correct-color: green;
@@ -16,5 +17,7 @@ $card-background-highlight-color: #ddf4ff;
 // links
 $link-hovered-color: #5d5d5d;
 
-$card-shadow-depth: calc(0.5px + 0.25vh);
-$card-border-thickness: calc(1px + 0.15vh);
+$card-shadow-depth: calc(1px + 0.15vh);
+$card-shadow-depth2: calc(0.5px + 0.25vh);
+$card-border-thickness: calc(0.5px + 0.15vh);
+$card-border-thickness2: calc(1px + 0.15vh);

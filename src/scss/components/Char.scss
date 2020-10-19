@@ -6,14 +6,18 @@
 }
 
 .card {
-  border: $card-border-thickness solid $card-border-neutral-color;
-  border-radius: calc(10px + 1vh);
+  // border: $card-border-thickness solid $card-border-neutral-color;
+  border-radius: calc(5px + 1vh);
   margin-top: 3vh;
   margin-bottom: 3vh;
-  padding: calc(0px + 0.6vh) calc(6px + 1.2vh);
+  // padding: calc(0px + 0.6vh) calc(6px + 1.2vh);
+  padding: 5px;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .card-button {
+  border: $card-border-thickness solid $card-border-neutral-color;
   box-shadow: 0 $card-shadow-depth $card-border-neutral-color;
 }
 
@@ -28,23 +32,33 @@
   box-shadow: none !important;
 }
 
-.correct {
+.correct.completed {
   color: $correct-color;
 }
 
 .incorrect {
   color: $incorrect-color !important;
-  border: $card-border-thickness solid $incorrect-color !important;
+  border-bottom: solid $incorrect-color !important;
+  border-radius: 0;
+  // border: $card-border-thickness solid $incorrect-color !important;
   // box-shadow: 0 0 10px $incorrect-color !important; // uncomment for glow-effect
 }
 
-.hinted {
+.hinted.completed {
   color: $hinted-color;
 }
 
+.current-hinted {
+  color: $hinted-color;
+  border-bottom: solid $hinted-color;
+  border-radius: 0;
+}
+
 .highlighted {
-  border: $card-border-thickness solid $primary-color;
+  // border: $card-border-thickness solid $primary-color;
   color: $primary-color;
+  border-bottom: solid $primary-color;
+  border-radius: 0;
   // box-shadow: 0 0 10px $primary-color; // uncomment for glow-effect
 }
 

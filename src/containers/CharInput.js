@@ -162,11 +162,12 @@ class CharInput extends React.Component {
       endWalkThrough,
     } = this.props;
 
+    console.log(`${disableAllAction} disable action`)
     if (walkThroughEnabled) {
-      event.preventDefault();
       if (event.which === 27) {
         endWalkThrough();
       } else if (disableAllAction) {
+        event.preventDefault();
         return;
       }
     }
@@ -305,7 +306,7 @@ class CharInput extends React.Component {
       getKeyByValue,
       disableAllAction,
     } = this.props;
-
+    
     if (disableAllAction) {
       return;
     }

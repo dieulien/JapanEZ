@@ -90,19 +90,19 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      route: "register", // should be register
-      // userInfo: {
-      //   id: "a284d3ec-a941-4db0-acf2-b3531dab3f60",
-      //   name: "newcomer",
-      //   email: "newcomer@g.com",
-      //   joined: "2020-10-14T19:27:16.707Z",
-      // },
+      route: "home", // should be register
       userInfo: {
-        id: "",
-        name: "",
-        email: "",
-        joined: "",
+        id: "a284d3ec-a941-4db0-acf2-b3531dab3f60",
+        name: "newcomer",
+        email: "newcomer@g.com",
+        joined: "2020-10-14T19:27:16.707Z",
       },
+      // userInfo: {
+      //   id: "",
+      //   name: "",
+      //   email: "",
+      //   joined: "",
+      // },
       currentWordInfo: null,
       openEndDialogue: false,
       isFetchingWord: false,
@@ -425,6 +425,7 @@ class App extends Component {
       onHintedCard,
       wordCompleted,
       audioIsPlaying,
+      currentJapChar,
     } = this.props;
 
     if (onIncorrectCard) {
@@ -434,7 +435,7 @@ class App extends Component {
     } else if (wordCompleted && !audioIsPlaying) {
       return "Next Word";
     } else if (!onHintedCard && !wordCompleted) {
-      return "Learn Character";
+      return `LEARN ${currentJapChar}`;
     } else {
       return "";
     }
@@ -468,13 +469,22 @@ class App extends Component {
     )
   }
 
-  onExitIntro1 = () => {}
+  onExitIntro1 = () => {
+    this.setState(() => ({ steps1Enabled: false }));
+    this.setState({ disableAllAction: false });
+  }
   onExitIntro2 = () => {
     this.setState(() => ({ steps2Enabled: false }));
+    this.setState({ disableAllAction: false });
   }
-  onExitIntro3 = () => {}
+  onExitIntro3 = () => {
+    this.setState(() => ({ steps3Enabled: false }));
+    this.setState({ disableAllAction: false });
+  }
   onExitIntro4 = () => {
-    this.setState({walkThroughEnabled: false });
+    this.setState(() => ({ steps4Enabled: false }));
+    this.setState({ disableAllAction: false });
+    this.setState({ walkThroughEnabled: false });
   }
   
   handleClickWalkthrough = () => {
@@ -620,8 +630,8 @@ class App extends Component {
           hideNext: true,
           exitOnOverlayClick: false,
           exitOnEsc: false,
-          showButtons: false,
-          overlayOpacity: 0.2,
+          showButtons: true,
+          overlayOpacity: 0.1,
         };
         const lastStepsOptions = {
           showStepNumbers: false,
@@ -641,7 +651,7 @@ class App extends Component {
               options={generalStepsOptions}
               ref={steps => (this.steps1 = steps)}
               onBeforeChange={this.onBeforeChange1}
-              onChange={this.onChangeInSteps(3)}
+              onChange={this.onChangeInSteps(2)}
             />
             <Steps
               enabled={steps2Enabled && this.state.walkThroughEnabled}
@@ -668,7 +678,7 @@ class App extends Component {
               steps={steps4}
               initialStep={initialStep}
               onExit={this.onExitIntro4}
-              options={lastStepsOptions}
+              options={generalStepsOptions}
               ref={steps => (this.steps4 = steps)}
               onBeforeChange={this.onBeforeChange4}
             />
@@ -782,9 +792,10 @@ class App extends Component {
                       clickedJapChar={this.state.clickedJapChar}
                     />
                   </Grid>
-                  {this.state.checkedEnableBlueButton ? (<Grid item className="main-button"> 
+                  {this.state.checkedEnableBlueButton ? (<Grid item > 
                     {!this.props.audioIsPlaying ? (
                       <Button
+                        className="main-button"
                         size="large"
                         variant="contained"
                         color="primary"
@@ -795,6 +806,7 @@ class App extends Component {
                       </Button>
                     ) : (
                       <Button
+                        className="main-button"
                         disabled                       
                         size="large"
                         variant="contained"

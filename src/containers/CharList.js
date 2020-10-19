@@ -54,6 +54,10 @@ class CharList extends React.Component {
     } = this.props;
     var className = "";
 
+    if (wordCompleted) {
+      className = className.concat(` completed `);
+    }
+
     if (wordCompleted && this.props.clickedJapChar !== "") {
       if (char === this.props.clickedJapChar) {
         className = className.concat(` clicked `);
@@ -62,7 +66,7 @@ class CharList extends React.Component {
       }
     }
     if (idx === indexCurrentCard) {
-      className = className.concat(` highlighted `);
+      className = className.concat(onHintedCard ? ` current-hinted ` : ` highlighted `);
     } else {
       className = className.concat(
         onHintedCard ? ` o-30 ` : wordCompleted ? "" : ` o-60 `
@@ -95,7 +99,7 @@ class CharList extends React.Component {
         direction="row"
         justify="center"
         alignItems="center"
-        spacing="1"
+        spacing="0"
       >
         {charsArrayDisplay}
       </Grid>
