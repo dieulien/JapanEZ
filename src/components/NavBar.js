@@ -83,24 +83,26 @@ const NavBar = (props) => {
           >
             <div className="navbar-button-text">Home</div>
           </Button>
-          <Button
-            className="nav-button-progress nav-button-chart"
-            variant={currentTab === "progress" ? "outlined" : "text"}
-            color="secondary"
-            onClick={() => onRouteChange("progress")}
-            startIcon={<AssessmentOutlinedIcon />}
-          >
-            <div className="navbar-button-text">Progress</div>
-          </Button>
-          <Button
-            className="nav-button-katakanaChart nav-button-chart"
-            variant={currentTab === "katakanaChart" ? "outlined" : "text"}
-            color="secondary"
-            onClick={() => onRouteChange("katakanaChart")}
-            startIcon={<TranslateOutlinedIcon />}
-          >
-            <div className="navbar-button-text">Katakana</div>
-          </Button>
+          <div className="nav-button-chart">
+            <Button
+              className="nav-button-progress"
+              variant={currentTab === "progress" ? "outlined" : "text"}
+              color="secondary"
+              onClick={() => onRouteChange("progress")}
+              startIcon={<AssessmentOutlinedIcon />}
+            >
+              <div className="navbar-button-text">Progress</div>
+            </Button>
+            <Button
+              className="nav-button-katakanaChart"
+              variant={currentTab === "katakanaChart" ? "outlined" : "text"}
+              color="secondary"
+              onClick={() => onRouteChange("katakanaChart")}
+              startIcon={<TranslateOutlinedIcon />}
+            >
+              <div className="navbar-button-text">Katakana</div>
+            </Button>
+          </div>
           <Button
             color="secondary"
             variant={currentTab === "signout" ? "outlined" : "text"}

@@ -470,19 +470,20 @@ class App extends Component {
   }
 
   onExitIntro1 = () => {
-    this.setState(() => ({ steps1Enabled: false }));
+    this.setState({ steps1Enabled: false });
     this.setState({ disableAllAction: false });
+    this.setState({ checkedEnableMessage: true });
   }
   onExitIntro2 = () => {
-    this.setState(() => ({ steps2Enabled: false }));
+    this.setState({ steps2Enabled: false });
     this.setState({ disableAllAction: false });
   }
   onExitIntro3 = () => {
-    this.setState(() => ({ steps3Enabled: false }));
+    this.setState({ steps3Enabled: false });
     this.setState({ disableAllAction: false });
   }
   onExitIntro4 = () => {
-    this.setState(() => ({ steps4Enabled: false }));
+    this.setState({ steps4Enabled: false });
     this.setState({ disableAllAction: false });
     this.setState({ walkThroughEnabled: false });
   }
@@ -632,6 +633,8 @@ class App extends Component {
           exitOnEsc: false,
           showButtons: true,
           overlayOpacity: 0.1,
+          skipLabel: "Skip forward",
+          doneLabel: "Exit",
         };
         const lastStepsOptions = {
           showStepNumbers: false,
@@ -651,7 +654,7 @@ class App extends Component {
               options={generalStepsOptions}
               ref={steps => (this.steps1 = steps)}
               onBeforeChange={this.onBeforeChange1}
-              onChange={this.onChangeInSteps(2)}
+              onChange={this.onChangeInSteps(1)}
             />
             <Steps
               enabled={steps2Enabled && this.state.walkThroughEnabled}
