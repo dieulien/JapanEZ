@@ -90,19 +90,19 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      route: "home", // should be register
-      userInfo: {
-        id: "a284d3ec-a941-4db0-acf2-b3531dab3f60",
-        name: "newcomer",
-        email: "newcomer@g.com",
-        joined: "2020-10-14T19:27:16.707Z",
-      },
+      route: "register", // should be register
       // userInfo: {
-      //   id: "",
-      //   name: "",
-      //   email: "",
-      //   joined: "",
+      //   id: "fc4000b4-6046-432a-aa85-7587c7c6a84e",
+      //   name: "sexyboy",
+      //   email: "sexyboy@g.com",
+      //   joined: "2020-10-21T01:56:33.322Z",
       // },
+      userInfo: {
+        id: "",
+        name: "",
+        email: "",
+        joined: "",
+      },
       currentWordInfo: null,
       openEndDialogue: false,
       isFetchingWord: false,
@@ -139,7 +139,7 @@ class App extends Component {
     // check if it's user's first time logging in
     if (this.state.route === "home"
         && prevState.route === "register") {
-      this.setState({ walkThroughEnabled: true })
+      this.setState({ walkThroughEnabled: true }) // TODO should be true
       this.setState({ steps1Enabled: true })
       this.setState({ steps2Enabled: false })
       this.setState({ steps3Enabled: false })

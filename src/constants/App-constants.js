@@ -78,7 +78,7 @@ const WALKTHROUGH_PART_3 =  [
 
 const WALKTHROUGH_PART_4 = [
   {
-    intro: "Now you know the general flow of the webapp. Just one last thing: You can press spacebar instead of clicking the blue button.",
+    intro: "Now you know the general flow of the webapp. Just one last thing: You can press spacebar instead of clicking the button.",
     position: "left",
   },
   {
