@@ -106,7 +106,7 @@ class App extends Component {
       currentWordInfo: null,
       openEndDialogue: false,
       isFetchingWord: false,
-      checkedAudioAutoPlay: true,
+      checkedAudioAutoPlay: false,
       checkedEnableMessage: true,
       checkedEnableBlueButton: true,
       walkThroughEnabled: false,
@@ -282,6 +282,9 @@ class App extends Component {
     })
       .then((res) => res.json())
       .then((word) => {
+        if (word === "END GAME") {
+          this.setState({ openEndDialogue: true });
+        }
         this.setState({ isFetchingWord: false })
 
         romajiList = this.parseJapaneseWord(word.vocab_kana).map(
@@ -772,29 +775,31 @@ class App extends Component {
                 alignItems="center"
               >
                 <div className="main-area">
-                  <Grid item className="inputbox-div">
-                    <OutsideAlerter focusInputBox={this.focusInputBox}>
-                      <CharInput
-                        updateCharScore={this.updateCharScore}
-                        updateWordScore={this.updateWordScore}
-                        getKeyByValue={this.getKeyByValue}
-                        user_uid={this.state.userInfo.id}
-                        ref={this.charInputRef}
-                        setClick={(click) => (this.clickChild = click)}
-                        matchClearFormInputFunction={(childFunc) => (this.clearFormInput = childFunc)}
-                        disableAllAction={this.state.disableAllAction}
-                        endWalkThrough={this.endWalkThrough}
-                        walkThroughEnabled={this.state.walkThroughEnabled}
+                  <div className="inputbox-and-word">
+                    <Grid item className="inputbox-div">
+                      <OutsideAlerter focusInputBox={this.focusInputBox}>
+                        <CharInput
+                          updateCharScore={this.updateCharScore}
+                          updateWordScore={this.updateWordScore}
+                          getKeyByValue={this.getKeyByValue}
+                          user_uid={this.state.userInfo.id}
+                          ref={this.charInputRef}
+                          setClick={(click) => (this.clickChild = click)}
+                          matchClearFormInputFunction={(childFunc) => (this.clearFormInput = childFunc)}
+                          disableAllAction={this.state.disableAllAction}
+                          endWalkThrough={this.endWalkThrough}
+                          walkThroughEnabled={this.state.walkThroughEnabled}
+                        />
+                      </OutsideAlerter>
+                    </Grid>
+                    <Grid item className="japanese-word-area">
+                      <CharList
+                        charsToRead={this.parseJapaneseWord(currentWord)}
+                        onClickCard={this.onClickCard}
+                        clickedJapChar={this.state.clickedJapChar}
                       />
-                    </OutsideAlerter>
-                  </Grid>
-                  <Grid item className="japanese-word-area">
-                    <CharList
-                      charsToRead={this.parseJapaneseWord(currentWord)}
-                      onClickCard={this.onClickCard}
-                      clickedJapChar={this.state.clickedJapChar}
-                    />
-                  </Grid>
+                    </Grid>
+                  </div>
                   {this.state.checkedEnableBlueButton ? (<Grid item > 
                     {!this.props.audioIsPlaying ? (
                       <Button
