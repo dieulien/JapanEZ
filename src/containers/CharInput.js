@@ -171,7 +171,6 @@ class CharInput extends React.Component {
         return;
       }
     }
-
     // disable input
     if (audioIsPlaying) {
       event.preventDefault();
@@ -203,11 +202,11 @@ class CharInput extends React.Component {
     } else {
       event.preventDefault();
 
-      if (event.which === 32) {
+      if (event.which === 32) { // space
         this.buttonClickOrSpacePressHandler(event.target);
-      } else if (event.which === 8) {
+      } else if (event.which === 8) { // backspace
         this.deleteIncorrectInput(event.target);
-      } else if (event.which === 13) {
+      } else if (event.which === 13) { // enter
         this.goToNextWord(event.target);
         this.fillHintedCharacter(event.target);
       }
@@ -248,11 +247,14 @@ class CharInput extends React.Component {
       romajiList,
       wordCompleted,
       setCurrentChar,
+      moveToNextWord,
+      requestedWord,
     } = this.props;
 
     if (wordCompleted) {
       updateWord("", [""]);
-      updateWordScore(user_uid, currentWord);
+      moveToNextWord(requestedWord);
+      // updateWordScore(user_uid, currentWord);
       onSpacePress("CONTINUE_AFTER_COMPLETE");
 
       eventTarget.value = "";

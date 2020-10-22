@@ -103,6 +103,8 @@ class App extends Component {
         email: "",
         joined: "",
       },
+      requestedWord: `place_holder`,
+
       currentWordInfo: null,
       openEndDialogue: false,
       isFetchingWord: false,
@@ -131,10 +133,6 @@ class App extends Component {
     this.wordCardRef = React.createRef();
   }
 
-  componentDidMount = () => {
-    this.requestNewWord(); // temporary
-  };
-
   componentDidUpdate = (prevProps, prevState) => {
     // check if it's user's first time logging in
     if (this.state.route === "home"
@@ -147,6 +145,13 @@ class App extends Component {
     } 
     if (this.state.userInfo.id !== prevState.userInfo.id) {
       this.props.resetStore();
+      // this.requestNewWord();
+      // this.moveToNextWord(this.state.requestedWord);
+      console.log(`big sad`)
+      this.requestAndUpdateWord();
+    }
+    if (this.props.wordCompleted 
+        && this.props.wordCompleted !== prevProps.wordCompleted) {
       this.requestNewWord();
     }
     if (this.state.route === "home") {
@@ -239,6 +244,7 @@ class App extends Component {
       });
   };
 
+  // not used
   updateWordScore = (user_uid, word) => {
     fetch(WORDSCORE_URL, {
       method: "post",
@@ -264,51 +270,66 @@ class App extends Component {
     return audio_string.slice(7, audio_string.length - 1);
   };
 
-  requestNewWord = () => {
+  requestNewWord = async() => {
+    return new Promise(resolve => {
+      console.log('requesting new word...')
+      this.setState({ clickedJapChar: "" });
+      this.setState({ isFetchingWord: true })
+      const wordRequestTime = Date.now();
+      console.log("Word requested at time:", wordRequestTime)
+      this.setState({ wordRequestTimeStamp: wordRequestTime})
+  
+      fetch(GETWORD_URL, {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_uid: this.state.userInfo.id,
+        }),
+      })
+        .then((res) => res.json())
+        .then((word) => {
+          console.log('sucessfully requested new word...')
+  
+          if (word === "END GAME") {
+            this.setState({ openEndDialogue: true });
+          }
+          this.setState({ isFetchingWord: false });
+          this.setState({ requestedWord: word }); // not sure if should use await here
+          resolve();
+        })
+        .catch((err) => {
+          console.log("Error in getting next word", err);
+        });
+    });
+  };
+
+  moveToNextWord = async(word) => {
+    console.log(`DEBUG ${word}`)
     const { setCurrentChar, updateWord } = this.props;
     var romajiList = [];
-    this.setState({ clickedJapChar: "" });
-    this.setState({ isFetchingWord: true })
-    const wordRequestTime = Date.now();
-    console.log("Word requested at time:", wordRequestTime)
-    this.setState({ wordRequestTimeStamp: wordRequestTime})
+    romajiList = this.parseJapaneseWord(word.vocab_kana).map(
+      (kana_char) => kana_char.romaji
+    );
+    updateWord(word.vocab_kana, romajiList);
+    setCurrentChar(word.vocab_kana.charAt(0), romajiList[0]);
 
-    fetch(GETWORD_URL, {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        user_uid: this.state.userInfo.id,
-      }),
-    })
-      .then((res) => res.json())
-      .then((word) => {
-        if (word === "END GAME") {
-          this.setState({ openEndDialogue: true });
-        }
-        this.setState({ isFetchingWord: false })
+    this.setState({ currentWordInfo: word });
+    this.setState({ currentWord_unix_time: Date.now() });
+    const audio_url = `${MEDIA_BASE_URL_WORD}${this.parseAudio(word.vocab_sound_local)}`
+    const word_audio = new Audio(audio_url);
 
-        romajiList = this.parseJapaneseWord(word.vocab_kana).map(
-          (kana_char) => kana_char.romaji
-        );
-        updateWord(word.vocab_kana, romajiList);
-        setCurrentChar(word.vocab_kana.charAt(0), romajiList[0]);
-
-        this.setState({ currentWordInfo: word });
-        this.setState({ currentWord_unix_time: Date.now() });
-        const audio_url = `${MEDIA_BASE_URL_WORD}${this.parseAudio(word.vocab_sound_local)}`
-        const word_audio = new Audio(audio_url);
-    
-        word_audio.addEventListener("loadedmetadata", (event) => {
-          console.log("audio duration", event.target.duration)
-          this.setState({
-            word_audio_duration: event.target.duration,
-          });
-        });
-      })
-      .catch((err) => {
-        console.log("Error in getting next word", err);
+    word_audio.addEventListener("loadedmetadata", (event) => {
+      console.log("audio duration", event.target.duration)
+      this.setState({
+        word_audio_duration: event.target.duration,
       });
-  };
+    });
+  }
+
+  requestAndUpdateWord = async() => {
+    await this.requestNewWord();
+    this.moveToNextWord(this.state.requestedWord);
+  }
 
   focusInputBox = () => {
     this.charInputRef.current.formRef.current.focus();
@@ -444,17 +465,27 @@ class App extends Component {
     }
   };
   displayLoadingPopup = () => {
-    if (this.state.isFetchingWord) {
-      const curTime = Date.now()
-      if (curTime - this.state.wordRequestTimeStamp > 1000) {
-        console.log("Word Request is taking more than 1 sec")
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
+    console.log(`BEFORE`)
+    setTimeout(() => {
+      console.log("after 1 sec");
+      return this.state.isFetchingWord;
+    }, 1000);
+    
+    // return this.state.isFetchingWord;
+    
+    // return curTime > this.state.wordRequestTimeStamp > 2000;
+
+    // if (this.state.isFetchingWord) {
+    //   const curTime = Date.now()
+    //   if (curTime - this.state.wordRequestTimeStamp > 1000) {
+    //     console.log("Word Request is taking more than 1 sec")
+    //     return true;
+    //   } else {
+    //     return false;
+    //   }
+    // } else {
+    //   return false;
+    // }
   }
   handleAudioAutoplaySwitch = (event) => {
     this.setState(
@@ -504,7 +535,9 @@ class App extends Component {
     this.setState({ walkThroughEnabled: true });
     this.setState({ checkedEnableBlueButton: true });
     this.props.resetStore();
-    this.requestNewWord();
+    // this.requestNewWord();
+    // this.moveToNextWord(this.state.requestedWord);
+    this.requestAndUpdateWord();
   }
 
   endWalkThrough = () => {
@@ -519,7 +552,9 @@ class App extends Component {
     this.setState({ walkThroughEnabled: false });
     this.setState({ checkedEnableBlueButton: true });
     this.props.resetStore();
-    this.requestNewWord();
+    // this.requestNewWord();
+    // this.moveToNextWord(this.state.requestedWord);
+    this.requestAndUpdateWord();
   }
 
   onBeforeChange1 = (nextStepIndex) => {
@@ -789,6 +824,8 @@ class App extends Component {
                           disableAllAction={this.state.disableAllAction}
                           endWalkThrough={this.endWalkThrough}
                           walkThroughEnabled={this.state.walkThroughEnabled}
+                          moveToNextWord = {this.moveToNextWord}
+                          requestedWord = {this.state.requestedWord}
                         />
                       </OutsideAlerter>
                     </Grid>

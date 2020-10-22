@@ -26,6 +26,7 @@ var MEDIA_BASE_URL_CHAR =
 var WORD_LINK =
   "https://www.reddit.com/r/LearnJapanese/comments/s2iop/heres_a_spreadsheet_of_the_6000_most_common/c4ak0xd/";
 var TOFUGU_LINK = "https://www.tofugu.com/japanese/learn-katakana/";
+var MARSHALSITE_LINK = "https://marshallyin.com/courses/hiragana-test/?tab=tab-curriculum";
 
 switch (method) {
   case "local":
