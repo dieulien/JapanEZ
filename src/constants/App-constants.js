@@ -30,7 +30,7 @@ const listOfEncouragements = [
 
 const WALKTHROUGH_PART_1 = [
   {
-    element: ".main-area",
+    element: ".inputbox-and-word",
     intro: "Your challenge is to type out the pronunciation of the word.",
     position: "left",
   },
