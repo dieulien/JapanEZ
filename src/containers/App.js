@@ -635,7 +635,7 @@ class App extends Component {
           exitOnOverlayClick: false,
           exitOnEsc: false,
           showButtons: true,
-          overlayOpacity: 0.1,
+          overlayOpacity: 0.5,
           skipLabel: "Skip forward",
           doneLabel: "Exit",
         };
@@ -657,7 +657,7 @@ class App extends Component {
               options={generalStepsOptions}
               ref={steps => (this.steps1 = steps)}
               onBeforeChange={this.onBeforeChange1}
-              onChange={this.onChangeInSteps(1)}
+              onChange={this.onChangeInSteps(2)}
             />
             <Steps
               enabled={steps2Enabled && this.state.walkThroughEnabled}
