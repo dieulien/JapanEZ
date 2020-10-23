@@ -92,19 +92,19 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      route: "home", // should be register
-      userInfo: {
-        id: "c85114f6-7417-40cc-8279-b7db7c2e2c3a",
-        name: "Tuan Anh",
-        email: "tuan@g.com",
-        joined: "2020-10-22T19:20:24.629Z",
-      },
+      route: "register", // should be register
       // userInfo: {
-      //   id: "",
-      //   name: "",
-      //   email: "",
-      //   joined: "",
+      //   id: "c85114f6-7417-40cc-8279-b7db7c2e2c3a",
+      //   name: "Tuan Anh",
+      //   email: "tuan@g.com",
+      //   joined: "2020-10-22T19:20:24.629Z",
       // },
+      userInfo: {
+        id: "",
+        name: "",
+        email: "",
+        joined: "",
+      },
       requestedWord: `place_holder`,
 
       currentWordInfo: null,
