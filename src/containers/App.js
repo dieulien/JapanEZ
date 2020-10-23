@@ -128,6 +128,7 @@ class App extends Component {
       steps3: WALKTHROUGH_PART_3,
       steps4: WALKTHROUGH_PART_4,
       disableAllAction: false,
+      firstTimeCompleteWordSinceWalkThru: false,
     };
     this.charInputRef = React.createRef();
     this.hintCardRef = React.createRef();
@@ -181,12 +182,13 @@ class App extends Component {
         && !this.state.transitionedFromSteps3ToSteps4
         && this.state.transitionedFromSteps1ToSteps2
         && this.state.transitionedFromSteps2ToSteps3
-        && this.props.currentWord !== "ママ"
-        && this.props.currentWord !== prevProps.currentWord) {
+        && this.state.firstTimeCompleteWordSinceWalkThru
+        ) {
       if (this.wordCardRef.current === null) {
         this.setState({ steps3Enabled: false })
         this.setState({ steps4Enabled: true })
         this.setState({ transitionedFromSteps3ToSteps4: true })
+        this.setState({ firstTimeCompleteWordSinceWalkThru: false }) // for future walkthru
       }
     }
   };
@@ -618,6 +620,9 @@ class App extends Component {
       this.setState({ disableAllAction: false });
     }
   }
+  firstTimeCompleteWordSinceWalkThrough = () => {
+    this.setState({ firstTimeCompleteWordSinceWalkThru : true })
+  }
   
   renderRoute = (route) => {
     switch (route) {
@@ -838,6 +843,8 @@ class App extends Component {
                           walkThroughEnabled={this.state.walkThroughEnabled}
                           moveToNextWord = {this.moveToNextWord}
                           requestedWord = {this.state.requestedWord}
+                          firstTimeCompleteWordSinceWalkThrough = 
+                          {this.firstTimeCompleteWordSinceWalkThrough}
                         />
                       </OutsideAlerter>
                     </Grid>

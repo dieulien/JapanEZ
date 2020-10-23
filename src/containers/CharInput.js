@@ -242,9 +242,11 @@ class CharInput extends React.Component {
       wordCompleted,
       moveToNextWord,
       requestedWord,
+      firstTimeCompleteWordSinceWalkThrough,
     } = this.props;
 
     if (wordCompleted) {
+      firstTimeCompleteWordSinceWalkThrough()
       moveToNextWord(requestedWord);
       onSpacePress("CONTINUE_AFTER_COMPLETE");
       eventTarget.value = "";

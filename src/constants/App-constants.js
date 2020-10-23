@@ -35,12 +35,12 @@ const WALKTHROUGH_PART_1 = [
   },
   {
     element: ".inputbox-and-word",
-    intro: "Your challenge is to type out the pronunciation of the word.",
+    intro: "Your challenge is to type out the pronunciation of the word. But not yet!",
     position: "left",
   },
   {
     element: ".main-button",
-    intro: "Click this button now to see the pronunciation of the highlighted character.",
+    intro: "Click this button to see the pronunciation of the highlighted character.",
     position: "left",
   },
 ];
