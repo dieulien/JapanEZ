@@ -556,6 +556,7 @@ class App extends Component {
     this.setState({ transitionedFromSteps3ToSteps4: false });
     this.setState({ walkThroughEnabled: true });
     this.setState({ checkedEnableBlueButton: true });
+    this.setState({ firstIntroductionEnabled: false });
     this.props.resetStore();
     this.requestAndUpdateWord();
   }

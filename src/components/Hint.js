@@ -7,7 +7,6 @@ import Divider from "@material-ui/core/Divider";
 import { katakanaToRomaji, katakanaHint } from "../jap-char";
 import { MEDIA_BASE_URL_CHAR } from "../constants";
 import "../scss/components/Hint.scss";
-import { Grid } from "@material-ui/core";
 import CardActionArea from '@material-ui/core/CardActionArea';
 
 

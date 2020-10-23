@@ -1,5 +1,3 @@
-import { USER_TIME_LIMIT_IN_MINUTES } from "../constants";
-
 const listOfPraises = [
   "Great job!",
   "You're a pro!",
