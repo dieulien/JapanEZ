@@ -823,7 +823,7 @@ class App extends Component {
               </FormControlLabel>
               <FormControlLabel
                 className="blue-button-visibility-control switch-control"
-                label="Show Blue Button"
+                label="Display Button"
                 labelPlacement="start"
                 control={
                   <Switch 

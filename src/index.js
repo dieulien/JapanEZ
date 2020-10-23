@@ -21,6 +21,7 @@ LogRocket.init("zskhtw/japanese-learning");
 
 const theme = createMuiTheme({
   palette: {
+    // type: "dark",
     primary: {
       main: PRIMARYCOLOR,
     },
@@ -32,7 +33,7 @@ const theme = createMuiTheme({
     MuiButton: {
       iconSizeMedium: {
         "& > *:first-child": {
-          fontSize: 30
+          fontSize: 22 // change global icon size
         }
       }
     }
