@@ -51,14 +51,17 @@ class Music extends React.Component {
   }
 
   componentDidUpdate = (prevProps) => {
+    console.log("UPDATED")
     if (prevProps.audioLink !== this.props.audioLink) {
       var newAudio = new Audio(this.props.audioLink);
       newAudio.addEventListener("ended", this.stopAudioHandler);
       this.setState({ audio: newAudio });
-      setTimeout(() => {
-        this.state.audio.play();
-        this.props.onAudioPlay();
-      }, this.props.delay);
+      if (this.props.autoplay) {
+        setTimeout(() => {
+          this.state.audio.play();
+          this.props.onAudioPlay();
+        }, this.props.delay);
+      }
     }
   };
 

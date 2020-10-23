@@ -1,7 +1,7 @@
 @import "../variables.scss";
 
 .wordcard-text {
-  font-size: calc(10px + 1.5vh);
+  font-size: calc(10px + 1vh);
   padding-bottom: calc(2px + 0.2vh);
 }
 
@@ -16,4 +16,23 @@
 
 .word-card {
   margin-top: 3vh;
+}
+
+.wordcard-kana {
+  font-size: calc(20px + 1vh);
+  color: #5e5e5e;
+  margin-top: 15px;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+
+.bolded-style {
+  color: $primary-color;
+  font-size: calc(10px + 2vh);
+  margin: 0;
+  padding-bottom: 10px;
+}
+
+.subtext-meaning {
+  padding-top: 10px;
 }

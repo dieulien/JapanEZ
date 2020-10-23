@@ -228,7 +228,11 @@ class CharInput extends React.Component {
       onInputBoxChange(eventTarget.value);
       onSpacePress("CONTINUE_AFTER_ERROR");
       resetRomajiNotInDictAlert();
-    }  
+    } else {
+      // clear current input
+      console.log("DELETE");
+      this.clearCurrentInput(eventTarget);
+    }
   };
 
   clearInputBox(eventTarget) {
@@ -314,21 +318,25 @@ class CharInput extends React.Component {
         romajiList[indexCurrentCard]
       );
       updateCharScore(user_uid, currentChar, "+0");
-
-      // clear inputBox
-      eventTarget.value = this.inputChecker.buffer.length
-        ? eventTarget.value.slice(0, -this.inputChecker.buffer.length)
-        : eventTarget.value;
-      onInputBoxChange(eventTarget.value);
-
-      // clear inputChecker buffer
-      this.inputChecker.checkInput("clearBuffer");
+      // clear current input
+      this.clearCurrentInput(eventTarget);
     } else if (wordCompleted) {
       this.goToNextWord(eventTarget)
     } else if (onHintedCard) {
       this.fillHintedCharacter(eventTarget);
     }
   };
+
+  clearCurrentInput = (eventTarget) => {
+    const {onInputBoxChange} = this.props;
+    eventTarget.value = this.inputChecker.buffer.length
+      ? eventTarget.value.slice(0, -this.inputChecker.buffer.length)
+      : eventTarget.value;
+    onInputBoxChange(eventTarget.value);
+
+    // clear inputChecker buffer
+    this.inputChecker.checkInput("clearBuffer");
+  }
 
   render() {
     return (

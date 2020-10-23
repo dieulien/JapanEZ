@@ -283,7 +283,7 @@ const katakanaHint = {
   ラ: {
     imageLink:
       "https://s3.amazonaws.com/image.japanesereading.com/%E3%83%A9.jpg",
-    shortHint: "It is a <u>ra</u>ptor wearing sweet <u>ra</u>y-bans",
+    shortHint: "It is a <u>ra</u>ptor wearing sweet ray-ban",
   },
   リ: {
     imageLink:
