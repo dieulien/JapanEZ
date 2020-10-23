@@ -9,6 +9,7 @@ import { katakanaToRomaji } from "../jap-char";
 import Signin from "../components/Signin";
 import Register from "../components/Register";
 import WordCard from "../components/WordCard";
+import WordCard2 from "../components/WordCard2";
 import OutsideAlerter from "../components/OutsideAlerter";
 import Footer from "../components/Footer";
 import MessageBar from "../components/MessageBar";
@@ -137,7 +138,7 @@ class App extends Component {
     // check if it's user's first time logging in
     if (this.state.route === "home"
         && prevState.route === "register") {
-      this.setState({ walkThroughEnabled: true }) // TODO should be true
+      this.setState({ walkThroughEnabled: false }) // TODO should be true, if want to enable by default when login first time
       this.setState({ steps1Enabled: true })
       this.setState({ steps2Enabled: false })
       this.setState({ steps3Enabled: false })
@@ -304,26 +305,37 @@ class App extends Component {
   };
 
   moveToNextWord = async(word) => {
-    console.log(`DEBUG ${word}`)
+    console.log(`DEBUG ${JSON.stringify(word)}`)
     const { setCurrentChar, updateWord } = this.props;
     var romajiList = [];
-    romajiList = this.parseJapaneseWord(word.vocab_kana).map(
+    
+    if (Object.keys(word).includes("word")) {
+      romajiList = this.parseJapaneseWord(word.word).map(
       (kana_char) => kana_char.romaji
-    );
-    updateWord(word.vocab_kana, romajiList);
-    setCurrentChar(word.vocab_kana.charAt(0), romajiList[0]);
+      );
+      console.log(`DEBUG2 ${romajiList}`)
+      updateWord(word.word, romajiList);
+      setCurrentChar(word.word.charAt(0), romajiList[0]);
+    } else {
+      romajiList = this.parseJapaneseWord(word.vocab_kana).map(
+        (kana_char) => kana_char.romaji
+      );
+      updateWord(word.vocab_kana, romajiList);
+      setCurrentChar(word.vocab_kana.charAt(0), romajiList[0]);
+      const audio_url = `${MEDIA_BASE_URL_WORD}${this.parseAudio(word.vocab_sound_local)}`
+      const word_audio = new Audio(audio_url);
+  
+      word_audio.addEventListener("loadedmetadata", (event) => {
+        console.log("audio duration", event.target.duration)
+        this.setState({
+          word_audio_duration: event.target.duration,
+        });
+      });
+    }
 
     this.setState({ currentWordInfo: word });
     this.setState({ currentWord_unix_time: Date.now() });
-    const audio_url = `${MEDIA_BASE_URL_WORD}${this.parseAudio(word.vocab_sound_local)}`
-    const word_audio = new Audio(audio_url);
-
-    word_audio.addEventListener("loadedmetadata", (event) => {
-      console.log("audio duration", event.target.duration)
-      this.setState({
-        word_audio_duration: event.target.duration,
-      });
-    });
+    
   }
 
   requestAndUpdateWord = async() => {
@@ -377,7 +389,7 @@ class App extends Component {
     if (this.props.wordCompleted) {
       return (
         <Grid item>
-          <WordCard
+          <WordCard2
             wordInfo={this.state.currentWordInfo}
             word_audio_duration={this.state.word_audio_duration}
             autoplayAudio={this.state.checkedAudioAutoPlay}
@@ -424,9 +436,9 @@ class App extends Component {
         : `${curWrongChar} corresponds to ${this.getKeyByValue(katakanaToRomaji, curWrongChar)}, not ${currentJapChar}.`
       );
     } else if (onHintedCard) {
-      return "Press spacebar again to continue."
+      return "press SPACEBAR again to continue."
     } else if (romajiList[indexCurrentCard] in wrongCharList) {
-      return "Press spacebar to learn the character if you're stuck."
+      return "press SPACEBAR to learn the character if you're stuck."
     } else if (indexCurrentCard > 0 
       && indexCurrentCard < cardStateList.length
       && cardStateList[indexCurrentCard - 1] === "correct") {
@@ -436,11 +448,11 @@ class App extends Component {
       if (cardStateSet.size === 1 && cardStateSet.has("correct")) {
         return this.randomItem(listOfPraises);
       } else {
-        return "You can click on a character to review its mnemonic card.";
+        return "click on a character to view its mnemonic card or press SPACEBAR to continue.";
       }
     } else {
       // return `I will be giving you feedback as you use the app.`;
-      return `...`;
+      return `press SPACEBAR if you're stuck.`;
     }
   };
   setButtonText = () => {

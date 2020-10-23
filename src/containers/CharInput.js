@@ -236,32 +236,19 @@ class CharInput extends React.Component {
   };
 
   goToNextWord(eventTarget) {
-    // move on to next word
     const {
-      updateWord,
-      updateWordScore,
       onSpacePress,
-      user_uid,
-      currentWord,
       onInputBoxChange,
-      romajiList,
       wordCompleted,
-      setCurrentChar,
       moveToNextWord,
       requestedWord,
     } = this.props;
 
     if (wordCompleted) {
-      updateWord("", [""]);
       moveToNextWord(requestedWord);
-      // updateWordScore(user_uid, currentWord);
       onSpacePress("CONTINUE_AFTER_COMPLETE");
-
       eventTarget.value = "";
       onInputBoxChange(eventTarget.value);
-      const newRomaji = romajiList[0];
-      const newKana = currentWord[0];
-      setCurrentChar(newKana, newRomaji);
     }
   }
 
