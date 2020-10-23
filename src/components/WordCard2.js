@@ -43,16 +43,7 @@ export default function WordCard2({ wordInfo, word_audio_duration, autoplayAudio
   return (
     <Card className={`${classes.root} word-card `}>
       <CardContent>
-        <Typography 
-          variant="h5" 
-          component="h2"
-        >
-          <div className="wordcard-kana">
-            {katakana_word}
-          </div>
-        </Typography>
-
-        <Divider style={{ marginTop: "calc(5px + 0.5vh)" }} />
+        
         <Typography
           className={`${classes.title}`}
           color="textSecondary"
@@ -70,10 +61,21 @@ export default function WordCard2({ wordInfo, word_audio_duration, autoplayAudio
           <div className="wordcard-subtext subtext-pos">Part of Speech</div>
         </Typography>
         <Typography variant="h3" component="h4">
-          <div className="wordcard-text">
+          <div className="wordcard-pos">
             {word_pos}
           </div>
         </Typography>
+
+        <Divider style={{ marginTop: "calc(5px + 0.5vh)" }} />
+        <Typography 
+          variant="h5" 
+          component="h2"
+        >
+          <div className="wordcard-kana">
+            {katakana_word}
+          </div>
+        </Typography>
+
       
       </CardContent>
     </Card>

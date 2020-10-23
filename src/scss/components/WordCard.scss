@@ -1,8 +1,8 @@
 @import "../variables.scss";
 
-.wordcard-text {
+.wordcard-pos {
   font-size: calc(10px + 1vh);
-  padding-bottom: calc(2px + 0.2vh);
+  padding-bottom: calc(5px + 0.2vh);
 }
 
 .wordcard-subtext {
@@ -21,9 +21,8 @@
 .wordcard-kana {
   font-size: calc(20px + 1vh);
   color: #5e5e5e;
-  margin-top: 15px;
+  margin-top: 20px;
   font-weight: 400;
-  margin-bottom: 20px;
 }
 
 .bolded-style {
@@ -34,5 +33,10 @@
 }
 
 .subtext-meaning {
+  padding-top: 10px;
+}
+
+.subtext-pos {
+  padding-bottom: 0px;
   padding-top: 10px;
 }

@@ -46,6 +46,7 @@ import {
   WALKTHROUGH_PART_2,
   WALKTHROUGH_PART_3,
   WALKTHROUGH_PART_4,
+  Introduction,
 } from "../constants/App-constants"
 
 import LogRocket from "logrocket";
@@ -91,19 +92,19 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      route: "register", // should be register
-      // userInfo: {
-      //   id: "fc4000b4-6046-432a-aa85-7587c7c6a84e",
-      //   name: "sexyboy",
-      //   email: "sexyboy@g.com",
-      //   joined: "2020-10-21T01:56:33.322Z",
-      // },
+      route: "home", // should be register
       userInfo: {
-        id: "",
-        name: "",
-        email: "",
-        joined: "",
+        id: "c85114f6-7417-40cc-8279-b7db7c2e2c3a",
+        name: "Tuan Anh",
+        email: "tuan@g.com",
+        joined: "2020-10-22T19:20:24.629Z",
       },
+      // userInfo: {
+      //   id: "",
+      //   name: "",
+      //   email: "",
+      //   joined: "",
+      // },
       requestedWord: `place_holder`,
 
       currentWordInfo: null,
@@ -127,29 +128,33 @@ class App extends Component {
       steps2: WALKTHROUGH_PART_2,
       steps3: WALKTHROUGH_PART_3,
       steps4: WALKTHROUGH_PART_4,
+      introductory_steps: Introduction,
       disableAllAction: false,
       firstTimeCompleteWordSinceWalkThru: false,
+      firstIntroductionEnabled: false,
     };
     this.charInputRef = React.createRef();
     this.hintCardRef = React.createRef();
     this.wordCardRef = React.createRef();
   }
 
+  componentDidMount = () => {
+    this.props.resetStore();
+    this.requestAndUpdateWord();
+  } // temporary, cna delete
   componentDidUpdate = (prevProps, prevState) => {
     // check if it's user's first time logging in
     if (this.state.route === "home"
         && prevState.route === "register") {
       this.setState({ walkThroughEnabled: false }) // TODO should be true, if want to enable by default when login first time
-      this.setState({ steps1Enabled: true })
-      this.setState({ steps2Enabled: false })
-      this.setState({ steps3Enabled: false })
-      this.setState({ steps4Enabled: false })
+      this.setState({ steps1Enabled: true });
+      this.setState({ steps2Enabled: false });
+      this.setState({ steps3Enabled: false });
+      this.setState({ steps4Enabled: false });
+      this.setState({ firstIntroductionEnabled: true });
     } 
     if (this.state.userInfo.id !== prevState.userInfo.id) {
       this.props.resetStore();
-      // this.requestNewWord();
-      // this.moveToNextWord(this.state.requestedWord);
-      console.log(`big sad`)
       this.requestAndUpdateWord();
     }
     if (this.props.wordCompleted 
@@ -517,6 +522,9 @@ class App extends Component {
     )
   }
 
+  onExitIntroduction = () => {
+    this.setState({ firstIntroductionEnabled: false });
+  }
   onExitIntro1 = () => {
     this.setState({ steps1Enabled: false });
     this.setState({ disableAllAction: false });
@@ -549,8 +557,6 @@ class App extends Component {
     this.setState({ walkThroughEnabled: true });
     this.setState({ checkedEnableBlueButton: true });
     this.props.resetStore();
-    // this.requestNewWord();
-    // this.moveToNextWord(this.state.requestedWord);
     this.requestAndUpdateWord();
   }
 
@@ -566,8 +572,6 @@ class App extends Component {
     this.setState({ walkThroughEnabled: false });
     this.setState({ checkedEnableBlueButton: true });
     this.props.resetStore();
-    // this.requestNewWord();
-    // this.moveToNextWord(this.state.requestedWord);
     this.requestAndUpdateWord();
   }
 
@@ -702,10 +706,21 @@ class App extends Component {
           <div className="page-container" style={{ position: "relative" }}>
             <LoadingPopup isOpen={this.displayLoadingPopup()}/>
             <Steps
+              enabled={this.state.firstIntroductionEnabled}
+              steps={this.state.introductory_steps}
+              initialStep={initialStep}
+              onExit={this.onExitIntroduction}
+              options={generalStepsOptions}
+              ref={steps => (this.introductory_steps = steps)}
+              // onBeforeChange={this.onBeforeChange1}
+            >
+
+            </Steps>
+            <Steps
               enabled={steps1Enabled && this.state.walkThroughEnabled}
               steps={steps1}
               initialStep={initialStep}
-              onExit={this.onExitIntro1}
+              onExit={this.onExitIntroduction}
               options={generalStepsOptions}
               ref={steps => (this.steps1 = steps)}
               onBeforeChange={this.onBeforeChange1}
@@ -719,7 +734,7 @@ class App extends Component {
               options={generalStepsOptions}
               ref={steps => (this.steps2 = steps)}
               onBeforeChange={this.onBeforeChange2}
-              onChange={this.onChangeInSteps(2)}
+              onChange={this.onChangeInSteps(1)}
             />
             <Steps
               enabled={steps3Enabled && this.state.walkThroughEnabled}

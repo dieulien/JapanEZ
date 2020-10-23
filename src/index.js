@@ -28,6 +28,15 @@ const theme = createMuiTheme({
       main: "#ffffff",
     },
   },
+  overrides: {
+    MuiButton: {
+      iconSizeMedium: {
+        "& > *:first-child": {
+          fontSize: 30
+        }
+      }
+    }
+  }
 });
 
 const rootReducer = combineReducers({

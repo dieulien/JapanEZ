@@ -27,7 +27,16 @@ const listOfEncouragements = [
   "You can do this!",
   "Try again.",
 ]
-
+const Introduction = [
+  {
+    intro: "Welcome! Your challenging is to type out the pronunciation of Japanese words. If you don't know a Japanese character, just press SPACEBAR to learn them.",
+  },
+  {
+    element: ".nav-button-walkthrough",
+    intro: "You can click this tab anytime for a walkthrough.",
+    position: "bottom"
+  }
+]
 const WALKTHROUGH_PART_1 = [
   {
     intro: "Welcome to the walkthrough! Click next to continue.",
@@ -48,12 +57,7 @@ const WALKTHROUGH_PART_1 = [
 const WALKTHROUGH_PART_2 = [
   {
     element: ".hint-card",
-    intro: "A character card pops up!",
-    position: "left",
-  },
-  {
-    element: ".music-button",
-    intro: "You can click this to play the audio",
+    intro: "A character card pops up! You can click on it to play the audio.",
     position: "left",
   },
   {
@@ -75,7 +79,7 @@ const WALKTHROUGH_PART_3 =  [
   },
   {
     element: ".main-area",
-    intro: "Can you try to finish the rest? Keep clicking the button if you don't the character.",
+    intro: "Can you try to finish the rest? Keep clicking the button if you don't know the character.",
     position: "left",
   },
 ]
@@ -92,12 +96,12 @@ const WALKTHROUGH_PART_4 = [
   },
   {
     element: ".nav-button-chart",
-    intro: "Check your progress with these two tabs.",
+    intro: "These two tabs show your progress.",
     position: "bottom",
   },
   {
     element: ".nav-button-walkthrough",
-    intro: "Click this tab to replay this walkthrough",
+    intro: "Click this tab anytime to replay this walkthrough.",
     position: "bottom",
   },
 ];
@@ -110,4 +114,5 @@ export {
   listOfPraises,
   listOfSoftPraises,
   listOfEncouragements,
+  Introduction,
 };

@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
 import { onAudioPlay, onAudioPause } from "../actions";
 import "../scss/components/Music.scss";
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import PauseIcon from '@material-ui/icons/Pause';
 
 const mapStateToProps = (state) => {
   return {
@@ -41,6 +43,7 @@ class Music extends React.Component {
   };
 
   componentDidMount() {
+    this.props.bindMethod(this.togglePlay)
     this.state.audio.addEventListener("ended", this.stopAudioHandler);
     setTimeout(() => {
       if (this.props.autoplay) {
@@ -92,20 +95,7 @@ class Music extends React.Component {
   };
 
   render() {
-    return (
-      <div>
-        <Button
-          variant="text"
-          color="primary"
-          onClick={this.togglePlay}
-          className="music-button"
-        >
-          <div className="button-text">
-            {this.state.play ? "Pause Audio" : "Play Audio"}
-          </div>
-        </Button>
-      </div>
-    );
+    return null;
   }
 }
 
