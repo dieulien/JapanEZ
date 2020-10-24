@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/japanese-reading-v2/precache-manifest.bb2b7a6a1ca68184858bbc51fb5816e6.js"
+  "/japanese-reading-v2/precache-manifest.dd2530861999527f71cfc675128298a1.js"
 );
 
 self.addEventListener('message', (event) => {
