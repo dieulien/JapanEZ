@@ -108,6 +108,34 @@ class CharInput extends React.Component {
     }
   };
 
+  fillHintedCharacter = (eventTarget) => {
+    const {
+      onHintedCard,
+      indexCurrentCard,
+      romajiList,
+      onWordCompletion,
+      currentRomaji,
+      onInputBoxChange,
+      onEnterPress,
+      setCurrentChar,
+      currentWord,
+    } = this.props;
+
+    if (onHintedCard) {
+      if (indexCurrentCard === romajiList.length - 1) {
+        onWordCompletion();
+      }
+      // autofill correct answer
+      eventTarget.value = eventTarget.value.concat(currentRomaji);
+      onInputBoxChange(eventTarget.value);
+      onEnterPress(Date.now());
+
+      const curRomaji = romajiList[indexCurrentCard + 1];
+      const curKana = currentWord[indexCurrentCard + 1];
+      setCurrentChar(curKana, curRomaji);
+    }
+  }
+
   checkFunction = (char) => {
     const {
       romajiList,
@@ -121,10 +149,12 @@ class CharInput extends React.Component {
       getKeyByValue,
       updateCharScore,
       user_uid,
+      onHintedCard,
+      onEnterPress,
     } = this.props;
     const userInputChar = getKeyByValue(katakanaToRomaji, char);
 
-    if (char === romajiList[indexCurrentCard]) {
+    if (char === romajiList[indexCurrentCard] && !onHintedCard) {
       updateCharScore(user_uid, userInputChar, "+1");
       onCorrectChar();
       onCompleteChar(Date.now(), "correct");
@@ -136,6 +166,15 @@ class CharInput extends React.Component {
       if (indexCurrentCard === romajiList.length - 1) {
         onWordCompletion();
       }
+    } else if (char === romajiList[indexCurrentCard] && onHintedCard) {
+      if (indexCurrentCard === romajiList.length - 1) {
+        onWordCompletion();
+      }
+      onEnterPress(Date.now()); // mimic spacepress to fill hinted char
+      const newRomaji = romajiList[indexCurrentCard + 1];
+      const newKana = currentWord[indexCurrentCard + 1];
+      setCurrentChar(newKana, newRomaji);
+      // onCompleteChar(Date.now(), "hinted"); // maybe this should be here instead of when just requested for hint
     } else {
       onWrongInput(char, romajiList[indexCurrentCard]);
       var currentChar = getKeyByValue(
@@ -161,8 +200,6 @@ class CharInput extends React.Component {
       walkThroughEnabled,
       endWalkThrough,
     } = this.props;
-
-    console.log(`${disableAllAction} disable action`)
     if (walkThroughEnabled) {
       if (event.which === 27) {
         endWalkThrough();
@@ -190,8 +227,8 @@ class CharInput extends React.Component {
     if (
       ((event.which >= 65 && event.which <= 90) || event.which === 222) &&
       !onIncorrectCard &&
-      !wordCompleted &&
-      !onHintedCard
+      !wordCompleted
+      //&& !onHintedCard
     ) {
       var key =
         event.which === 222
@@ -201,14 +238,13 @@ class CharInput extends React.Component {
       this.inputChecker.checkInput(key);
     } else {
       event.preventDefault();
-
       if (event.which === 32) { // space
         this.buttonClickOrSpacePressHandler(event.target);
       } else if (event.which === 8) { // backspace
         this.deleteIncorrectInput(event.target);
       } else if (event.which === 13) { // enter
         this.goToNextWord(event.target);
-        this.fillHintedCharacter(event.target);
+        // this.fillHintedCharacter(event.target);
       }
     }
   };
@@ -258,34 +294,6 @@ class CharInput extends React.Component {
     }
   }
 
-  fillHintedCharacter = (eventTarget) => {
-    const {
-      onHintedCard,
-      indexCurrentCard,
-      romajiList,
-      onWordCompletion,
-      currentRomaji,
-      onInputBoxChange,
-      onEnterPress,
-      setCurrentChar,
-      currentWord,
-    } = this.props;
-
-    if (onHintedCard) {
-      if (indexCurrentCard === romajiList.length - 1) {
-        onWordCompletion();
-      }
-      // autofill correct answer
-      eventTarget.value = eventTarget.value.concat(currentRomaji);
-      onInputBoxChange(eventTarget.value);
-      onEnterPress(Date.now());
-
-      const curRomaji = romajiList[indexCurrentCard + 1];
-      const curKana = currentWord[indexCurrentCard + 1];
-      setCurrentChar(curKana, curRomaji);
-    }
-  }
-
   buttonClickOrSpacePressHandler = (eventTarget) => {
     const {
       onIncorrectCard,
@@ -323,7 +331,7 @@ class CharInput extends React.Component {
     } else if (wordCompleted) {
       this.goToNextWord(eventTarget)
     } else if (onHintedCard) {
-      this.fillHintedCharacter(eventTarget);
+      // this.fillHintedCharacter(eventTarget);
     }
   };
 

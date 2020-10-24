@@ -138,10 +138,6 @@ class App extends Component {
     this.wordCardRef = React.createRef();
   }
 
-  componentDidMount = () => {
-    this.props.resetStore();
-    this.requestAndUpdateWord();
-  } // temporary, cna delete
   componentDidUpdate = (prevProps, prevState) => {
     // check if it's user's first time logging in
     if (this.state.route === "home"
@@ -279,6 +275,7 @@ class App extends Component {
   };
 
   requestNewWord = async() => {
+    console.log(`Requesting word for user with id ${this.state.userInfo.id}`)
     return new Promise(resolve => {
       console.log('requesting new word...')
       this.setState({ clickedJapChar: "" });
@@ -443,7 +440,7 @@ class App extends Component {
         : `${curWrongChar} corresponds to ${this.getKeyByValue(katakanaToRomaji, curWrongChar)}, not ${currentJapChar}.`
       );
     } else if (onHintedCard) {
-      return "press SPACEBAR again to continue."
+      return "type the character."
     } else if (romajiList[indexCurrentCard] in wrongCharList) {
       return "press SPACEBAR to learn the character if you're stuck."
     } else if (indexCurrentCard > 0 
@@ -455,7 +452,7 @@ class App extends Component {
       if (cardStateSet.size === 1 && cardStateSet.has("correct")) {
         return this.randomItem(listOfPraises);
       } else {
-        return "click on a character to view its mnemonic card or press SPACEBAR to continue.";
+        return "click on a character or press SPACEBAR to continue.";
       }
     } else {
       // return `I will be giving you feedback as you use the app.`;
@@ -693,8 +690,8 @@ class App extends Component {
           exitOnEsc: false,
           showButtons: true,
           overlayOpacity: 0.5,
-          skipLabel: "Skip forward",
-          doneLabel: "Exit",
+          skipLabel: "Skip",
+          doneLabel: "Got it!",
         };
         const lastStepsOptions = {
           showStepNumbers: false,
