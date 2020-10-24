@@ -81,6 +81,7 @@ const limitedKatakanaList = [
   "リ",
   "ル",
   "レ",
+  'ロ', 'ツ', 'ノ', 'ヘ', 'ユ', 'ヒ', 'セ', 'ヌ', 'チ', 'ヨ', 'サ', 'ワ', 'ヲ'
 ];
 
 const katakanaHint = {
