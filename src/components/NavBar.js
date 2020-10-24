@@ -56,7 +56,7 @@ const NavBar = (props) => {
           >
             <div className="navbar-title">JapanEZ</div>
           </Typography>
-          <Button
+          {/* <Button
             className="nav-button-walkthrough"
             // disabled
             variant="text"
@@ -65,15 +65,15 @@ const NavBar = (props) => {
             startIcon={<DirectionsOutlinedIcon />}
           >
             <div className="navbar-button-text">Walkthrough</div>
-          </Button>
-          {/* <Button
+          </Button> */}
+          <Button
             variant="text"
             color="secondary"
             onClick={handleClickOpen}
             startIcon={<HelpOutlineOutlinedIcon />}
           >
             <div className="navbar-button-text">Help</div>
-          </Button> */}
+          </Button>
           <Button
             className="nav-button-home"
             variant={currentTab === "home" ? "outlined" : "text"}
@@ -122,14 +122,12 @@ const NavBar = (props) => {
           <DialogTitle id="alert-dialog-title">{"Instruction"}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              <p>
-                In this app, you will learn Japanese Katakana alphabet. At
-                each iteration, the app will display all the Katakana
-                characters that make up a certain Japanese word.
-              </p>
-              <p>If you know the katakana, simply type romaji </p>
-              <p>If you don't know it, press SPACE to learn the romaji. </p>
-              <p>If your input is incorrect, press SPACE to retry.</p>
+              <p>Your task is to type the pronunciation of Japanese words and learn Japanese katakana characters on the way. </p>
+
+              <p>If you don't know a Japanese character, press SPACE to learn it. But don't abuse this feature! Try to learn the character and type them out. That's the only way you can progress through this app!</p>
+
+              <p>Happy learning!</p>
+
             </DialogContentText>
           </DialogContent>
           <DialogActions>

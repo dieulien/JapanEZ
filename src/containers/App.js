@@ -112,7 +112,7 @@ class App extends Component {
       isFetchingWord: false,
       checkedAudioAutoPlay: false,
       checkedEnableMessage: true,
-      checkedEnableBlueButton: true,
+      checkedEnableBlueButton: false,
       walkThroughEnabled: false,
 
       // introjs test
@@ -715,7 +715,6 @@ class App extends Component {
               ref={steps => (this.introductory_steps = steps)}
               // onBeforeChange={this.onBeforeChange1}
             >
-
             </Steps>
             <Steps
               enabled={steps1Enabled && this.state.walkThroughEnabled}
@@ -822,7 +821,7 @@ class App extends Component {
                 }
               >
               </FormControlLabel>
-              <FormControlLabel
+              {/* <FormControlLabel
                 className="blue-button-visibility-control switch-control"
                 label="Display Button"
                 labelPlacement="start"
@@ -835,7 +834,7 @@ class App extends Component {
                   />
                 }
               >
-              </FormControlLabel>
+              </FormControlLabel> */}
               <Grid
                 container
                 direction="column"

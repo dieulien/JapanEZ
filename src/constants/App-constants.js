@@ -27,13 +27,16 @@ const listOfEncouragements = [
 ]
 const Introduction = [
   {
-    intro: "Welcome! Your challenging is to type out the pronunciation of Japanese words. If you don't know a Japanese character, just press SPACEBAR to learn them.",
+    intro: "Welcome! Your challenging is to type out the pronunciation of Japanese words.",
   },
   {
-    element: ".nav-button-walkthrough",
-    intro: "You can click this tab anytime for a walkthrough.",
-    position: "bottom"
-  }
+    intro: "If you don't know a Japanese character, just press SPACEBAR to learn them.",
+  },
+  // {
+  //   element: ".nav-button-walkthrough",
+  //   intro: "You can click this tab anytime for a walkthrough.",
+  //   position: "bottom"
+  // }
 ]
 const WALKTHROUGH_PART_1 = [
   {

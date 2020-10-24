@@ -66,7 +66,7 @@ export default function WordCard2({ wordInfo, word_audio_duration, autoplayAudio
           </div>
         </Typography>
 
-        <Divider style={{ marginTop: "calc(5px + 0.5vh)" }} />
+        {/* <Divider style={{ marginTop: "calc(5px + 0.5vh)" }} />
         <Typography 
           variant="h5" 
           component="h2"
@@ -74,7 +74,7 @@ export default function WordCard2({ wordInfo, word_audio_duration, autoplayAudio
           <div className="wordcard-kana">
             {katakana_word}
           </div>
-        </Typography>
+        </Typography> */}
 
       
       </CardContent>
