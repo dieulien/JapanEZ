@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/japanese-reading/static/css/main.48b576ce.chunk.css",
-    "main.js": "/japanese-reading/static/js/main.ee691e96.chunk.js",
-    "main.js.map": "/japanese-reading/static/js/main.ee691e96.chunk.js.map",
+    "main.css": "/japanese-reading/static/css/main.d0605c18.chunk.css",
+    "main.js": "/japanese-reading/static/js/main.c86a1393.chunk.js",
+    "main.js.map": "/japanese-reading/static/js/main.c86a1393.chunk.js.map",
     "runtime-main.js": "/japanese-reading/static/js/runtime-main.ba7e5498.js",
     "runtime-main.js.map": "/japanese-reading/static/js/runtime-main.ba7e5498.js.map",
     "static/css/2.da848f00.chunk.css": "/japanese-reading/static/css/2.da848f00.chunk.css",
-    "static/js/2.a3b395b4.chunk.js": "/japanese-reading/static/js/2.a3b395b4.chunk.js",
-    "static/js/2.a3b395b4.chunk.js.map": "/japanese-reading/static/js/2.a3b395b4.chunk.js.map",
+    "static/js/2.82bff689.chunk.js": "/japanese-reading/static/js/2.82bff689.chunk.js",
+    "static/js/2.82bff689.chunk.js.map": "/japanese-reading/static/js/2.82bff689.chunk.js.map",
     "index.html": "/japanese-reading/index.html",
-    "precache-manifest.d56b5f34ba00e555d32158e448dcc5ae.js": "/japanese-reading/precache-manifest.d56b5f34ba00e555d32158e448dcc5ae.js",
+    "precache-manifest.54e5b312acaf9ef425b9804ead383686.js": "/japanese-reading/precache-manifest.54e5b312acaf9ef425b9804ead383686.js",
     "service-worker.js": "/japanese-reading/service-worker.js",
     "static/css/2.da848f00.chunk.css.map": "/japanese-reading/static/css/2.da848f00.chunk.css.map",
-    "static/css/main.48b576ce.chunk.css.map": "/japanese-reading/static/css/main.48b576ce.chunk.css.map",
-    "static/js/2.a3b395b4.chunk.js.LICENSE.txt": "/japanese-reading/static/js/2.a3b395b4.chunk.js.LICENSE.txt",
+    "static/css/main.d0605c18.chunk.css.map": "/japanese-reading/static/css/main.d0605c18.chunk.css.map",
+    "static/js/2.82bff689.chunk.js.LICENSE.txt": "/japanese-reading/static/js/2.82bff689.chunk.js.LICENSE.txt",
     "static/media/index.css": "/japanese-reading/static/media/roboto-latin-900italic.ebf6d164.woff2"
   },
   "entrypoints": [
     "static/js/runtime-main.ba7e5498.js",
     "static/css/2.da848f00.chunk.css",
-    "static/js/2.a3b395b4.chunk.js",
-    "static/css/main.48b576ce.chunk.css",
-    "static/js/main.ee691e96.chunk.js"
+    "static/js/2.82bff689.chunk.js",
+    "static/css/main.d0605c18.chunk.css",
+    "static/js/main.c86a1393.chunk.js"
   ]
 }
