@@ -135,3 +135,10 @@ export const resetRomajiNotInDictAlert = () => {
     type: "RESET_NOT_IN_DICT_ALERT",
   };
 };
+
+export const loadUserToStore = (userInfo) => {
+  return {
+    type: "LOAD_USER",
+    payload: userInfo,
+  }
+}

@@ -156,6 +156,7 @@ class CharInput extends React.Component {
 
     if (char === romajiList[indexCurrentCard] && !onHintedCard) {
       updateCharScore(user_uid, userInputChar, "+1");
+      this.props.requestModuleInfo();
       onCorrectChar();
       onCompleteChar(Date.now(), "correct");
 
@@ -183,6 +184,7 @@ class CharInput extends React.Component {
       );
       updateCharScore(user_uid, userInputChar, "0");
       updateCharScore(user_uid, currentChar, "0");
+      this.props.requestModuleInfo();
     }
   };
 
@@ -190,7 +192,6 @@ class CharInput extends React.Component {
     const {
       onIncorrectCard,
       wordCompleted,
-      onHintedCard,
       romajiList,
       indexCurrentCard,
       onWordCompletion,
@@ -199,7 +200,10 @@ class CharInput extends React.Component {
       disableAllAction,
       walkThroughEnabled,
       endWalkThrough,
+      requestModuleInfo,
     } = this.props;
+
+    // requestModuleInfo();
     if (walkThroughEnabled) {
       if (event.which === 27) {
         endWalkThrough();
@@ -297,7 +301,6 @@ class CharInput extends React.Component {
   buttonClickOrSpacePressHandler = (eventTarget) => {
     const {
       onIncorrectCard,
-      onInputBoxChange,
       onSpacePress,
       onCompleteChar,
       wordCompleted,
@@ -326,6 +329,7 @@ class CharInput extends React.Component {
         romajiList[indexCurrentCard]
       );
       updateCharScore(user_uid, currentChar, "+0");
+      this.props.requestModuleInfo();
       // clear current input
       this.clearCurrentInput(eventTarget);
     } else if (wordCompleted) {

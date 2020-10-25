@@ -19,6 +19,8 @@ import { Button } from "@material-ui/core";
 import LoadingPopup from "../components/LoadingPopup"
 import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import LinearDeterminate from "../components/LinearDeterminate";
+import Box from '@material-ui/core/Box';
 
 // dialog
 import Dialog from "@material-ui/core/Dialog";
@@ -31,6 +33,7 @@ import {
   updateChar,
   updateWord,
   resetStore,
+  loadUserToStore,
 } from "../actions";
 import {
   GETWORD_URL,
@@ -38,6 +41,7 @@ import {
   WORDSCORE_URL,
   MEDIA_BASE_URL_WORD,
   USER_TIME_LIMIT_IN_MINUTES,
+  GETMODULEINFO_URL,
 } from "../constants";
 import {
   listOfPraises,
@@ -85,6 +89,9 @@ const mapDispatchToProps = (dispatch) => {
     resetStore: () => {
       dispatch(resetStore());
     },
+    loadUserToStore: (userInfo) => {
+      dispatch(loadUserToStore(userInfo));
+    }
   };
 };
 
@@ -94,10 +101,10 @@ class App extends Component {
     this.state = {
       route: "register", // should be register
       // userInfo: {
-      //   id: "c85114f6-7417-40cc-8279-b7db7c2e2c3a",
+      //   id: "dc8ea38f-685f-486a-90b8-76a6c4da315c",
       //   name: "Tuan Anh",
       //   email: "tuan@g.com",
-      //   joined: "2020-10-22T19:20:24.629Z",
+      //   joined: "2020-10-24T23:39:08.779Z",
       // },
       userInfo: {
         id: "",
@@ -132,10 +139,18 @@ class App extends Component {
       disableAllAction: false,
       firstTimeCompleteWordSinceWalkThru: false,
       firstIntroductionEnabled: false,
+      
+      moduleInfo: null,
     };
     this.charInputRef = React.createRef();
     this.hintCardRef = React.createRef();
     this.wordCardRef = React.createRef();
+  }
+
+  componentDidMount = () => {
+    this.props.resetStore();
+    this.requestAndUpdateWord();
+    this.requestModuleInfo();
   }
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -148,10 +163,12 @@ class App extends Component {
       this.setState({ steps3Enabled: false });
       this.setState({ steps4Enabled: false });
       this.setState({ firstIntroductionEnabled: true });
+      this.requestModuleInfo();
     } 
     if (this.state.userInfo.id !== prevState.userInfo.id) {
       this.props.resetStore();
       this.requestAndUpdateWord();
+      this.requestModuleInfo();
     }
     if (this.props.wordCompleted 
         && this.props.wordCompleted !== prevProps.wordCompleted) {
@@ -204,6 +221,8 @@ class App extends Component {
       userInfo.joined = joined;
       return { userInfo };
     });
+
+    this.props.loadUserToStore(user);
 
     LogRocket.identify(user_uid, {
       name: name,
@@ -274,6 +293,25 @@ class App extends Component {
     return audio_string.slice(7, audio_string.length - 1);
   };
 
+  requestModuleInfo = () => {
+    console.log(`REQUESTING MODULE INFO for user ${this.state.userInfo.id}`)
+    fetch(GETMODULEINFO_URL, {
+      method: "post",
+      headers: { "Content-Type": "application/json"},
+      body: JSON.stringify({
+        userId: this.state.userInfo.id,
+      }),
+    })
+    .then((res) => res.json())
+    .then((moduleInfoObject) => {
+      console.log(`IN APP: ${JSON.stringify(moduleInfoObject)}`);
+      this.setState({ moduleInfo: moduleInfoObject });
+    })
+    .catch((error) => {
+      console.log(`Error in requestModuleInfo: ${error}`);
+    });
+  }
+
   requestNewWord = async() => {
     console.log(`Requesting word for user with id ${this.state.userInfo.id}`)
     return new Promise(resolve => {
@@ -291,25 +329,25 @@ class App extends Component {
           user_uid: this.state.userInfo.id,
         }),
       })
-        .then((res) => res.json())
-        .then((word) => {
-          console.log('sucessfully requested new word...')
-  
-          if (word === "END GAME") {
-            this.setState({ openEndDialogue: true });
-          }
-          this.setState({ isFetchingWord: false });
-          this.setState({ requestedWord: word }); // not sure if should use await here
-          resolve();
-        })
-        .catch((err) => {
-          console.log("Error in getting next word", err);
-        });
+      .then((res) => res.json())
+      .then((word) => {
+        console.log('sucessfully requested new word...')
+
+        if (word === "END GAME") {
+          this.setState({ openEndDialogue: true });
+        }
+        this.setState({ isFetchingWord: false });
+        this.setState({ requestedWord: word }); // not sure if should use await here
+        resolve();
+      })
+      .catch((err) => {
+        console.log("Error in getting next word", err);
+      });
     });
   };
 
   moveToNextWord = async(word) => {
-    console.log(`DEBUG ${JSON.stringify(word)}`)
+    this.requestModuleInfo();
     const { setCurrentChar, updateWord } = this.props;
     var romajiList = [];
     
@@ -317,7 +355,6 @@ class App extends Component {
       romajiList = this.parseJapaneseWord(word.word).map(
       (kana_char) => kana_char.romaji
       );
-      console.log(`DEBUG2 ${romajiList}`)
       updateWord(word.word, romajiList);
       setCurrentChar(word.word.charAt(0), romajiList[0]);
     } else {
@@ -481,28 +518,11 @@ class App extends Component {
     }
   };
   displayLoadingPopup = () => {
-    console.log(`BEFORE`)
     setTimeout(() => {
-      console.log("after 1 sec");
       return this.state.isFetchingWord;
     }, 1000);
-    
-    // return this.state.isFetchingWord;
-    
-    // return curTime > this.state.wordRequestTimeStamp > 2000;
+  } // not used
 
-    // if (this.state.isFetchingWord) {
-    //   const curTime = Date.now()
-    //   if (curTime - this.state.wordRequestTimeStamp > 1000) {
-    //     console.log("Word Request is taking more than 1 sec")
-    //     return true;
-    //   } else {
-    //     return false;
-    //   }
-    // } else {
-    //   return false;
-    // }
-  }
   handleAudioAutoplaySwitch = (event) => {
     this.setState(
       { checkedAudioAutoPlay: !this.state.checkedAudioAutoPlay }
@@ -839,7 +859,8 @@ class App extends Component {
                 alignItems="center"
               >
                 <div className="main-area">
-                  <div className="inputbox-and-word">
+                  <div className="inputbox-and-word"
+                  >
                     <Grid item className="inputbox-div">
                       <OutsideAlerter focusInputBox={this.focusInputBox}>
                         <CharInput
@@ -857,6 +878,7 @@ class App extends Component {
                           requestedWord = {this.state.requestedWord}
                           firstTimeCompleteWordSinceWalkThrough = 
                           {this.firstTimeCompleteWordSinceWalkThrough}
+                          requestModuleInfo={this.requestModuleInfo}
                         />
                       </OutsideAlerter>
                     </Grid>
@@ -866,6 +888,19 @@ class App extends Component {
                         onClickCard={this.onClickCard}
                         clickedJapChar={this.state.clickedJapChar}
                       />
+                    </Grid>
+                    <div className="module-level">
+                      {`Level ${this.state.moduleInfo ? this.state.moduleInfo.moduleIndex : 0}`}
+                    </div>
+                    <Grid item>
+                      <Box
+                        className="progress-bar"
+                        // width="30vw" 
+                      >
+                        <LinearDeterminate 
+                          moduleInfo={this.state.moduleInfo} 
+                        />
+                      </Box>
                     </Grid>
                   </div>
                   {this.state.checkedEnableBlueButton ? (<Grid item > 

@@ -16,6 +16,8 @@ var UPDATECHARSCORE_URL =
 var WORDSCORE_URL = "https://shrouded-harbor-11572.herokuapp.com/wordscore";
 var GETCHARSCORE_URL =
   "https://shrouded-harbor-11572.herokuapp.com/getcharscore";
+var GETMODULEINFO_URL =
+  "https://shrouded-harbor-11572.herokuapp.com/getmoduleinfo";
 var MEDIA_BASE_URL_SENTENCE =
   "https://s3.amazonaws.com/media.japanesereading.com/sentence-sound/";
 var MEDIA_BASE_URL_WORD =
@@ -62,4 +64,5 @@ export {
   UPDATECHARSCORE_URL,
   USER_TIME_LIMIT_IN_MINUTES,
   PRIMARYCOLOR,
+  GETMODULEINFO_URL,
 };

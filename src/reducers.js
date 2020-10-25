@@ -9,6 +9,7 @@ const initialInputBox = {
 
 const initialGeneralState = {
   audioIsPlaying: false,
+  userInfo: null,
 };
 
 const initialCardState = {
@@ -38,6 +39,8 @@ export const changeGeneralState = (
       return { ...state, audioIsPlaying: true };
     case "PAUSE_AUDIO":
       return { ...state, audioIsPlaying: false };
+    case "LOAD_USER":
+      return { ...state, userInfo: action.payload };
     default:
       return state;
   }

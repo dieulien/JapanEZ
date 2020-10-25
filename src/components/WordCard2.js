@@ -39,6 +39,16 @@ export default function WordCard2({ wordInfo, word_audio_duration, autoplayAudio
     word_pos = wordInfo.vocab_pos;
   }
 
+  // fix pos format from marshallyin site
+  if (word_pos.includes("&")) {
+    word_pos = word_pos.replace(/&/g, " & ");
+  }
+  if (word_pos.includes("suru-Verb")) {
+    word_pos = word_pos.replace(/suru-Verb/g, "Verb");
+  }
+  if (word_pos.includes("na-Adj")) {
+    word_pos = word_pos.replace(/na-Adj/g, "Adj");
+  }
 
   return (
     <Card className={`${classes.root} word-card `}>

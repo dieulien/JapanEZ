@@ -60,6 +60,17 @@
   margin-top: 0.5vh;
 }
 
+.module-level {
+  color: $primary-color;
+  font-weight: bold;
+}
+
+//https://www.freecodecamp.org/news/how-to-center-anything-with-css-align-a-div-text-and-more/
+.progress-bar {
+  width: 25vw;
+  margin: 0 auto; // magic for centering item!
+  margin-top: 10px;
+}
 // .introjs-skipbutton {
 //   display: none;
 // }
