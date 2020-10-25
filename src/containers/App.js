@@ -99,19 +99,19 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      route: "register", // should be register
-      // userInfo: {
-      //   id: "dc8ea38f-685f-486a-90b8-76a6c4da315c",
-      //   name: "Tuan Anh",
-      //   email: "tuan@g.com",
-      //   joined: "2020-10-24T23:39:08.779Z",
-      // },
+      route: "home", // should be register
       userInfo: {
-        id: "",
-        name: "",
-        email: "",
-        joined: "",
+        id: "ac73af88-9b41-418f-909e-902ed5f6d446",
+        name: "Dev",
+        email: "dev@g.com",
+        joined: "2020-10-25T14:57:22.578Z",
       },
+      // userInfo: {
+      //   id: "",
+      //   name: "",
+      //   email: "",
+      //   joined: "",
+      // },
       requestedWord: `place_holder`,
 
       currentWordInfo: null,
@@ -473,13 +473,13 @@ class App extends Component {
     }
     if (onIncorrectCard) {
       return (romajiNotInDict 
-        ? `${curWrongChar} does not exist in the Japanese alphabet.`
-        : `${curWrongChar} corresponds to ${this.getKeyByValue(katakanaToRomaji, curWrongChar)}, not ${currentJapChar}.`
+        ? `${curWrongChar} does not exist in the Japanese alphabet. Try again.`
+        : `${curWrongChar} corresponds to ${this.getKeyByValue(katakanaToRomaji, curWrongChar)}, not ${currentJapChar}. Try again.`
       );
     } else if (onHintedCard) {
       return "type the character."
     } else if (romajiList[indexCurrentCard] in wrongCharList) {
-      return "press SPACEBAR to learn the character if you're stuck."
+      return "press SPACEBAR if you're stuck."
     } else if (indexCurrentCard > 0 
       && indexCurrentCard < cardStateList.length
       && cardStateList[indexCurrentCard - 1] === "correct") {
@@ -487,7 +487,7 @@ class App extends Component {
     } else if (wordCompleted && !audioIsPlaying) {
       const cardStateSet = new Set(cardStateList);
       if (cardStateSet.size === 1 && cardStateSet.has("correct")) {
-        return this.randomItem(listOfPraises);
+        return `${this.randomItem(listOfPraises)} Press Enter to continue.`;
       } else {
         return "click on a character or press SPACEBAR to continue.";
       }
