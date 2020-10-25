@@ -260,7 +260,6 @@ class App extends Component {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("Update Char Score:", data);
       })
       .catch((error) => {
         console.log("Failed to update char score", error);
@@ -304,7 +303,6 @@ class App extends Component {
     })
     .then((res) => res.json())
     .then((moduleInfoObject) => {
-      console.log(`IN APP: ${JSON.stringify(moduleInfoObject)}`);
       this.setState({ moduleInfo: moduleInfoObject });
     })
     .catch((error) => {
@@ -487,9 +485,9 @@ class App extends Component {
     } else if (wordCompleted && !audioIsPlaying) {
       const cardStateSet = new Set(cardStateList);
       if (cardStateSet.size === 1 && cardStateSet.has("correct")) {
-        return `${this.randomItem(listOfPraises)} Press Enter to continue.`;
+        return `${this.randomItem(listOfPraises)} Press ENTER to continue.`;
       } else {
-        return "click on a character or press SPACEBAR to continue.";
+        return "click on a character or press ENTER to continue.";
       }
     } else {
       // return `I will be giving you feedback as you use the app.`;

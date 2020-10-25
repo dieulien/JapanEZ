@@ -46,7 +46,7 @@ class Hint extends React.Component {
           <div className="hint-card-content">
             <h3 className="hint-card-romaji">{romaji}</h3>
             <Divider />
-            <div>
+            <div className="image-div">
               <img
                 src={`${katakanaHint[this.props.currentHintedChar].imageLink}`}
                 className={`hint-card-image`}

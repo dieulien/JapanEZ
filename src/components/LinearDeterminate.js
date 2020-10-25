@@ -24,8 +24,8 @@ export default function LinearDeterminate(props) {
   }
   
   const progressPercent = calculateProgress(totalRepetition, totalRemainingRepetition);
-  console.log(`got ${totalRepetition-totalRemainingRepetition} out of ${totalRepetition}`)
-  console.log(`progressPercent ${progressPercent}%`)
+  // console.log(`got ${totalRepetition-totalRemainingRepetition} out of ${totalRepetition}`)
+  // console.log(`progressPercent ${progressPercent}%`)
 
   return (
     <div className={classes.root}>

@@ -67,7 +67,7 @@
 
 //https://www.freecodecamp.org/news/how-to-center-anything-with-css-align-a-div-text-and-more/
 .progress-bar {
-  width: 25vw;
+  width: calc(170px + 15vh + 2vh); // match hint card
   margin: 0 auto; // magic for centering item!
   margin-top: 10px;
 }

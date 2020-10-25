@@ -1,17 +1,20 @@
 @import "../variables.scss";
 
 .hint-card-content {
+  width: calc(170px + 15vh);
   padding-bottom: 3vh;
   padding-left: 1vh;
   padding-right: 1vh;
 }
 
 .hint-card-image {
-  height: calc(75px + 10vh);
+  // height: calc(75px + 10vh);
+  width: calc(150px + 15vh);
 }
 
 .hint-text {
   font-size: calc(10px + 0.7vh);
+  word-wrap: break-word;
   // padding-bottom: calc(10px + 0.5vh);
 }
 

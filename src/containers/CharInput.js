@@ -200,10 +200,8 @@ class CharInput extends React.Component {
       disableAllAction,
       walkThroughEnabled,
       endWalkThrough,
-      requestModuleInfo,
     } = this.props;
-
-    // requestModuleInfo();
+    
     if (walkThroughEnabled) {
       if (event.which === 27) {
         endWalkThrough();
@@ -321,6 +319,8 @@ class CharInput extends React.Component {
       this.deleteIncorrectInput(eventTarget)
     } else if (!onIncorrectCard && !onHintedCard && !wordCompleted) {
       // ask for hint
+      console.log("Requesting hint...")
+      this.props.requestModuleInfo();
       onSpacePress("REQUEST_HINT");
       onCompleteChar(Date.now(), "hinted");
 
