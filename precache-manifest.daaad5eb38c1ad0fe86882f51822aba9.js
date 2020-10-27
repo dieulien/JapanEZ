@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "6433ff2a765557f44df69e45f34356fc",
+    "revision": "f1cd32e3e1c404d8463ce613ebefa964",
     "url": "/japanese-reading/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/japanese-reading/static/css/2.da848f00.chunk.css"
   },
   {
-    "revision": "7ff977e9ed2f3adad46a",
+    "revision": "d7caf1055e25a4d111d3",
     "url": "/japanese-reading/static/css/main.976fd006.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/japanese-reading/static/js/2.8ddbe5d2.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "7ff977e9ed2f3adad46a",
-    "url": "/japanese-reading/static/js/main.b19d0f57.chunk.js"
+    "revision": "d7caf1055e25a4d111d3",
+    "url": "/japanese-reading/static/js/main.a88c967f.chunk.js"
   },
   {
     "revision": "e302560d5cd9bb944f5b",
