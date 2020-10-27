@@ -299,6 +299,7 @@ class App extends Component {
       headers: { "Content-Type": "application/json"},
       body: JSON.stringify({
         userId: this.state.userInfo.id,
+        version: "",
       }),
     })
     .then((res) => res.json())
