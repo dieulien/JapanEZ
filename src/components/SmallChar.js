@@ -19,6 +19,11 @@ const useStyles = makeStyles((theme) => ({
         ? "#d6d6d6"
         : `linear-gradient(0deg, green 0% ${props.correctPercent}%, #f2b50c ${props.correctPercent}% ${props.hintedPercent}%)`;
     },
+    backgroundImage: (props) => {
+      return props.correctPercent === 0 && props.hintedPercent === 0
+        ? "#d6d6d6"
+        : `-webkit-linear-gradient(0deg, green 0% ${props.correctPercent}%, #f2b50c ${props.correctPercent}% ${props.hintedPercent}%)`;
+    },
   },
 }));
 
