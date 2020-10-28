@@ -71,9 +71,9 @@ const MessageBar = (props) => {
   const classes = useStyles(props);
 
   return (
-    <div className="container" style={{ color: "#5D5D5D" }}>
+    <div className="message-box" style={{ color: "#5D5D5D" }}>
       <Paper elevation={0} />
-      <div className="welcome-text">
+      <div className="message">
         {props.displayHelpMessages ? (
           <p 
             className={`${classes.messageText}`} 

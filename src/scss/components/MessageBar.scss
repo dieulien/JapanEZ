@@ -1,13 +1,20 @@
 @import "../variables.scss";
 
-.welcome-text {
-  padding: 28px;
+.message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: calc(10px + 1vh);
 }
 
-.container {
-  border: 1px solid $card-border-neutral-color;
+.message-box {
+  border: 1.5px solid $card-border-neutral-color;
+  width: 96vw;
+  height: calc(10px + 7vh);
+  margin: 5px auto;
   border-radius: (10px);
   padding: calc(5px + 0.5vh);
-  margin: calc(1px + 0.2vh) 0 calc(15px + 1vh);
-  height: 80px;
+  position: relative;
+  color: "#5D5D5D";
 }
