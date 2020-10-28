@@ -17,12 +17,12 @@ const useStyles = makeStyles((theme) => ({
     background: (props) => {
       return props.correctPercent === 0 && props.hintedPercent === 0
         ? "#d6d6d6"
-        : `linear-gradient(0deg, green 0% ${props.correctPercent}%, #f2b50c ${props.correctPercent}% ${props.hintedPercent}%)`;
+        : `linear-gradient(0deg, rbga(0,128,0,1) 0% ${props.correctPercent}%, rbga(242,181,12,1) ${props.correctPercent}% ${props.hintedPercent}%)`;
     },
     backgroundImage: (props) => {
       return props.correctPercent === 0 && props.hintedPercent === 0
         ? "#d6d6d6"
-        : `-webkit-linear-gradient(0deg, green 0% ${props.correctPercent}%, #f2b50c ${props.correctPercent}% ${props.hintedPercent}%)`;
+        : `-webkit-linear-gradient(0deg, rbga(0,128,0,1) 0% ${props.correctPercent}%, rbga(242,181,12,1) ${props.correctPercent}% ${props.hintedPercent}%)`;
     },
   },
 }));
