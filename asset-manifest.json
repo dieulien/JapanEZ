@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/japanese-reading/static/css/main.f2cd46d8.chunk.css",
-    "main.js": "/japanese-reading/static/js/main.da9a20ad.chunk.js",
-    "main.js.map": "/japanese-reading/static/js/main.da9a20ad.chunk.js.map",
+    "main.js": "/japanese-reading/static/js/main.538b8520.chunk.js",
+    "main.js.map": "/japanese-reading/static/js/main.538b8520.chunk.js.map",
     "runtime-main.js": "/japanese-reading/static/js/runtime-main.ba7e5498.js",
     "runtime-main.js.map": "/japanese-reading/static/js/runtime-main.ba7e5498.js.map",
     "static/css/2.da848f00.chunk.css": "/japanese-reading/static/css/2.da848f00.chunk.css",
     "static/js/2.82f98999.chunk.js": "/japanese-reading/static/js/2.82f98999.chunk.js",
     "static/js/2.82f98999.chunk.js.map": "/japanese-reading/static/js/2.82f98999.chunk.js.map",
     "index.html": "/japanese-reading/index.html",
-    "precache-manifest.f2910e6dddebde02cf132e941190c591.js": "/japanese-reading/precache-manifest.f2910e6dddebde02cf132e941190c591.js",
+    "precache-manifest.2cb69204c4896c9741ad8cbd8769258d.js": "/japanese-reading/precache-manifest.2cb69204c4896c9741ad8cbd8769258d.js",
     "service-worker.js": "/japanese-reading/service-worker.js",
     "static/css/2.da848f00.chunk.css.map": "/japanese-reading/static/css/2.da848f00.chunk.css.map",
     "static/css/main.f2cd46d8.chunk.css.map": "/japanese-reading/static/css/main.f2cd46d8.chunk.css.map",
@@ -21,6 +21,6 @@
     "static/css/2.da848f00.chunk.css",
     "static/js/2.82f98999.chunk.js",
     "static/css/main.f2cd46d8.chunk.css",
-    "static/js/main.da9a20ad.chunk.js"
+    "static/js/main.538b8520.chunk.js"
   ]
 }
