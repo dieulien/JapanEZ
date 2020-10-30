@@ -5,7 +5,7 @@ const method = "tuanHeroku";
 var PRIMARYCOLOR = "#1cb0f6"
 // var PRIMARYCOLOR = "#45ACE7"
 
-var USER_TIME_LIMIT_IN_MINUTES = 30;
+var USER_TIME_LIMIT_IN_MINUTES = 20;
 var REGISTER_URL = "https://localhost:3000/register";
 var SIGNIN_URL = "https://localhost:3000/signin";
 var PROFILE_URL = "https://localhost:3000/profile/";
