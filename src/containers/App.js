@@ -99,7 +99,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      route: "register", // should be register
+      route: "signin", // should be register
       // userInfo: {
       //   id: "ac73af88-9b41-418f-909e-902ed5f6d446",
       //   name: "Dev",
@@ -175,9 +175,9 @@ class App extends Component {
       this.requestNewWord();
     }
     if (this.state.route === "home") {
-      setTimeout(() => {
-        this.setState({ openEndDialogue: true });
-      }, USER_TIME_LIMIT_IN_MINUTES * 60000);
+      // setTimeout(() => {
+      //   this.setState({ openEndDialogue: true });
+      // }, USER_TIME_LIMIT_IN_MINUTES * 60000);
     }
     if (this.state.steps1Enabled === prevState.steps1Enabled
         && !this.state.transitionedFromSteps1ToSteps2) {

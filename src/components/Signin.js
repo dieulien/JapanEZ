@@ -112,6 +112,46 @@ class Signin extends React.Component {
       });
   };
 
+onDemo = (event) => {
+    this.setState({ openLoadingPopup: true })
+
+    fetch(SIGNIN_URL, {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: "demouser@test.com",
+        password: "aaa",
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState({ openLoadingPopup: false })
+
+        if (Object.keys(data).length === 4) {
+          this.props.loadUser(data);
+          this.props.onRouteChange("home");
+          this.setState({
+            emailErrorMsg: "",
+            passwordErrorMsg: "",
+          });
+        } else {
+          // there is an error loggin in
+          console.log("Login Failed", data);
+          if (data === "email is not yet registered") {
+            this.setState({ emailErrorMsg: data });
+          } else if (data === "incorrect password") {
+            this.setState({
+              passwordErrorMsg: data,
+              emailErrorMsg: "",
+            });
+          }
+        }
+      })
+      .catch((error) => {
+        console.log("Error!", error);
+      });
+  }
+
   onSignIn = (event) => {
     event.preventDefault();
     const { signInEmail, signInPassword } = this.state;
@@ -200,6 +240,15 @@ class Signin extends React.Component {
                       style={{ color: "white" }}
                     >
                       Sign In
+                    </Button>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      onClick={this.onDemo}
+                      style={{ color: "white" }}
+                    >
+                      Guest Demo
                     </Button>
                     <Grid
                       container
